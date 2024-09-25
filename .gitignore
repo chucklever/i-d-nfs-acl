@@ -21,3 +21,4 @@ draft-cel-nfsv4-nfsacl.xml
 package-lock.json
 report.xml
 !requirements.txt
+i-d-nfs-acl.code-workspace
