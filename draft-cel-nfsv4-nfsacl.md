@@ -10,18 +10,18 @@ ipr: trust200902
 area: "Web and Internet Transport"
 stand_alone: yes
 v: 3
-area: AREA
+area: "Web and Internet Transport"
 workgroup: "Network File System Version 4"
 keyword:
  - NFS
  - ACL
 venue:
-  group: nfsv4
-  type: Working Group
-  mail: nfsv4@ietf.org
-  arch: https://mailarchive.ietf.org/arch/browse/nfsv4/
-  github: https://github.com/chucklever/i-d-nfs-acl
-  latest: https://chucklever.github.io/i-d-nfs-acl/#go.draft-cel-nfsv4-nfsacl.html
+  group: "Network File System Version 4"
+  type: "Working Group"
+  mail: "nfsv4@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/nfsv4/"
+  github: "chucklever/i-d-nfs-acl"
+  latest: "https://chucklever.github.io/i-d-nfs-acl/draft-cel-nfsv4-nfsacl.html"
 
 author:
  -
