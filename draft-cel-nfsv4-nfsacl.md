@@ -3,7 +3,7 @@ title: "The Network File System Access Control List Protocol"
 abbrev: "NFS ACL Protocol"
 category: info
 
-docname: draft-cel-nfsv4-nfsacl
+docname: draft-cel-nfsv4-nfsacl-latest
 pi: [toc, sortrefs, symrefs, docmapping]
 submissiontype: IETF
 ipr: trust200902
