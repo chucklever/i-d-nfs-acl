@@ -20,8 +20,8 @@ venue:
   type: Working Group
   mail: nfsv4@ietf.org
   arch: https://mailarchive.ietf.org/arch/browse/nfsv4/
-  github: https://github.com/chucklever/i-d-nfsacl
-  latest: https://chucklever.github.io/i-d-update-copy-spec/#go.draft-cel-nfsv4-nfsacl.html
+  github: https://github.com/chucklever/i-d-nfs-acl
+  latest: https://chucklever.github.io/i-d-nfs-acl/#go.draft-cel-nfsv4-nfsacl.html
 
 author:
  -
@@ -395,9 +395,9 @@ This structure represents a single entry in an Access Control List.
 
 ~~~ xdr
 struct aclent {
-	int type;
-	uid id;
-	o_mode perm;
+    int type;
+    uid id;
+    o_mode perm;
 };
 ~~~
 
@@ -405,22 +405,22 @@ The "type" element in an Access Control Entry is a bit mask.
 The bit field values in this mask are defined as follows:
 
 ~~~ xdr
-const NA_USER_OBJ = 0x1;	/* object owner */
-const NA_USER = 0x2;		/* additional users */
-const NA_GROUP_OBJ = 0x4;	/* owning group of the object */
-const NA_GROUP = 0x8;		/* additional groups */
-const NA_CLASS_OBJ = 0x10;	/* file group class and mask entry */
-const NA_OTHER_OBJ = 0x20;	/* other entry for the object */
-const NA_ACL_DEFAULT = 0x1000;	/* default flag */
+const NA_USER_OBJ = 0x1;        /* object owner */
+const NA_USER = 0x2;            /* additional users */
+const NA_GROUP_OBJ = 0x4;       /* owning group of the object */
+const NA_GROUP = 0x8;           /* additional groups */
+const NA_CLASS_OBJ = 0x10;      /* file group class and mask entry */
+const NA_OTHER_OBJ = 0x20;      /* other entry for the object */
+const NA_ACL_DEFAULT = 0x1000;  /* default flag */
 ~~~
 
 The "perm" element in an Access Control Entry is also a bit mask.
 The bit field values in this mask are defined as follows:
 
 ~~~ xdr
-const NA_READ = 0x4;		/* read permission */
-const NA_WRITE = 0x2;		/* write permission */
-const NA_EXEC = 0x1;		/* exec permission */
+const NA_READ = 0x4;            /* read permission */
+const NA_WRITE = 0x2;           /* write permission */
+const NA_EXEC = 0x1;            /* exec permission */
 ~~~
 
 ### secattr
@@ -433,11 +433,11 @@ children.
 
 ~~~ xdr
 struct secattr {
-	u_int mask;
-	int aclcnt;
-	aclent aclent<NFS_ACL_MAX_ENTRIES>;
-	int dfaclcnt;
-	aclent dfaclent<NFS_ACL_MAX_ENTRIES>;
+    u_int mask;
+    int aclcnt;
+    aclent aclent<NFS_ACL_MAX_ENTRIES>;
+    int dfaclcnt;
+    aclent dfaclent<NFS_ACL_MAX_ENTRIES>;
 };
 ~~~
 
@@ -489,7 +489,7 @@ LOOKUP
 ### ftype
 
 The enumeration "ftype" gives the type of an NFS version 3 file.
-This definition comes from {{Section 2.3.2 of RFC 1094}}:
+This definition comes from {{Section 2.3.2 of RFC1094}}:
 
 ~~~ xdr
 enum ftype {
@@ -674,8 +674,8 @@ settings.
 
 ~~~ xdr
 struct GETACL2args {
-	fhandle_t fh;
-	u_int mask;
+    fhandle_t fh;
+    u_int mask;
 };
 ~~~
 
@@ -683,15 +683,15 @@ struct GETACL2args {
 
 ~~~ xdr
 struct GETACL2resok {
-	struct nfsfattr attr;
-	secattr acl;
+    struct nfsfattr attr;
+    secattr acl;
 };
 
 union GETACL2res switch (enum nfsstat status) {
 case ACL2_OK:
-	GETACL2resok resok;
+    GETACL2resok resok;
 default:
-	void;
+    void;
 };
 ~~~
 
@@ -722,8 +722,8 @@ represented by the file handle in the argument.
 
 ~~~ xdr
 struct SETACL2args {
-	fhandle_t fh;
-	secattr acl;
+    fhandle_t fh;
+    secattr acl;
 };
 ~~~
 
@@ -731,14 +731,14 @@ struct SETACL2args {
 
 ~~~ xdr
 struct SETACL2resok {
-	struct nfsfattr attr;
+    struct nfsfattr attr;
 };
 
 union SETACL2res switch (enum nfsstat status) {
 case ACL2_OK:
-	SETACL2resok resok;
+    SETACL2resok resok;
 default:
-	void;
+    void;
 };
 ~~~
 
@@ -761,7 +761,7 @@ a file system object.
 
 ~~~ xdr
 struct GETATTR2args {
-	fhandle_t fh;
+    fhandle_t fh;
 };
 ~~~
 
@@ -769,14 +769,14 @@ struct GETATTR2args {
 
 ~~~ xdr
 struct GETATTR2resok {
-	struct nfsfattr attr;
+    struct nfsfattr attr;
 };
 
 union GETATTR2res switch (enum nfsstat status) {
 case ACL2_OK:
-	GETATTR2resok resok;
+    GETATTR2resok resok;
 default:
-	void;
+    void;
 };
 ~~~
 
@@ -827,32 +827,32 @@ reduce over-the-wire attribute checks.
 
 ~~~ xdr
 struct ACCESS2args {
-	fhandle_t fh;
-	uint32 access;
+    fhandle_t fh;
+    uint32 access;
 };
 ~~~
 
 #### RESULTS
 
 ~~~ xdr
-const ACCESS2_READ = 0x1;	/* read data or readdir a directory */
-const ACCESS2_LOOKUP = 0x2;	/* lookup a name in a directory */
-const ACCESS2_MODIFY = 0x4;	/* rewrite existing file data or */
-				/* modify existing directory entries */
-const ACCESS2_EXTEND = 0x8;	/* write new data or add directory entries */
-const ACCESS2_DELETE = 0x10;	/* delete existing directory entry */
-const ACCESS2_EXECUTE = 0x20;	/* execute file (no meaning for a directory) */
+const ACCESS2_READ = 0x1;       /* read data or readdir a directory */
+const ACCESS2_LOOKUP = 0x2;     /* lookup a name in a directory */
+const ACCESS2_MODIFY = 0x4;     /* rewrite existing file data or */
+                                /* modify existing directory entries */
+const ACCESS2_EXTEND = 0x8;     /* write new data or add directory entries */
+const ACCESS2_DELETE = 0x10;    /* delete existing directory entry */
+const ACCESS2_EXECUTE = 0x20;   /* execute file (no meaning for a directory) */
 
 struct ACCESS2resok {
-	struct nfsfattr attr;
-	uint32 access;
+    struct nfsfattr attr;
+    uint32 access;
 };
 
 union ACCESS2res switch (enum nfsstat status) {
 case ACL2_OK:
-	ACCESS2resok resok;
+    ACCESS2resok resok;
 default:
-	void;
+    void;
 };
 ~~~
 
@@ -970,8 +970,8 @@ the client does not have this permission.
 
 ~~~ xdr
 struct GETXATTRDIR2args {
-	fhandle_t fh;
-	bool create;
+    fhandle_t fh;
+    bool create;
 };
 ~~~
 
@@ -979,15 +979,15 @@ struct GETXATTRDIR2args {
 
 ~~~ xdr
 struct GETXATTRDIR2resok {
-	fhandle_t fh;
-	struct nfsfattr attr;
+    fhandle_t fh;
+    struct nfsfattr attr;
 };
 
 union GETXATTRDIR2res switch (enum nfsstat status) {
 case ACL2_OK:
-	GETXATTRDIR2resok resok;
+    GETXATTRDIR2resok resok;
 default:
-	void;
+    void;
 };
 ~~~
 
@@ -1356,8 +1356,8 @@ based on security or authentication policy settings.
 
 ~~~ xdr
 struct GETACL3args {
-	nfs_fh3 fh;
-	u_int mask;
+    nfs_fh3 fh;
+    u_int mask;
 };
 ~~~
 
@@ -1365,19 +1365,19 @@ struct GETACL3args {
 
 ~~~ xde
 struct GETACL3resok {
-	post_op_attr attr;
-	secattr acl;
+    post_op_attr attr;
+    secattr acl;
 };
 
 struct GETACL3resfail {
-	post_op_attr attr;
+    post_op_attr attr;
 };
 
 union GETACL3res switch (nfsstat3 status) {
 case ACL3_OK:
-	GETACL3resok resok;
+    GETACL3resok resok;
 default:
-	GETACL3resfail resfail;
+    GETACL3resfail resfail;
 };
 ~~~
 
@@ -1405,8 +1405,8 @@ represented by the file handle in the argument.
 
 ~~~ xdr
 struct SETACL3args {
-	nfs_fh3 fh;
-	secattr acl;
+    nfs_fh3 fh;
+    secattr acl;
 };
 ~~~
 
@@ -1414,18 +1414,18 @@ struct SETACL3args {
 
 ~~~ xdr
 struct SETACL3resok {
-	post_op_attr attr;
+    post_op_attr attr;
 };
 
 struct SETACL3resfail {
-	post_op_attr attr;
+    post_op_attr attr;
 };
 
 union SETACL3res switch (nfsstat3 status) {
 case ACL3_OK:
-	SETACL3resok resok;
+    SETACL3resok resok;
 default:
-	SETACL3resfail resfail;
+    SETACL3resfail resfail;
 };
 ~~~
 
@@ -1448,8 +1448,8 @@ a file system object.
 
 ~~~ xdr
 struct GETXATTRDIR3args {
-	nfs_fh3 fh;
-	bool create;
+    nfs_fh3 fh;
+    bool create;
 };
 ~~~
 
@@ -1457,15 +1457,15 @@ struct GETXATTRDIR3args {
 
 ~~~ xdr
 struct GETXATTRDIR3resok {
-	nfs_fh3 fh;
-	post_op_attr attr;
+    nfs_fh3 fh;
+    post_op_attr attr;
 };
 
 union GETXATTRDIR3res switch (nfsstat3 status) {
 case ACL3_OK:
-	GETXATTRDIR3resok resok;
+    GETXATTRDIR3resok resok;
 default:
-	void;
+    void;
 };
 ~~~
 
@@ -1479,23 +1479,6 @@ In this case, the server returns the RPC-level error PROC_UNAVAIL.
 #### ERRORS
 
 # Implementation Issues
-
-The NFS protocol was designed to allow different
-operating systems to share files. Since it was
-designed in a UNIX environment, many operations have
-semantics similar to the operations of the UNIX file system.
-
-A number of papers have been written describing issues
-encountered when constructing an NFS version 2 protocol
-implementation. The best overview paper is still [Sandberg].
-[Israel], [Macklem], and [Pawlowski] describe other
-implementations. [X/OpenNFS] provides a complete description
-of the NFS version 2 protocol and supporting protocols, as
-well as a discussion on implementation issues and procedure
-and error semantics. Many of the issues encountered when
-constructing an NFS version 2 protocol implementation will be
-encountered when constructing an NFS version 3 protocol
-implementation.
 
 ## Permission issues
 
@@ -1636,23 +1619,19 @@ extract into ready-to-compile form.  The reader can apply the
 following shell script to this document to produce a
 machine-readable XDR description of the NFSACL protocol.
 
-<CODE BEGINS>
-
+~~~ sh
 #!/bin/sh
 grep '^ *///' | sed 's?^ /// ??' | sed 's?^ *///$??'
-
-<CODE ENDS>
+~~~
 
 That is, if the above script is stored in a file called
 "extract.sh" and this document is in a file called "spec.txt",
 then the reader can do the following to extract an XDR
 description file:
 
-<CODE BEGINS>
-
+~~~ sh
 sh extract.sh < spec.txt > nfsacl.x
-
-<CODE ENDS>
+~~~
 
 ###  Code Component License
 
@@ -1706,9 +1685,9 @@ text need be preserved.
 ///  */
 ///
 /// /*
-///  *	Copyright 1994,2001-2003 Sun Microsystems, Inc.
-///  *	All rights reserved.
-///  *	Use is subject to license terms.
+///  *  Copyright 1994,2001-2003 Sun Microsystems, Inc.
+///  *  All rights reserved.
+///  *  Use is subject to license terms.
 ///  */
 /// 
 /// const NFS_ACL_MAX_ENTRIES = 1024;
@@ -1720,30 +1699,30 @@ text need be preserved.
 ///  * This is the format of an ACL which is passed over the network.
 ///  */
 /// struct aclent {
-/// 	int type;
-/// 	uid id;
-/// 	o_mode perm;
+///     int type;
+///     uid id;
+///     o_mode perm;
 /// };
 /// 
 /// /*
 ///  * The values for the type element of the aclent structure.
 ///  */
-/// const NA_USER_OBJ = 0x1;	/* object owner */
-/// const NA_USER = 0x2;		/* additional users */
-/// const NA_GROUP_OBJ = 0x4;	/* owning group of the object */
-/// const NA_GROUP = 0x8;		/* additional groups */
-/// const NA_CLASS_OBJ = 0x10;	/* file group class and mask entry */
-/// const NA_OTHER_OBJ = 0x20;	/* other entry for the object */
-/// const NA_ACL_DEFAULT = 0x1000;	/* default flag */
+/// const NA_USER_OBJ = 0x1;            /* object owner */
+/// const NA_USER = 0x2;                /* additional users */
+/// const NA_GROUP_OBJ = 0x4;           /* owning group of the object */
+/// const NA_GROUP = 0x8;               /* additional groups */
+/// const NA_CLASS_OBJ = 0x10;          /* file group class and mask entry */
+/// const NA_OTHER_OBJ = 0x20;          /* other entry for the object */
+/// const NA_ACL_DEFAULT = 0x1000;      /* default flag */
 /// 
 /// /*
 ///  * The bit field values for the perm element of the aclent
 ///  * structure.  The three values can be combined to form any
 ///  * of the 8 combinations.
 ///  */
-/// const NA_READ = 0x4;		/* read permission */
-/// const NA_WRITE = 0x2;		/* write permission */
-/// const NA_EXEC = 0x1;		/* exec permission */
+/// const NA_READ = 0x4;                /* read permission */
+/// const NA_WRITE = 0x2;               /* write permission */
+/// const NA_EXEC = 0x1;                /* exec permission */
 /// 
 /// /*
 ///  * This is the structure which contains the ACL entries for a
@@ -1754,11 +1733,11 @@ text need be preserved.
 ///  * The values for the mask field are defined below.
 ///  */
 /// struct secattr {
-/// 	u_int mask;
-/// 	int aclcnt;
-/// 	aclent aclent<NFS_ACL_MAX_ENTRIES>;
-/// 	int dfaclcnt;
-/// 	aclent dfaclent<NFS_ACL_MAX_ENTRIES>;
+///     u_int mask;
+///     int aclcnt;
+///     aclent aclent<NFS_ACL_MAX_ENTRIES>;
+///     int dfaclcnt;
+///     aclent dfaclent<NFS_ACL_MAX_ENTRIES>;
 /// };
 /// 
 /// /*
@@ -1766,10 +1745,10 @@ text need be preserved.
 ///  * as for the mask element in the arguments in the GETACL2 and
 ///  * GETACL3 procedures.
 ///  */
-/// const NA_ACL = 0x1;		/* aclent contains a valid list */
-/// const NA_ACLCNT = 0x2;		/* the number of entries in the aclent list */
-/// const NA_DFACL = 0x4;		/* dfaclent contains a valid list */
-/// const NA_DFACLCNT = 0x8;	/* the number of entries in the dfaclent list */
+/// const NA_ACL = 0x1;                 /* aclent contains a valid list */
+/// const NA_ACLCNT = 0x2;              /* the number of entries in the aclent list */
+/// const NA_DFACL = 0x4;               /* dfaclent contains a valid list */
+/// const NA_DFACLCNT = 0x8;            /* the number of entries in the dfaclent list */
 /// 
 /// /*
 ///  * XDR data types inherited from the NFS version 2 protocol
@@ -1837,76 +1816,76 @@ text need be preserved.
 ///  */
 /// 
 /// struct GETACL2args {
-/// 	fhandle_t fh;
-/// 	u_int mask;
+///     fhandle_t fh;
+///     u_int mask;
 /// };
 /// 
 /// struct GETACL2resok {
-/// 	struct nfsfattr attr;
-/// 	secattr acl;
+///     struct nfsfattr attr;
+///     secattr acl;
 /// };
 /// 
 /// union GETACL2res switch (enum nfsstat status) {
 /// case ACL2_OK:
-/// 	GETACL2resok resok;
+///     GETACL2resok resok;
 /// default:
-/// 	void;
+///     void;
 /// };
 /// 
 /// struct SETACL2args {
-/// 	fhandle_t fh;
-/// 	secattr acl;
+///     fhandle_t fh;
+///     secattr acl;
 /// };
 /// 
 /// struct SETACL2resok {
-/// 	struct nfsfattr attr;
+///     struct nfsfattr attr;
 /// };
 /// 
 /// union SETACL2res switch (enum nfsstat status) {
 /// case ACL2_OK:
-/// 	SETACL2resok resok;
+///     SETACL2resok resok;
 /// default:
-/// 	void;
+///     void;
 /// };
 /// 
 /// struct GETATTR2args {
-/// 	fhandle_t fh;
+///     fhandle_t fh;
 /// };
 /// 
 /// struct GETATTR2resok {
-/// 	struct nfsfattr attr;
+///     struct nfsfattr attr;
 /// };
 /// 
 /// union GETATTR2res switch (enum nfsstat status) {
 /// case ACL2_OK:
-/// 	GETATTR2resok resok;
+///     GETATTR2resok resok;
 /// default:
-/// 	void;
+///     void;
 /// };
 /// 
 /// struct ACCESS2args {
-/// 	fhandle_t fh;
-/// 	uint32 access;
+///     fhandle_t fh;
+///     uint32 access;
 /// };
 /// 
-/// const ACCESS2_READ = 0x1;	/* read data or readdir a directory */
-/// const ACCESS2_LOOKUP = 0x2;	/* lookup a name in a directory */
-/// const ACCESS2_MODIFY = 0x4;	/* rewrite existing file data or */
-/// 				/* modify existing directory entries */
-/// const ACCESS2_EXTEND = 0x8;	/* write new data or add directory entries */
-/// const ACCESS2_DELETE = 0x10;	/* delete existing directory entry */
-/// const ACCESS2_EXECUTE = 0x20;	/* execute file (no meaning for a directory) */
+/// const ACCESS2_READ = 0x1;           /* read data or readdir a directory */
+/// const ACCESS2_LOOKUP = 0x2;         /* lookup a name in a directory */
+/// const ACCESS2_MODIFY = 0x4;         /* rewrite existing file data or */
+///                                     /* modify existing directory entries */
+/// const ACCESS2_EXTEND = 0x8;         /* write new data or add directory entries */
+/// const ACCESS2_DELETE = 0x10;        /* delete existing directory entry */
+/// const ACCESS2_EXECUTE = 0x20;       /* execute file (no meaning for a directory) */
 /// 
 /// struct ACCESS2resok {
-/// 	struct nfsfattr attr;
-/// 	uint32 access;
+///     struct nfsfattr attr;
+///     uint32 access;
 /// };
 /// 
 /// union ACCESS2res switch (enum nfsstat status) {
 /// case ACL2_OK:
-/// 	ACCESS2resok resok;
+///     ACCESS2resok resok;
 /// default:
-/// 	void;
+///     void;
 /// };
 /// 
 /// /*
@@ -1914,20 +1893,20 @@ text need be preserved.
 ///  * to NFS Version 2 files.
 ///  */
 /// struct GETXATTRDIR2args {
-/// 	fhandle_t fh;
-/// 	bool create;
+///     fhandle_t fh;
+///     bool create;
 /// };
 /// 
 /// struct GETXATTRDIR2resok {
-/// 	fhandle_t fh;
-/// 	struct nfsfattr attr;
+///     fhandle_t fh;
+///     struct nfsfattr attr;
 /// };
 /// 
 /// union GETXATTRDIR2res switch (enum nfsstat status) {
 /// case ACL2_OK:
-/// 	GETXATTRDIR2resok resok;
+///     GETXATTRDIR2resok resok;
 /// default:
-/// 	void;
+///     void;
 /// };
 /// 
 /// /*
@@ -2032,44 +2011,44 @@ text need be preserved.
 ///  */
 /// 
 /// struct GETACL3args {
-/// 	nfs_fh3 fh;
-/// 	u_int mask;
+///     nfs_fh3 fh;
+///     u_int mask;
 /// };
 /// 
 /// struct GETACL3resok {
-/// 	post_op_attr attr;
-/// 	secattr acl;
+///     post_op_attr attr;
+///     secattr acl;
 /// };
 /// 
 /// struct GETACL3resfail {
-/// 	post_op_attr attr;
+///     post_op_attr attr;
 /// };
 /// 
 /// union GETACL3res switch (nfsstat3 status) {
 /// case ACL3_OK:
-/// 	GETACL3resok resok;
+///     GETACL3resok resok;
 /// default:
-/// 	GETACL3resfail resfail;
+///     GETACL3resfail resfail;
 /// };
 /// 
 /// struct SETACL3args {
-/// 	nfs_fh3 fh;
-/// 	secattr acl;
+///     nfs_fh3 fh;
+///     secattr acl;
 /// };
 /// 
 /// struct SETACL3resok {
-/// 	post_op_attr attr;
+///     post_op_attr attr;
 /// };
 /// 
 /// struct SETACL3resfail {
-/// 	post_op_attr attr;
+///     post_op_attr attr;
 /// };
 /// 
 /// union SETACL3res switch (nfsstat3 status) {
 /// case ACL3_OK:
-/// 	SETACL3resok resok;
+///     SETACL3resok resok;
 /// default:
-/// 	SETACL3resfail resfail;
+///     SETACL3resfail resfail;
 /// };
 /// 
 /// /*
@@ -2077,20 +2056,20 @@ text need be preserved.
 ///  * to NFS Version 3 files.
 ///  */
 /// struct GETXATTRDIR3args {
-/// 	nfs_fh3 fh;
-/// 	bool create;
+///     nfs_fh3 fh;
+///     bool create;
 /// };
 /// 
 /// struct GETXATTRDIR3resok {
-/// 	nfs_fh3 fh;
-/// 	post_op_attr attr;
+///     nfs_fh3 fh;
+///     post_op_attr attr;
 /// };
 /// 
 /// union GETXATTRDIR3res switch (nfsstat3 status) {
 /// case ACL3_OK:
-/// 	GETXATTRDIR3resok resok;
+///     GETXATTRDIR3resok resok;
 /// default:
-/// 	void;
+///     void;
 /// };
 /// 
 /// /*
@@ -2099,30 +2078,30 @@ text need be preserved.
 /// const NFS_ACL_PORT = 2049;
 /// 
 /// program NFS_ACL_PROGRAM {
-/// 	version NFS_ACL_V2 {
-/// 		void
-/// 		 ACLPROC2_NULL(void) = 0;
-/// 		GETACL2res
-/// 		 ACLPROC2_GETACL(GETACL2args) = 1;
-/// 		SETACL2res
-/// 		 ACLPROC2_SETACL(SETACL2args) = 2;
-/// 		GETATTR2res
-/// 		 ACLPROC2_GETATTR(GETATTR2args) = 3;
-/// 		ACCESS2res
-/// 		 ACLPROC2_ACCESS(ACCESS2args) = 4;
-/// 		GETXATTRDIR2res
-/// 		 ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
-/// 	} = 2;
-/// 	version NFS_ACL_V3 {
-/// 		void
-/// 		 ACLPROC3_NULL(void) = 0;
-/// 		GETACL3res
-/// 		 ACLPROC3_GETACL(GETACL3args) = 1;
-/// 		SETACL3res
-/// 		 ACLPROC3_SETACL(SETACL3args) = 2;
-/// 		GETXATTRDIR3res
-/// 		 ACLPROC3_GETXATTRDIR(GETXATTRDIR3args) = 3;
-/// 	} = 3;
+///     version NFS_ACL_V2 {
+///         void
+///             ACLPROC2_NULL(void) = 0;
+///         GETACL2res
+///             ACLPROC2_GETACL(GETACL2args) = 1;
+///         SETACL2res
+///             ACLPROC2_SETACL(SETACL2args) = 2;
+///         GETATTR2res
+///             ACLPROC2_GETATTR(GETATTR2args) = 3;
+///         ACCESS2res
+///             ACLPROC2_ACCESS(ACCESS2args) = 4;
+///         GETXATTRDIR2res
+///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
+///     } = 2;
+///     version NFS_ACL_V3 {
+///         void
+///             ACLPROC3_NULL(void) = 0;
+///         GETACL3res
+///             ACLPROC3_GETACL(GETACL3args) = 1;
+///         SETACL3res
+///             ACLPROC3_SETACL(SETACL3args) = 2;
+///         GETXATTRDIR3res
+///             ACLPROC3_GETXATTRDIR(GETXATTRDIR3args) = 3;
+///     } = 3;
 /// } = 100227;
 ~~~
 
@@ -2201,7 +2180,6 @@ the current document as a Reference.
 --- back
 
 # Appendix I: Source Material
-{:numbered="false"}
 
 The on-the-wire protocol described here is intended to
 match existing de factor implementations of NFSACL.
