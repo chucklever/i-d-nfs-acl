@@ -662,7 +662,7 @@ responding to the NULL procedure call acknowledges the existence
 of a resource to an unauthenticated client.
 
 #### ERRORS
- 
+
 Since the NULL procedure returns no result, it can not return an
 NFSACL error status code. However, some server implementations may
 return RPC-level errors based on security or authentication policy
@@ -1344,7 +1344,7 @@ responding to the NULL procedure call acknowledges the existence
 of a resource to an unauthenticated client.
 
 #### ERRORS
- 
+
 Since the NULL procedure takes no argument and returns no
 result, it can not return an NFS or NFSACL error status code.
 However, some server implementations may return RPC errors
@@ -1589,24 +1589,12 @@ effects.
 A good description of the implementation and use of a
 duplicate request cache can be found in [Juszczak].
 
-## Adaptive Retransmission
-
-Most client implementations use either an exponential
-back-off strategy to some maximum retransmission value, or a
-more adaptive strategy that attempts congestion avoidance.
-Congestion avoidance schemes in NFS request retransmission
-are modelled on the work presented in [Jacobson]. [Nowicki]
-and [Macklem] describe congestion avoidance schemes to be
-applied to the NFS protocol over UDP.
-
 ## Caching Policies
 
 The NFS version 3 protocol does not define a policy for
 caching on the client or server. In particular, there is no
 support for strict cache consistency between a client and
-server, nor between different clients. See [Kazar] for a
-discussion of the issues of cache synchronization and
-mechanisms in several distributed file systems.
+server, nor between different clients.
 
 # XDR Protocol Definition
 
@@ -1633,7 +1621,7 @@ description file:
 sh extract.sh < spec.txt > nfsacl.x
 ~~~
 
-###  Code Component License
+##  Code Component License
 
 Code components extracted from this document must include
 the following license text.  When the extracted XDR code
@@ -1689,12 +1677,12 @@ text need be preserved.
 ///  *  All rights reserved.
 ///  *  Use is subject to license terms.
 ///  */
-/// 
+///
 /// const NFS_ACL_MAX_ENTRIES = 1024;
-/// 
+///
 /// typedef int uid;
 /// typedef unsigned short o_mode;
-/// 
+///
 /// /*
 ///  * This is the format of an ACL which is passed over the network.
 ///  */
@@ -1703,7 +1691,7 @@ text need be preserved.
 ///     uid id;
 ///     o_mode perm;
 /// };
-/// 
+///
 /// /*
 ///  * The values for the type element of the aclent structure.
 ///  */
@@ -1714,7 +1702,7 @@ text need be preserved.
 /// const NA_CLASS_OBJ = 0x10;          /* file group class and mask entry */
 /// const NA_OTHER_OBJ = 0x20;          /* other entry for the object */
 /// const NA_ACL_DEFAULT = 0x1000;      /* default flag */
-/// 
+///
 /// /*
 ///  * The bit field values for the perm element of the aclent
 ///  * structure.  The three values can be combined to form any
@@ -1723,7 +1711,7 @@ text need be preserved.
 /// const NA_READ = 0x4;                /* read permission */
 /// const NA_WRITE = 0x2;               /* write permission */
 /// const NA_EXEC = 0x1;                /* exec permission */
-/// 
+///
 /// /*
 ///  * This is the structure which contains the ACL entries for a
 ///  * particular entity.  It contains the ACL entries which apply
@@ -1739,7 +1727,7 @@ text need be preserved.
 ///     int dfaclcnt;
 ///     aclent dfaclent<NFS_ACL_MAX_ENTRIES>;
 /// };
-/// 
+///
 /// /*
 ///  * The values for the mask element of the secattr struct as well
 ///  * as for the mask element in the arguments in the GETACL2 and
@@ -1749,7 +1737,7 @@ text need be preserved.
 /// const NA_ACLCNT = 0x2;              /* the number of entries in the aclent list */
 /// const NA_DFACL = 0x4;               /* dfaclent contains a valid list */
 /// const NA_DFACLCNT = 0x8;            /* the number of entries in the dfaclent list */
-/// 
+///
 /// /*
 ///  * XDR data types inherited from the NFS version 2 protocol
 ///  */
@@ -1762,14 +1750,14 @@ text need be preserved.
 ///     NFCHR = 4,
 ///     NFLNK = 5,
 /// };
-/// 
+///
 /// typedef opaque fhandle[FHSIZE];
-/// 
+///
 /// struct timeval {
 ///     unsigned int seconds;
 ///     unsigned int useconds;
 /// };
-/// 
+///
 /// struct fattr {
 ///     ftype        type;
 ///     unsigned int mode;
@@ -1786,7 +1774,7 @@ text need be preserved.
 ///     timeval      mtime;
 ///     timeval      ctime;
 /// };
-/// 
+///
 /// /*
 ///  * ACL error codes; the numeric values match codes with the same
 ///  * name used in NFS version 2.
@@ -1810,64 +1798,64 @@ text need be preserved.
 ///     ACL2ERR_DQUOT = 69,
 ///     ACL2ERR_STALE = 70,
 /// };
-/// 
+///
 /// /*
 ///  * NFSACL version 2 procedure arguments and results
 ///  */
-/// 
+///
 /// struct GETACL2args {
 ///     fhandle_t fh;
 ///     u_int mask;
 /// };
-/// 
+///
 /// struct GETACL2resok {
 ///     struct nfsfattr attr;
 ///     secattr acl;
 /// };
-/// 
+///
 /// union GETACL2res switch (enum nfsstat status) {
 /// case ACL2_OK:
 ///     GETACL2resok resok;
 /// default:
 ///     void;
 /// };
-/// 
+///
 /// struct SETACL2args {
 ///     fhandle_t fh;
 ///     secattr acl;
 /// };
-/// 
+///
 /// struct SETACL2resok {
 ///     struct nfsfattr attr;
 /// };
-/// 
+///
 /// union SETACL2res switch (enum nfsstat status) {
 /// case ACL2_OK:
 ///     SETACL2resok resok;
 /// default:
 ///     void;
 /// };
-/// 
+///
 /// struct GETATTR2args {
 ///     fhandle_t fh;
 /// };
-/// 
+///
 /// struct GETATTR2resok {
 ///     struct nfsfattr attr;
 /// };
-/// 
+///
 /// union GETATTR2res switch (enum nfsstat status) {
 /// case ACL2_OK:
 ///     GETATTR2resok resok;
 /// default:
 ///     void;
 /// };
-/// 
+///
 /// struct ACCESS2args {
 ///     fhandle_t fh;
 ///     uint32 access;
 /// };
-/// 
+///
 /// const ACCESS2_READ = 0x1;           /* read data or readdir a directory */
 /// const ACCESS2_LOOKUP = 0x2;         /* lookup a name in a directory */
 /// const ACCESS2_MODIFY = 0x4;         /* rewrite existing file data or */
@@ -1875,19 +1863,19 @@ text need be preserved.
 /// const ACCESS2_EXTEND = 0x8;         /* write new data or add directory entries */
 /// const ACCESS2_DELETE = 0x10;        /* delete existing directory entry */
 /// const ACCESS2_EXECUTE = 0x20;       /* execute file (no meaning for a directory) */
-/// 
+///
 /// struct ACCESS2resok {
 ///     struct nfsfattr attr;
 ///     uint32 access;
 /// };
-/// 
+///
 /// union ACCESS2res switch (enum nfsstat status) {
 /// case ACL2_OK:
 ///     ACCESS2resok resok;
 /// default:
 ///     void;
 /// };
-/// 
+///
 /// /*
 ///  * This is the definition for the GETXATTRDIR procedure which applies
 ///  * to NFS Version 2 files.
@@ -1896,19 +1884,19 @@ text need be preserved.
 ///     fhandle_t fh;
 ///     bool create;
 /// };
-/// 
+///
 /// struct GETXATTRDIR2resok {
 ///     fhandle_t fh;
 ///     struct nfsfattr attr;
 /// };
-/// 
+///
 /// union GETXATTRDIR2res switch (enum nfsstat status) {
 /// case ACL2_OK:
 ///     GETXATTRDIR2resok resok;
 /// default:
 ///     void;
 /// };
-/// 
+///
 /// /*
 ///  * XDR data types inherited from the NFS version 3 protocol
 ///  */
@@ -1920,7 +1908,7 @@ text need be preserved.
 /// typedef uint32 gid3;
 /// typedef uint64 size3;
 /// typedef uint32 mode3;
-/// 
+///
 /// enum ftype3 {
 ///     NF3REG    = 1,
 ///     NF3DIR    = 2,
@@ -1930,23 +1918,23 @@ text need be preserved.
 ///     NF3SOCK   = 6,
 ///     NF3FIFO   = 7
 /// };
-/// 
+///
 /// struct specdata3 {
 ///     uint32     specdata1;
 ///     uint32     specdata2;
 /// };
-/// 
+///
 /// const NFS3_FHSIZE = 64;
-/// 
+///
 /// struct nfs_fh3 {
 ///     opaque       data<NFS3_FHSIZE>;
 /// };
-/// 
+///
 /// struct nfstime3 {
 ///     uint32   seconds;
 ///     uint32   nseconds;
 /// };
-/// 
+///
 /// struct fattr3 {
 ///     ftype3     type;
 ///     mode3      mode;
@@ -1962,14 +1950,14 @@ text need be preserved.
 ///     nfstime3   mtime;
 ///     nfstime3   ctime;
 /// };
-/// 
+///
 /// union post_op_attr switch (bool attributes_follow) {
 /// case TRUE:
 ///     fattr3   attributes;
 /// case FALSE:
 ///     void;
 /// };
-/// 
+///
 /// /*
 ///  * ACL error codes; the numeric values match codes with the same
 ///  * name used in NFS version 3.
@@ -2005,52 +1993,52 @@ text need be preserved.
 ///     ACL3ERR_BADTYPE = 10007,
 ///     ACL3ERR_JUKEBOX = 10008,
 /// };
-/// 
+///
 /// /*
 ///  * NFSACL version 3 procedure arguments and results
 ///  */
-/// 
+///
 /// struct GETACL3args {
 ///     nfs_fh3 fh;
 ///     u_int mask;
 /// };
-/// 
+///
 /// struct GETACL3resok {
 ///     post_op_attr attr;
 ///     secattr acl;
 /// };
-/// 
+///
 /// struct GETACL3resfail {
 ///     post_op_attr attr;
 /// };
-/// 
+///
 /// union GETACL3res switch (nfsstat3 status) {
 /// case ACL3_OK:
 ///     GETACL3resok resok;
 /// default:
 ///     GETACL3resfail resfail;
 /// };
-/// 
+///
 /// struct SETACL3args {
 ///     nfs_fh3 fh;
 ///     secattr acl;
 /// };
-/// 
+///
 /// struct SETACL3resok {
 ///     post_op_attr attr;
 /// };
-/// 
+///
 /// struct SETACL3resfail {
 ///     post_op_attr attr;
 /// };
-/// 
+///
 /// union SETACL3res switch (nfsstat3 status) {
 /// case ACL3_OK:
 ///     SETACL3resok resok;
 /// default:
 ///     SETACL3resfail resfail;
 /// };
-/// 
+///
 /// /*
 ///  * This is the definition for the GETXATTRDIR procedure which applies
 ///  * to NFS Version 3 files.
@@ -2059,24 +2047,24 @@ text need be preserved.
 ///     nfs_fh3 fh;
 ///     bool create;
 /// };
-/// 
+///
 /// struct GETXATTRDIR3resok {
 ///     nfs_fh3 fh;
 ///     post_op_attr attr;
 /// };
-/// 
+///
 /// union GETXATTRDIR3res switch (nfsstat3 status) {
 /// case ACL3_OK:
 ///     GETXATTRDIR3resok resok;
 /// default:
 ///     void;
 /// };
-/// 
+///
 /// /*
 ///  * Share the port with the NFS service.
 ///  */
 /// const NFS_ACL_PORT = 2049;
-/// 
+///
 /// program NFS_ACL_PROGRAM {
 ///     version NFS_ACL_V2 {
 ///         void
