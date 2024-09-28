@@ -2246,11 +2246,7 @@ rewrite as necessary.
 Should the CDDL .x file be explicitly cited, or otherwise
 referenced, in this document?
 
-Should the POSIX ACL draft standard be cited in this document?
-
 How should the XDR language copyright notice read?
-
-Should the XATTR procedures be included as OPTIONAL or simply redacted from the published protocol?
 
 How are ACLs removed?
 
