@@ -4,7 +4,7 @@ abbrev: "NFS ACL Protocol"
 category: info
 
 docname: draft-cel-nfsv4-nfsacl-latest
-pi: [toc, sortrefs, symrefs, docmapping]
+pi: [sortrefs, symrefs, docmapping]
 submissiontype: IETF
 ipr: trust200902
 area: "Web and Internet Transport"
@@ -32,48 +32,84 @@ author:
     email: chuck.lever@oracle.com
 
 normative:
-  RFC1813:
   RFC4506:
   RFC5531:
 
 informative:
   RFC1094:
+  RFC1813:
+  RFC8275:
+  RFC8881:
+  Grünbacher:
+    title: POSIX Access Control Lists on Linux
+    author:
+      ins: A. Grünbacher
+      name: Andreas Grünbacher
+      org: SuSE Labs
+    date: 6-2003
+    seriesinfo: USENIX 2003 Annual Technical Conference Proceedings, FREENIX track, pp. 259-272
+  Juszczak:
+    title: Improving the Performance and Correctness of an NFS Server
+    author:
+      ins: C. Juszcak
+      name: Chet Juszcak
+      org: Digital Equipment Corporation
+    date: 1-1989
+    seriesinfo: USENIX Conference Proceedings, USENIX Association, Berkeley, CA, pp. 53-63
+  IEEE:
+    title: >
+      IEEE 1003.1e and 1003.2c:
+      Draft Standard for Information Technology--
+      Portable Operating System Interface (POSIX)--
+      Part 1: System Application Program Interface (API) and
+      Part 2: Shell and Utilities, draft 17
+    author:
+      org: Institute of Electrical and Electronics Engineers
+    date: 10-1997
+  Linux:
+    title: Linux kernel source code
+    target: https://www.kernel.org
+  Illumos:
+    title: Illumos source code
+    target: https://github.com/OpenIndiana
 
 --- abstract
 
 This Informational document describes the NFSACL protocol.
 NFSACL is a legacy member of the Network File System family
-of protocols that clients use to access and modify Access
-Control Lists stored on an NFS server.
+of protocols that NFS clients use to access and modify Access
+Control Lists stored on an NFS version 2 or version 3 server.
 
 
 --- middle
 
 # Introduction
 
-Traditionally, access to files stored in POSIX file systems
-is controlled by permission bits [citation needed].
-
-Permission bits provide only course-grained access control.
-The file owner can control only whether members of her
-group can read, write, or execute the file contents, or
-whether anyone else (without exception) has those rights.
-
-An Access Control List, or ACL, is a mechanism that enables
-file owners to grant specific users fine-grained access
-rights to file content [citation needed].
-
 The Network File System protocol (NFS) was introduced by Sun
 Microsystems in the 1980s. This protocol enabled applications
 to access and modify files, via local POSIX system interfaces,
 that reside on a remote host.
 
+Traditionally, permission to access files stored in NFS file
+systems is granted by permission bits {{RFC1094}}. Permission
+bits provide course-grained access control. The file owner
+can control only whether members of her group can read, write,
+or execute the file contents, or whether anyone else (without
+exception) has those rights.
+
+An Access Control List, or ACL, is a mechanism that enables
+file owners to grant specific users fine-grained access
+rights to file content {{IEEE}}.
+
 Version 2 of NFS is described in {{RFC1094}}, and version 3 in
 {{RFC1813}}. Neither of these protocols include a
 method for accessing or managing ACLs associated
-with files shared via the NFS protocol. Sun created the
-NFSACL protocol to enable that capability for these two
-protocols.
+with files shared via the NFS protocol, even though the
+local file systems shared via NFS often implemented ACLs and
+gave local users mechanisms to read and update them.
+
+Sun created the NFSACL protocol to provide that
+mechanism for files accessed remotely via NFS.
 
 The NFSACL protocol described in this document is not new.
 The protocol has been implemented in several operating systems
@@ -84,13 +120,17 @@ implementations have been reverse-engineered.
 
 This document describes the protocol based on the nfs_acl.x
 file that is publicly available in the OpenSolaris and
-Illumos code bases. This document strives to introduce
-no changes to the protocol as it is implemented in those
-operating aystems and in Linux.
+Illumos code bases {{Illumos}}. The author has strived to
+introduce no changes to the protocol as it is implemented
+in those operating systems and in Linux.
 
-The author assumes readers are familiar with the NFS version
+This document assumes readers are familiar with the NFS version
 2 or 3 protocols and at least one implementation of them.
 
+Issues of compatibility between the protocol described in
+this document and NFSv4 ACLs (as described by {{RFC8881}})
+are considered out of scope. More information on this topic
+is available in Section 6 of draft-rmacklem-nfsv4-posix-acls.
 
 # Conventions and Definitions
 
@@ -102,7 +142,6 @@ compatible implementations. However, note that, as an
 Informational document, this RFC does not make any compliance
 mandates on implementations of the protocol described herein.
 
-
 # General Concepts
 
 ## A Glossary of Useful Terms
@@ -110,22 +149,28 @@ mandates on implementations of the protocol described herein.
 The following are a set of foundational terms used throughout
 this document.
 
-server
-: A computer system that provides resources to network peers.
+application:
+: A program that executes on a client system.
 
-client
-: A computer system that utilizes resources provided by one or
-more server systems.
+client:
+: A computer system that utilizes compute resources provided by one or
+more servers.
 
-file
+file:
 : A unit of data storage consisting of an ordered stream of
 bytes and a set of metadata attributes.
 
-user
-: A person logged in on a client system.
+gid:
+: A 32-bit unsigned integer that represents a group of users.
 
-application
-: A program that executes on a client system.
+server:
+: A computer system that provides compute resources to network peers.
+
+uid:
+: A 32-bit unsigned integer that represents a specific user.
+
+user:
+: A person logged in on a client system.
 
 ## Remote Procedure Call
 
@@ -138,14 +183,14 @@ remote service procedure.  Servers can support multiple versions
 of a program by using different protocol version numbers.
 
 The NFS and NFSACL protocols are both based on SunRPC. The
-remainder of this document assumes the NFS environment is
+remainder of this document assumes an NFS environment that is
 implemented on top of SunRPC, as it is specified in {{RFC5531}}.
 
 ## External Data Representation
 
 The eXternal Data Representation (XDR) specification provides a
 standard way of representing a set of data types on a network.
-This addresses the problem of communication between network
+XDR addresses the problem of communication between network
 peers with different byte orders, structure alignment, and data
 type representation.
 
@@ -153,40 +198,48 @@ This document utilizes the RPC Data Description Language to
 specify the XDR format arguments and results to each of the RPC
 service procedures that an NFSACL server provides.
 
-Readers can find a full guide to XDR and this description
-language in {{RFC4506}}.
+Readers can find a full guide to XDR and the RPC Data Description
+Language in {{RFC4506}}.
 
 ## Authentication and Authorization
 
-The RPC protocol includes a slot in every call for user
-authentication parameters. The contents of the authentication
-parameters are determined by the type of authentication used
-by the server and client. A discussion of the mechanics of RPC
-user authentication appears in {{RFC5531}}, in particular
-Sections 9 and 10.
+The RPC protocol includes a slot in every procedure call for
+user authentication parameters. The specific content of the
+authentication parameters is determined by the type of
+authentication used by the server and client. A discussion
+of the mechanics of RPC user authentication appears in
+{{RFC5531}}, in particular Sections 9 and 10.
 
-The NFS server checks permissions by taking the credentials from
-the RPC authentication information in each RPC call. For
-example, using the AUTH_UNIX flavor of authentication, the
-server gets the user’s effective user ID, effective group ID and
-groups on each RPC call and uses these to check access.
+For NFS ACLs, the user ID carried in RPC calls is used
+for two purposes:
 
-Using user
-ids and group ids implies that the client and server either
-share the same ID list or do local user and group ID mapping.
-Servers and clients must agree on the mapping from user to uid
-and from group to gid, for those sites that do not implement a
-consistent user ID and group ID space. In practice, such mapping
-is typically performed on the server, following a static mapping
-scheme or a mapping established by the user from a client at
+* When setting an ACL via the SETACL procedure or retrieving
+an ACL via the GETACL procedure, the NFSACL service verifies
+that the calling user has been granted permission to perform
+the procedure.
+
+* Each Access Control Entry (see below) contains an element
+that identifies the user to which the ACE applies. That
+user is represented by a 32-bit user ID. The value of the
+user ID in each ACE has the same meaning and mapping as
+the value of incoming RPC calls.
+
+Using user ids and group ids implies that the client and
+server either share the same ID list or do local user and
+group ID mapping. Servers and clients must agree on the
+mapping from user to uid and from group to gid, for those
+sites that do not implement a consistent user ID and group
+ID number space. In practice, such mapping is typically
+performed on the server, following a static mapping scheme
+or a mapping established by the user from a client at
 mount time.
 
-The AUTH_GSS style of authentication provides stronger security
-through the use of cryptographic authentication. The server
-and client must agree on the mapping of the user's GSS
-principal to a local UID on the server, but the name to
-identity mapping is more operating system independent than the
-uid and gid mapping in AUTH_UNIX.
+The AUTH_GSS style of authentication provides stronger
+security through the use of cryptographic authentication.
+The server and client must agree on the mapping of the
+user's GSS principal to a local UID on the server, but
+the name to identity mapping is more operating system
+independent than the uid and gid mapping in AUTH_UNIX.
 
 ## File Access Control
 
@@ -227,15 +280,15 @@ all access controls on files.
 In NFS versions 2 and 3, there are three rudimentary categories
 of access:
 
-Read access
+Read access:
 : Read access grants permission for a user to read a file or
 directory.
 
-Write access
+Write access:
 : Write access grants permission for a user to modify a file
 or directory.
 
-Execute access
+Execute access:
 : For a file, execute access grants permission for the user to
 treat the file content as executable. For a directory object,
 execute access grants permission for the user to perform a
@@ -260,18 +313,24 @@ one for the file's owner group, and one for everyone else.
 
 ### Interpreting Access Control Lists
 
-An Access Control List is a set of one or more Access Control Entries (ACEs)
-that are associated with a file system object. Each Access Control Entry
-specifies a user (by the user's uid) and a mask of that user's allowed
-access.
+{:aside}
+> This section was cribbed from RFC 8881. Please replace/rewrite.
 
-Only ACEs that match the requester are considered. Each ACE is processed
-until all of the bits of the requester's access have been ALLOWED. Once a
-bit has been ALLOWED, that bit is no longer considered in the processing
+An NFS Access Control List is a list of three or more
+Access Control Entries (ACEs) associated with one file
+system object. Each Access Control Entry in this list
+specifies a user and a set of access types granted to
+that user.
+
+Only ACEs that match the requester are considered. Each
+ACE is processed until all of the bits of the requester's
+access have been ALLOWED. Once a bit has been ALLOWED,
+that bit is no longer considered in the processing
 of subsquent ACEs in the list.
 
-When the ACL has been fully processed, if there are bits in the requester's
-mask that have not been ALLOWED, access is denied.
+When the ACL has been fully processed, if there are bits
+in the requester's mask that have not been ALLOWED,
+access of that type is denied.
 
 Note that an ACL might not be the sole determiner of access. For example:
 
@@ -292,13 +351,13 @@ files on which the permissions have changed.
 privileges beyond an ordinary user. The superuser may be able to read or
 write data or metadata in ways that would not be permitted by the object's ACL.
 
+Clients do not perform their own access checks based
+on their interpretation of an ACL, but rather use ACCESS
+procedures to do access checks.
 
-
-Clients do not perform their own access checks based on their interpretation
-of an ACL, but rather use ACCESS procedures to do access checks.
-
-This allows the client to act on the results of having the server determine
-whether or not access should be granted based on its interpretation of the ACL.
+This allows the client to act on the results of having
+the server determine whether or not access should be
+granted based on its interpretation of the ACL.
 
 Clients must be aware of situations in which an object's ACL grants a
 certain access even though the server will not enforce it. In general, but
@@ -334,11 +393,71 @@ How file ownership relates to @OWNER, @GROUP, and @EVERYONE
 
 * How do default ACLs work?
 
-* Are default ACLs supported on non-directory objects?
+* Are default ACLs supported on non-directory objects? What happens when a client attempts to set a default ACL on a non-directory object?
 
-### Differences Between NFSACL ACLS and Withdrawn POSIX Draft ACLs
+### Detailed Operation
 
-To be filled in
+{:aside}
+> Copied from draft-rmacklem-nfsv4-posix-acls. Replace this with a discussion that focuses on NFSACL style ACLs rather than POSIX ACLs.
+
+A POSIX ACL must have one ACE for each of
+POSIXACE4_TAG_USER_OBJ, POSIXACE4_TAG_GROUP_OBJ and
+POSIXACE4_TAG_OTHER. An ACL that consists only of these
+three ACEs is referred to as a minimal POSIX ACL. A server
+responds with ACL2ERR_IO or ACL3ERR_INVAL (depending on
+the version of NFSACL that is in use) if a client
+attempts to set a POSIX ACL that does not have these three
+ACEs.
+
+A POSIX ACL may also have one or more POSIXACE4_TAG_USER
+and/or POSIXACE4_TAG_GROUP ACE(s). Such a POSIX ACL is
+referred to as an extended POSIX ACL and must have one
+POSIXACE4_TAG_MASK ACE as well.
+
+A POSIX access ACL defines permissions for a file object.
+A POSIX default ACL can only be associated with directory
+objects and is used for inheritance.
+A POSIX default ACL has no effect on access.
+
+In the "who" value within the posixace4 structure that appear in these
+new attributes, the field is interpreted as follows:
+
+*  For ACEs whose tag field is POSIXACE4_TAG_USER or
+POSIXACE4_TAG_GROUP the who value is a UTF8-encoded Unicode
+string, that has the same format as a user or group as represented
+within other NFSv4 operations and designates the same entity.  In
+these cases, the distinction between users and groups derives from
+the tag rather than a flag bit, as is done in NFSv4 ACLs.  This in
+in contrast to how the corresponding structures are described in
+{{Grünbacher}}, where numeric uids and gids are specified.
+
+*  For ACEs whose tag field has other values, the who field is
+ignored by the receiver and there is no reason for the sender to
+set it to any particular value.  As such, a zero length who string
+is appropriate.
+
+Setting one or more of the low-order nine mode bits
+can change the ACL and setting the POSIX access ACL can change the low-order nine mode bits. As such, the order of setting the attributes
+related to mode and POSIX ACLs is important. Therefore, in a manner
+similar to {{Section 6.4.1.3 of RFC8881}}, if the low-order nine bits of
+mode is being set via the mode/mode_set_masked attributes in the same
+SETATTR as posix_access_acl and/or posix_default_acl attributes, the
+setting of mode/mode_set_masked MUST be done before setting the POSIX
+ACL.
+
+For {{IEEE}}, when a new object is created in a directory that has a
+POSIX default ACL on it, the inherited ACL includes the intersection
+between the mode specified by the POSIX system call and the
+posixaceperm4 fields of the POSIX default ACL.  Therefore, to
+maintain compatible semantics with the POSIX draft, for NFSv4
+operations that create new file objects (OPEN/OPEN4_CREATE, CREATE)
+in a directory that has a POSIX default ACL, the low-order nine bits
+of the mode MUST be specified by mode_umask in the setable attributes
+for the operation.  See {{RFC8275}} for details on how mode_umask is
+used.  If the posix_access_acl and/or posix_default_acl are also
+specified in the setable attributes for the operation, the server
+sets these attributes after setting mode_umask and performing
+any POSIX ACL inheritance.
 
 ### Interoperation with Unsupported Implementations
 
@@ -360,15 +479,17 @@ All RPC authentication flavors can be used for other procedures.
 These are the RPC constants needed to call the NFS Version 3
 service.  They are given in decimal.
 
-PROGRAM 100227
+100227
 : The RPC program number for the NFSACL protocol
 
-Only versions 2 and 3 of this progream are valid.
+Only versions 2 and 3 of this RPC progream are valid.
 
 ## Transport address
 
 The NFSACL protocol can operate over the TCP, UDP, and RDMA
-transport protocols.  It uses port 2049, the same as the NFS protocol.
+transport protocols.
+For TCP and UDP, it uses port 2049, and for RDMA, it uses 20049.
+In both cases, this is the same as the base NFS protocol.
 
 ## Sizes
 
@@ -379,9 +500,9 @@ NFS_ACL_MAX_ENTRIES 1024
 
 The following XDR definitions are basic scalar types that are used in other structures.
 
-uid
+uid:
 : typedef int uid;
-o_mode
+o_mode:
 : typedef unsigned short o_mode;
 
 ## Structured Data types
@@ -446,9 +567,9 @@ bit field vvalues in this mask are defined as follows:
 
 ~~~ xdr
 const NA_ACL = 0x1;         /* aclent contains a valid list */
-const NA_ACLCNT = 0x2;      /* the number of entries in the aclent list */
+const NA_ACLCNT = 0x2;      /* number of entries in the aclent list */
 const NA_DFACL = 0x4;       /* dfaclent contains a valid list */
-const NA_DFACLCNT = 0x8;    /* the number of entries in the dfaclent list */
+const NA_DFACLCNT = 0x8;    /* number of entries in the dfaclent list */
 ~~~
 
 These bit field values are also used in the "mask" element of the
@@ -1260,7 +1381,7 @@ ACL3ERR_ISDIR
 : Is a directory. The caller specified a directory in a non-directory operation.
 
 ACL3ERR_INVAL
-: Invalid argument or unsupported argument for an operation. Two examples are attempting a READLINK on an object other than a symbolic link or attempting to SETATTR a time field on a server that does not support this operation.
+: An invalid or unsupported argument was specified for procedure.
 
 ACL3ERR_FBIG
 : File too large. The operation would have caused a file to grow beyond the server's limit.
@@ -1586,8 +1707,8 @@ request. If this happens, the duplicate request will be
 processed as a new one, possibly with destructive side
 effects.
 
-A good description of the implementation and use of a
-duplicate request cache can be found in [Juszczak].
+A description of an early implementation of a
+duplicate request cache can be found in {{Juszczak}}.
 
 ## Caching Policies
 
@@ -1734,9 +1855,9 @@ text need be preserved.
 ///  * GETACL3 procedures.
 ///  */
 /// const NA_ACL = 0x1;                 /* aclent contains a valid list */
-/// const NA_ACLCNT = 0x2;              /* the number of entries in the aclent list */
+/// const NA_ACLCNT = 0x2;              /* number of entries in the aclent list */
 /// const NA_DFACL = 0x4;               /* dfaclent contains a valid list */
-/// const NA_DFACLCNT = 0x8;            /* the number of entries in the dfaclent list */
+/// const NA_DFACLCNT = 0x8;            /* number of entries in the dfaclent list */
 ///
 /// /*
 ///  * XDR data types inherited from the NFS version 2 protocol
@@ -2040,8 +2161,8 @@ text need be preserved.
 /// };
 ///
 /// /*
-///  * This is the definition for the GETXATTRDIR procedure which applies
-///  * to NFS Version 3 files.
+///  * This is the definition for the GETXATTRDIR procedure which
+///  * applies to NFS Version 3 files.
 ///  */
 /// struct GETXATTRDIR3args {
 ///     nfs_fh3 fh;
@@ -2167,15 +2288,15 @@ the current document as a Reference.
 
 --- back
 
-# Appendix I: Source Material
+# Source Material
 
 The on-the-wire protocol described here is intended to
 match existing de factor implementations of NFSACL.
 
 The source for the XDR specification provided in this
 document is the nfs_acl.x file as found in published
-versions of the OpenSolaris source code base [citation
-needed].
+versions of the Illumos source code base {{Illumos}},
+an open source descendant of Solaris.
 
 However, there are a few changes to the protocol as it
 was originally described in the OpenSolaris source code
@@ -2193,9 +2314,9 @@ file is described this way:
 > attributes in-band.
 
 Because the two non-NULL procedures in this version of the NFSACL
-protocol were used only as a prototype and there are no other
-implementations of NFSACL version 4, it is not included in
-the protocol description in this doecument.
+protocol were used only as part of a Solaris a prototype and there
+are no other implementations of NFSACL version 4, it is not included
+in the protocol description appearing in this document.
 
 ## Code Compilation Requirements
 
@@ -2203,7 +2324,7 @@ THe original nfs_acl.x file provided in the OpenSolaris code
 base did not compile (usig the widely-available rpcgen tool).
 
 * The file does not include a definition of the ACL2_OK or
-ACL3_OK constants used in definitions of the result unions.
+ACL3_OK constants used in definitions of result unions.
 
 * The file does not include definitions of NFS protocol elements
 that are shared with the NFSACL protocol, such as fhandle_t and
@@ -2216,15 +2337,13 @@ description of the NFSACL protocol.
 ## Alignment with the Linux Implementation of NFSACL
 
 The initial Linux implementation of the NFSACL protocol is
-described in [citation needed], and subsequent modifications
-can be found in the Linux kernel source code repository
-[citation needed].
+described in {{Grünbacher}}, and subsequent modifications
+can be found in the Linux kernel source code repository {{Linux}}.
 
 Because it was reverse-engineered, it does not include ...
 rewrite as necessary.
 
-# Appendix III: Open Questions
-{:numbered="false"}
+# Open Questions
 
 Should the CDDL .x file be explicitly cited, or otherwise
 referenced, in this document?
@@ -2234,6 +2353,8 @@ Should the POSIX ACL draft standard be cited in this document?
 How should the XDR language copyright notice read?
 
 Should the XATTR procedures be included as OPTIONAL or simply redacted from the published protocol?
+
+How are ACLs removed?
 
 # Acknowledgments
 {:numbered="false"}
