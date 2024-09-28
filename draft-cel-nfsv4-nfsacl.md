@@ -1085,42 +1085,6 @@ the client does not have this permission.
 - ACL2ERR_IO
 - ACL2ERR_STALE
 
-### Procedure 5: GETXATTRDIR - Get named attributes
-
-#### ARGUMENTS
-
-~~~ xdr
-struct GETXATTRDIR2args {
-    fhandle_t fh;
-    bool create;
-};
-~~~
-
-#### RESULTS
-
-~~~ xdr
-struct GETXATTRDIR2resok {
-    fhandle_t fh;
-    struct nfsfattr attr;
-};
-
-union GETXATTRDIR2res switch (enum nfsstat status) {
-case ACL2_OK:
-    GETXATTRDIR2resok resok;
-default:
-    void;
-};
-~~~
-
-#### DESCRIPTION
-
-#### IMPLEMENTATION
-
-Server implementers are free to choose not to implement this procedure.
-In this case, the server returns the RPC-level error PROC_UNAVAIL.
-
-#### ERRORS
-
 
 # NFSACL Version 3
 
@@ -1563,41 +1527,6 @@ a file system object.
 - No permission
 - File system or object does not implement Access Control Lists
 
-### Procedure 3: GETXATTRDIR - Get named attributes
-
-#### ARGUMENTS
-
-~~~ xdr
-struct GETXATTRDIR3args {
-    nfs_fh3 fh;
-    bool create;
-};
-~~~
-
-#### RESULTS
-
-~~~ xdr
-struct GETXATTRDIR3resok {
-    nfs_fh3 fh;
-    post_op_attr attr;
-};
-
-union GETXATTRDIR3res switch (nfsstat3 status) {
-case ACL3_OK:
-    GETXATTRDIR3resok resok;
-default:
-    void;
-};
-~~~
-
-#### DESCRIPTION
-
-#### IMPLEMENTATION
-
-Server implementers are free to choose not to implement this procedure.
-In this case, the server returns the RPC-level error PROC_UNAVAIL.
-
-#### ERRORS
 
 # Implementation Issues
 
@@ -1998,27 +1927,6 @@ text need be preserved.
 /// };
 ///
 /// /*
-///  * This is the definition for the GETXATTRDIR procedure which applies
-///  * to NFS Version 2 files.
-///  */
-/// struct GETXATTRDIR2args {
-///     fhandle_t fh;
-///     bool create;
-/// };
-///
-/// struct GETXATTRDIR2resok {
-///     fhandle_t fh;
-///     struct nfsfattr attr;
-/// };
-///
-/// union GETXATTRDIR2res switch (enum nfsstat status) {
-/// case ACL2_OK:
-///     GETXATTRDIR2resok resok;
-/// default:
-///     void;
-/// };
-///
-/// /*
 ///  * XDR data types inherited from the NFS version 3 protocol
 ///  */
 ///
@@ -2161,27 +2069,6 @@ text need be preserved.
 /// };
 ///
 /// /*
-///  * This is the definition for the GETXATTRDIR procedure which
-///  * applies to NFS Version 3 files.
-///  */
-/// struct GETXATTRDIR3args {
-///     nfs_fh3 fh;
-///     bool create;
-/// };
-///
-/// struct GETXATTRDIR3resok {
-///     nfs_fh3 fh;
-///     post_op_attr attr;
-/// };
-///
-/// union GETXATTRDIR3res switch (nfsstat3 status) {
-/// case ACL3_OK:
-///     GETXATTRDIR3resok resok;
-/// default:
-///     void;
-/// };
-///
-/// /*
 ///  * Share the port with the NFS service.
 ///  */
 /// const NFS_ACL_PORT = 2049;
@@ -2198,8 +2085,6 @@ text need be preserved.
 ///             ACLPROC2_GETATTR(GETATTR2args) = 3;
 ///         ACCESS2res
 ///             ACLPROC2_ACCESS(ACCESS2args) = 4;
-///         GETXATTRDIR2res
-///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
 ///     } = 2;
 ///     version NFS_ACL_V3 {
 ///         void
@@ -2208,8 +2093,6 @@ text need be preserved.
 ///             ACLPROC3_GETACL(GETACL3args) = 1;
 ///         SETACL3res
 ///             ACLPROC3_SETACL(SETACL3args) = 2;
-///         GETXATTRDIR3res
-///             ACLPROC3_GETXATTRDIR(GETXATTRDIR3args) = 3;
 ///     } = 3;
 /// } = 100227;
 ~~~
@@ -2256,8 +2139,7 @@ URL:       <https://www.kernel.org>
 
 Maturity:  Complete.
 
-Coverage:  All procedures except GETXATTRDIR are implemented in
-           both versions of the protocol.
+Coverage:  All procedures described in this document are implemented in both versions of the protocol.
 
 Licensing: GPLv2
 
@@ -2302,7 +2184,7 @@ However, there are a few changes to the protocol as it
 was originally described in the OpenSolaris source code
 base.
 
-## Redaction of NFSACL version 4
+## Redaction of NFSACL Version 4
 
 Version 4 of NFSACL is described in the original nfs_acl.x source
 file is described this way:
@@ -2317,6 +2199,22 @@ Because the two non-NULL procedures in this version of the NFSACL
 protocol were used only as part of a Solaris a prototype and there
 are no other implementations of NFSACL version 4, it is not included
 in the protocol description appearing in this document.
+
+## Redaction of GETXATTRDIR Procedures
+
+The original NFSACL protocol contained a GETXATTRDIR procedure
+that was meant to provide clients access to named attributes
+(auxiliary streams) stored with each shared file. These
+procedures were later introduced in NFS version 4 {{RFC8881}}.
+
+As far as this author is aware, named attribute support was
+only ever implemented in Solaris, and the procedures here
+were strictly prototypes. There is little to no public
+documentation beyond what can be found in the original
+nfs_acl.x file.
+
+Therefore, the GETXATTRDIR procedures are not included in
+the protocol description appearing in this document.
 
 ## Code Compilation Requirements
 
