@@ -26,6 +26,7 @@ venue:
 author:
  -
     fullname: Chuck Lever
+    role: editor
     organization: Oracle Corporation
     abbrev: Oracle
     country: United States of America
@@ -40,14 +41,16 @@ informative:
   RFC1813:
   RFC8275:
   RFC8881:
-  Grünbacher:
+  Gruenbacher:
     title: POSIX Access Control Lists on Linux
     author:
       ins: A. Grünbacher
       name: Andreas Grünbacher
       org: SuSE Labs
     date: 6-2003
-    seriesinfo: USENIX 2003 Annual Technical Conference Proceedings, FREENIX track, pp. 259-272
+    seriesinfo:
+      "Proceedings": "of the FREENIX Track: 2003 USENIX Annual Technical Conference, pp. 259-272"
+      ISBN: 1-931971-11-0
   Juszczak:
     title: Improving the Performance and Correctness of an NFS Server
     author:
@@ -55,7 +58,8 @@ informative:
       name: Chet Juszcak
       org: Digital Equipment Corporation
     date: 1-1989
-    seriesinfo: USENIX Conference Proceedings, USENIX Association, Berkeley, CA, pp. 53-63
+    seriesinfo:
+      "USENIX": "Conference Proceedings, USENIX Association, Berkeley, CA, pp. 53-63"
   IEEE:
     title: >
       IEEE 1003.1e and 1003.2c:
@@ -66,6 +70,17 @@ informative:
     author:
       org: Institute of Electrical and Electronics Engineers
     date: 10-1997
+  POSIX:
+    title: >
+      IEEE Std 1003.1-2001
+      (Open Group Technical Standard, Issue 6),
+      Standard for Information Technology--
+      Portable Operating System Interface (POSIX)
+    author:
+      org: Institute of Electrical and Electronics Engineers 
+    date: 2001
+    seriesinfo:
+      ISBN: 0-7381-3010-9
   Linux:
     title: Linux kernel source code
     target: https://www.kernel.org
@@ -88,21 +103,21 @@ Control Lists stored on an NFS version 2 or version 3 server.
 The Network File System protocol (NFS) was introduced by Sun
 Microsystems in the 1980s. This protocol enabled applications
 to access and modify files, via local POSIX system interfaces,
-that reside on a remote host.
+that reside on a remote host {{RFC1094}}.
 
 Traditionally, permission to access files stored in NFS file
-systems is granted by permission bits {{RFC1094}}. Permission
-bits provide course-grained access control. The file owner
-can control only whether members of her group can read, write,
-or execute the file contents, or whether anyone else (without
-exception) has those rights.
+systems is granted by permission bits, mimicking {{POSIX}}.
+Permission bits provide course-grained access control. The
+file owner can control only whether members of her group can
+read, write, or execute the file contents, or whether anyone
+else (without exception) has those rights.
 
 An Access Control List, or ACL, is a mechanism that enables
 file owners to grant specific users fine-grained access
 rights to file content {{IEEE}}.
 
-Version 2 of NFS is described in {{RFC1094}}, and version 3 in
-{{RFC1813}}. Neither of these protocols include a
+Version 2 of NFS is described in {{RFC1094}}, and version 3
+in {{RFC1813}}. Neither of these protocols include a
 method for accessing or managing ACLs associated
 with files shared via the NFS protocol, even though the
 local file systems shared via NFS often implemented ACLs and
@@ -120,7 +135,7 @@ implementations have been reverse-engineered.
 
 This document describes the protocol based on the nfs_acl.x
 file that is publicly available in the OpenSolaris and
-Illumos code bases {{Illumos}}. The author has strived to
+Illumos code bases {{Illumos}}. The editor has strived to
 introduce no changes to the protocol as it is implemented
 in those operating systems and in Linux.
 
@@ -429,7 +444,7 @@ within other NFSv4 operations and designates the same entity.  In
 these cases, the distinction between users and groups derives from
 the tag rather than a flag bit, as is done in NFSv4 ACLs.  This in
 in contrast to how the corresponding structures are described in
-{{Grünbacher}}, where numeric uids and gids are specified.
+{{Gruenbacher}}, where numeric uids and gids are specified.
 
 *  For ACEs whose tag field has other values, the who field is
 ignored by the receiver and there is no reason for the sender to
@@ -1685,7 +1700,7 @@ text need be preserved.
 ///  * identified as authors of the code.  All rights reserved.
 ///  *
 ///  * The authors of the code are:
-///  * C. Lever
+///  * Sun Microsystems
 ///  *
 ///  * Redistribution and use in source and binary forms, with
 ///  * or without modification, are permitted provided that the
@@ -2163,7 +2178,7 @@ strongly recommended.
 
 # IANA Considerations
 
-In accordance with {{Section 13 of RFC5531}}, the author
+In accordance with {{Section 13 of RFC5531}}, the editor
 requests that IANA update the entry for the NFS ACL
 service in the RPC Program Numbers registry to add
 the current document as a Reference.
@@ -2207,7 +2222,7 @@ that was meant to provide clients access to named attributes
 (auxiliary streams) stored with each shared file. These
 procedures were later introduced in NFS version 4 {{RFC8881}}.
 
-As far as this author is aware, named attribute support was
+As far as this editor is aware, named attribute support was
 only ever implemented in Solaris, and the procedures here
 were strictly prototypes. There is little to no public
 documentation beyond what can be found in the original
@@ -2235,7 +2250,7 @@ description of the NFSACL protocol.
 ## Alignment with the Linux Implementation of NFSACL
 
 The initial Linux implementation of the NFSACL protocol is
-described in {{Grünbacher}}, and subsequent modifications
+described in {{Gruenbacher}}, and subsequent modifications
 can be found in the Linux kernel source code repository {{Linux}}.
 
 Because it was reverse-engineered, it does not include ...
@@ -2253,7 +2268,7 @@ How are ACLs removed?
 # Acknowledgments
 {:numbered="false"}
 
-The author is grateful to
+The editor is grateful to
 Bill Baker,
 Wim Coekaerts,
 Andreas Gruenbacher,
