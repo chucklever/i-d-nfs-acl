@@ -39,7 +39,6 @@ normative:
 informative:
   RFC1094:
   RFC1813:
-  RFC8275:
   RFC8881:
   Gruenbacher:
     title: POSIX Access Control Lists on Linux
@@ -77,7 +76,7 @@ informative:
       Standard for Information Technology--
       Portable Operating System Interface (POSIX)
     author:
-      org: Institute of Electrical and Electronics Engineers 
+      org: Institute of Electrical and Electronics Engineers
     date: 2001
     seriesinfo:
       ISBN: 0-7381-3010-9
@@ -311,11 +310,13 @@ lookup in that directory.
 
 ### Traditional Permission Bits
 
-Permission bits, or mode bits, are the simplest and perhaps oldest form of
-access control. Each file has a set of mode bits.
+Permission bits, or mode bits, are the simplest and perhaps
+oldest form of access control. Each file object has a set
+of mode bits {{POSIX}}.
 
-Each of the user categories is given a set of three access type bits.
-Altogether there are then nine bit flags for every file object.
+Each of the user categories is given a set of three access
+type bits. Altogether there are then nine bit flags for
+every file object.
 
 ### Access Control Lists
 
@@ -326,10 +327,7 @@ Mode bits, as explained in the previous section, are essentially an
 ACL that always contains exactly three ACEs: one for the file's owner,
 one for the file's owner group, and one for everyone else.
 
-### Interpreting Access Control Lists
-
-{:aside}
-> This section was cribbed from RFC 8881. Please replace/rewrite.
+#### Interpreting Access Control Lists
 
 An NFS Access Control List is a list of three or more
 Access Control Entries (ACEs) associated with one file
@@ -349,52 +347,92 @@ access of that type is denied.
 
 Note that an ACL might not be the sole determiner of access. For example:
 
-- In the case of a file system exported as read-only, the server may deny
-write access even though an object's ACL grants it.
-- Server implementations can grant some limited permission to update an
-ACL in order to prevent a situation from rising in which there is no valid
-way to ever modify the ACL.
-- All servers will allow a user the ability to read the data of the file
-when only the execute permission is granted (i.e., if the ACL denies the
-user the ACE4_READ_DATA access and allows the user ACE4_EXECUTE, the server
-will allow the user to read the data of the file).
-- Some server implementations have the notion of owner-override, in which the owner of
-the object is allowed to override accesses that are denied by the ACL.
-This can be helpful, for example, to allow users continued access to open
-files on which the permissions have changed.
-- Some server implementations have the notion of a "superuser" that has
-privileges beyond an ordinary user. The superuser may be able to read or
-write data or metadata in ways that would not be permitted by the object's ACL.
+- In the case of a file system exported as read-only,
+the server may deny write access even though an object's
+ACL grants it.
+- Server implementations can grant some limited permission
+to update an ACL in order to prevent a situation from
+rising in which there is no valid way to ever modify the ACL.
+- All servers will allow a user the ability to read the
+data of the file when only the execute permission is granted
+(i.e., if the ACL denies the user the NA_READ access and
+allows the user NA_EXEC, the server will allow the user to
+read the data of the file).
+- Some server implementations have the notion of
+owner-override, in which the owner of the object is allowed
+to override accesses that are denied by the ACL. This can be
+helpful, for example, to allow users continued access to
+open files on which the permissions have changed.
+- Some server implementations have the notion of a
+"superuser" that has privileges beyond an ordinary user.
+The superuser may be able to read or write data or metadata
+in ways that would otherwise not be permitted by the object's
+ACL.
 
 Clients do not perform their own access checks based
-on their interpretation of an ACL, but rather use ACCESS
-procedures to do access checks.
+on their interpretation of an ACL, but rather use either
+the NFSACL version 2 ACCESS procedure or the NFS version 3
+ACCESS procedure to perform access checks. This enables a
+client to act on the results of having the server determine
+whether or not access should be granted based on its
+interpretation of the ACL.
 
-This allows the client to act on the results of having
-the server determine whether or not access should be
-granted based on its interpretation of the ACL.
+In particular, clients must be aware of situations in which
+an object's ACL grants a certain access even though the
+server will not enforce it. A client sends an appropriate
+ACCESS operation prior to servicing an application request
+to determine whether the user or application should be
+granted the access requested.
 
-Clients must be aware of situations in which an object's ACL grants a
-certain access even though the server will not enforce it. In general, but
-especially in these situations, the client needs to do its part in the
-enforcement of access as defined by the ACL. To do this, the client may
-send the appropriate ACCESS operation prior to servicing an application
-request to determine whether the user or application should be granted the
-access requested.
+#### ACLs in Operation {#acls-in-operation}
 
-A client can use the NFSACL version 2 or NFS version 3 ACCESS procedure
-to check access without modifying or reading data or metadata.
+The SETACL procedure sets two types of Access Control Lists:
 
-Although a client can set and get an ACL, the server is responsible for
-using the ACL to restrict access to the file object it controls. To
-determine if a requested access is permitted, the server processes each
-entry in an Access Control List in order.
+Access:
+: An NFS access ACL specifies the access permission
+for a file object. Access Control Entries in an ACL's
+"aclent" field comprise the object's access ACL.
 
-The guiding principle with regard to NFS access is that the server must
-not accept ACLs that appear to make access to the file more restrictive
-than it really is.
+Default:
+: An NFS default ACL specifies the default ACL that
+is set on objects that are children of a directory.
+Access Control Entries in an ACL's "dfaclent" comprise
+an object's default ACL. The default ACL does not affect
+access to the object on which it is set.
 
-### Relationship Between Mode Bits and Access Control
+{:aside}
+> What error, if any, is returned if a client attempts to set
+a default ACL on a non-directory object?
+> What error is returned if an invalid mask bit is set or
+the ACL argument has too many ACEs?
+
+Each NFS ACL must have one ACE for each of
+NA_USER_OBJ, NA_GROUP_OBJ and NA_OTHER_OBJ.
+An NFS ACL that consists only of these
+three ACEs is referred to as a minimal NFS ACL.
+A server responds with ACL2ERR_IO or ACL3ERR_INVAL,
+depending on the version of NFSACL that is in use,
+if a client attempts to set an NFS ACL that does not
+contain these ACEs.
+
+An NFS ACL may zero or more NA_USER and/or NA_GROUP
+ACEs.
+
+{:aside}
+> What happens when more than one bit is set in the
+"type" field? What does the NA_ACL_DEFAULT bit do?
+
+The "id" field in an Access Control Entry is interpreted as follows:
+
+* For an ACE that specifies an NA_USER_OBJ, NA_USER,
+NA_GROUP, and NA_GROUP_OBJ, the "id" field contains
+a UID or GID value that identifies the user on the
+server whose access permission is being set.
+
+* For an ACE that specifies other types of permission,
+the "id" field is ignored.
+
+#### Relationship Between ACLs and Other File Attributes
 
 How file ownership relates to @OWNER, @GROUP, and @EVERYONE
 
@@ -404,87 +442,34 @@ How file ownership relates to @OWNER, @GROUP, and @EVERYONE
 
 * Are changes to the file's ACL reflected in the file's mode bits, and if so, how?
 
-### ACL Inheritance
+{:aside}
+> From rmacklem's draft. Is the following true of legacy NFS ACLs?
 
-* How do default ACLs work?
+Setting a file object's mode bits via the NFS SETATTR procedure
+can change the ACL and setting the NFS access ACL can change
+the a file object's mode mode bits. As such, the order of setting
+the attributes related to mode and NFS ACLs is important.
 
-* Are default ACLs supported on non-directory objects? What happens when a client attempts to set a default ACL on a non-directory object?
-
-### Detailed Operation
+#### ACL Inheritance
 
 {:aside}
-> Copied from draft-rmacklem-nfsv4-posix-acls. Replace this with a discussion that focuses on NFSACL style ACLs rather than POSIX ACLs.
+> Section needs to explain how default ACLs work and what
+impact they have on the mode bits of the new file.
 
-A POSIX ACL must have one ACE for each of
-POSIXACE4_TAG_USER_OBJ, POSIXACE4_TAG_GROUP_OBJ and
-POSIXACE4_TAG_OTHER. An ACL that consists only of these
-three ACEs is referred to as a minimal POSIX ACL. A server
-responds with ACL2ERR_IO or ACL3ERR_INVAL (depending on
-the version of NFSACL that is in use) if a client
-attempts to set a POSIX ACL that does not have these three
-ACEs.
+A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures
+to request instantiatiation of a new file object. The server uses
+the default ACL from the parent directory as the initial access
+ACL on the new object.
 
-A POSIX ACL may also have one or more POSIXACE4_TAG_USER
-and/or POSIXACE4_TAG_GROUP ACE(s). Such a POSIX ACL is
-referred to as an extended POSIX ACL and must have one
-POSIXACE4_TAG_MASK ACE as well.
+#### Historical References
 
-A POSIX access ACL defines permissions for a file object.
-A POSIX default ACL can only be associated with directory
-objects and is used for inheritance.
-A POSIX default ACL has no effect on access.
-
-In the "who" value within the posixace4 structure that appear in these
-new attributes, the field is interpreted as follows:
-
-*  For ACEs whose tag field is POSIXACE4_TAG_USER or
-POSIXACE4_TAG_GROUP the who value is a UTF8-encoded Unicode
-string, that has the same format as a user or group as represented
-within other NFSv4 operations and designates the same entity.  In
-these cases, the distinction between users and groups derives from
-the tag rather than a flag bit, as is done in NFSv4 ACLs.  This in
-in contrast to how the corresponding structures are described in
-{{Gruenbacher}}, where numeric uids and gids are specified.
-
-*  For ACEs whose tag field has other values, the who field is
-ignored by the receiver and there is no reason for the sender to
-set it to any particular value.  As such, a zero length who string
-is appropriate.
-
-Setting one or more of the low-order nine mode bits
-can change the ACL and setting the POSIX access ACL can change the low-order nine mode bits. As such, the order of setting the attributes
-related to mode and POSIX ACLs is important. Therefore, in a manner
-similar to {{Section 6.4.1.3 of RFC8881}}, if the low-order nine bits of
-mode is being set via the mode/mode_set_masked attributes in the same
-SETATTR as posix_access_acl and/or posix_default_acl attributes, the
-setting of mode/mode_set_masked MUST be done before setting the POSIX
-ACL.
-
-For {{IEEE}}, when a new object is created in a directory that has a
-POSIX default ACL on it, the inherited ACL includes the intersection
-between the mode specified by the POSIX system call and the
-posixaceperm4 fields of the POSIX default ACL.  Therefore, to
-maintain compatible semantics with the POSIX draft, for NFSv4
-operations that create new file objects (OPEN/OPEN4_CREATE, CREATE)
-in a directory that has a POSIX default ACL, the low-order nine bits
-of the mode MUST be specified by mode_umask in the setable attributes
-for the operation.  See {{RFC8275}} for details on how mode_umask is
-used.  If the posix_access_acl and/or posix_default_acl are also
-specified in the setable attributes for the operation, the server
-sets these attributes after setting mode_umask and performing
-any POSIX ACL inheritance.
-
-### Interoperation with Unsupported Implementations
-
-Client that supports NFSACL, server does not.
-
-* How should client respond to client requests to retrieve an ACL?
-
-* How does server indicate that it implements the NFSACL protocol, but the particular file system or queried file object does not support a POSIX ACL?
+The section entitled "The POSIX 1003.1e/1003.2c Working Group"
+in {{Gruenbacher}} details the history of POSIX standards efforts
+with regard to file access control.
 
 # Protocol Elements Common to Both Versions
 
-## Authentication
+## RPC Authentication
 
 The NFSACL service uses AUTH_NONE in the NULL procedure.
 All RPC authentication flavors can be used for other procedures.
@@ -590,14 +575,70 @@ const NA_DFACLCNT = 0x8;    /* number of entries in the dfaclent list */
 These bit field values are also used in the "mask" element of the
 GETACL2args and GETACL3args structures.
 
+### Interoperability Considerations
+
+Interoperability between NFS peers that do not implement
+the NFSACL protocol is what we already have today.
+Interoperability between peers that both implement the NFSACL
+procotol is described in the rest of this document.
+
+The following subsections briefly discuss three new
+interoperability scenarios.
+
+#### Client Implements NFSACL, Server Does Not
+
+Typically an NFS server that implements the NFSACL program will
+advertise the presence of NFSACL via an rpcbind registration.
+An NFS client that implements NFSACL should perform an rpcbind
+query before attempting any NFSACL procedure {{?RFC1833}}.
+
+If the client sends any NFSACL procedure without sending an
+rpcbind query first, and the server does not implement the
+NFSACL program, the server responds with an RPC access_stat
+of PROG_UNAVAIL.
+
+#### Server Implements NFSACL, Client Does Not
+
+An NFS server that implements advanced access control can
+deny requests made by a client by responding with
+NFS2ERR_ACCESS or NFS3ERR_ACCESS status codes, and an
+NFS client has no visibility as to why the denial occurred.
+Neither can that client send operations to update
+the access control on file objects.
+
+This is a quality of implementation issue for the client.
+
+#### Client Implements, Exported File System Does Not
+
+An NFS server that implements the NFSACL protocol might
+share both file systems that implement ACLs and
+file systems that do not. In this case, NFS clients
+detect the presense of an NFSACL service on the NFS
+server.
+
+For file objects that do not implement ACL support:
+
+* The server responds to a GETACL procedure by returning
+a manufactured minimal ACL (ie., only three ACEs) that
+reflects the current mode bits of the object.
+
+* The server responds to a SETACL version 3 procedure by
+returning ACL3ERR_NOTSUPP.
+
+{:aside}
+> Linux returns NFS3ERR_NOTSUPP even for NFSACLv2. Check Solaris.
+
 # NFSACL Version 2
 
 Version 2 of the NFSACL protocol is used in conjunction only with
 version 2 of the NFS protocol.
 
-An NFS version 2 server denies an NFS request by terminating the
-requested procedure before it is executed and returning a status
-value of NFSERR_ACCESS.
+## NFS Version 2 Behavior Changes
+
+When an NFS version 2 server receives an NFS request on a file
+object where an ACL denies permission, the server responds by
+terminating the procedure before it is executed and returning
+a status value of NFSERR_ACCESS.
 
 If an Access Control List does not contain an ACE that grants a
 requesting user "read" or execute access to the object represented
@@ -699,19 +740,10 @@ NFSACL protocol.
 enum aclstat2 {
     ACL2_OK = 0,
     ACL2ERR_PERM = 1,
-    ACL2ERR_NOENT = 2,
     ACL2ERR_IO = 5,
-    ACL2ERR_NXIO = 6,
     ACL2ERR_ACCES = 13,
-    ACL2ERR_EXIST = 17,
-    ACL2ERR_NODEV = 19,
-    ACL2ERR_NOTDIR = 20,
-    ACL2ERR_ISDIR = 21,
-    ACL2ERR_FBIG = 27,
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
-    ACL2ERR_NAMETOOLONG = 63,
-    ACL2ERR_NOTEMPTY = 66,
     ACL2ERR_DQUOT = 69,
     ACL2ERR_STALE = 70,
 };
@@ -722,44 +754,17 @@ These status codes carry the following meanings:
 ACL2ERR_PERM
 : Not owner. The caller does not have correct ownership to perform the requested operation.
 
-ACL2ERR_NOENT
-: No such file or directory.  The file or directory specified does not exist.
-
 ACL2ERR_IO
 : Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.
 
-ACL2ERR_NXIO
-: No such device or address.
-
 ACL2ERR_ACCES
 : Permission denied.  The caller does not have the correct permission to perform the requested operation.
-
-ACL2ERR_EXIST
-: File exists.  The file specified already exists.
-
-ACL2ERR_NODEV
-: No such device.
-
-ACL2ERR_NOTDIR
-: Not a directory.  The caller specified a non-directory in a directory operation.
-
-ACL2ERR_ISDIR
-: Is a directory.  The caller specified a directory in a non- directory operation.
-
-ACL2ERR_FBIG
-: File too large.  The operation caused a file to grow beyond the server's limit.
 
 ACL2ERR_NOSPC
 : No space left on device.  The operation caused the server's filesystem to reach its limit.
 
 ACL2ERR_ROFS
 : Read-only filesystem.  Write attempted on a read-only filesystem.
-
-ACL2ERR_NAMETOOLONG
-: File name too long.  The file name in an operation was too long.
-
-ACL2ERR_NOTEMPTY
-: Directory not empty.  Attempted to remove a directory that was not empty.
 
 ACL2ERR_DQUOT
 : Disk quota exceeded.  The client's disk quota on the server has been exceeded.
@@ -833,24 +838,47 @@ default:
 
 #### DESCRIPTION
 
-This procedure returns the Access Control list associated with
-a file system object.
+The GETACL procedure retrieves Access Control List
+information associated with the file system object
+specified by the GETACL2args.fh field. The client
+obtains this file handle using one of the NFS
+version 2 LOOKUP, CREATE, MKDIR, or SYMLINK procedures,
+or the MOUNT service, as described in {{RFC1094}}.
 
+The GETACL2args.mask field specifies which information
+is to be returned in the response:
+
+* If the NA_ACL bit is set, the server fills in the
+object's access ACL.
+* If the NA_ACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's access ACL.
+* If the NA_DFACL bit is set, the server fills in
+the object's default ACL.
+* if the NA_DFACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's default ACL.
+
+If the GETACL procedure is successful, the server sets the
+GETACL2res.status field to ACL2_OK. It fills in the
+GETACL2resok.attr field with the file object's current
+file attributes, as detailed in {{RFC1094}}. Lastly,
+it fills in the GETACL2res.acl field with two counted
+arrays of Access Control Entries (ACEs).
+
+Otherwise, GETACL2res.status contains an error status
+on failure and no other results are returned.
 
 #### IMPLEMENTATION
 
-On success, the result of the GETACL procedure contains
-a counted array of Access Control Entries (ACEs)
-that are associated with the file system object
-represented by the file handle in the argument.
-
+When GETACL2args.fh represents a file object that does not currently
+have an ACL associated with it or does not implement support
+for ACLs, the server responds by returning a manufactured
+minimal NFS ACL that reflects the current owner, group, and
+mode bits of the object (see {{acls-in-operation}}).
 
 #### ERRORS
 
-- No permission
-- File system or object does not support Access Control List
-- Object does not currently have an Access Control List
-
+- ACL2ERR_IO
+- ACL2ERR_STALE
 
 ### Procedure 2: SETACL - Set or replace an Access Control List
 
@@ -880,16 +908,55 @@ default:
 
 #### DESCRIPTION
 
-This procedure updates the Access Control List associated with
-a file system object.
+The SETACL procedure replaces the Access Control Lists
+associated with the file system object specified by the
+SETACL2args.fh field with the ACLs specified by the
+SETACL2args.acl field.  The client obtains the file
+handle using one of the NFS version 2 LOOKUP, CREATE,
+MKDIR, SYMLINK procedures, or the MOUNT service, as
+described in {{RFC1094}}.
+
+{:aside}
+> How are ACLs removed?
+
+If the SETACL procedure is successful, the server sets the
+SETACL2res.status field to ACL2_OK and fills in the
+SETACL2resok.attr field with the file object's new
+file attributes, as detailed in {{RFC1094}}.
+
+Otherwise, SETACL2res.status contains an error status
+on failure and no other results are returned.
 
 #### IMPLEMENTATION
 
+On success, the server does not send the reply until
+the ACL change is durable locally.
+
+Changing a file object's ACL changes the object's mtime.
+The mtime change is reflected in the attributes returned
+in the SETACL response.
+
+A high-quality server implementation ensures that a
+GETACL procedure running concurrently with a SETACL
+procedure does not return partially updated (torn)
+ACL contents. However, a failed SETACL may partially
+change a file's ACLs.
+
+When SETACL2args.fh represents a file object that does
+not implement support for ACLs, or the new ACL does not
+contain at least the minimal set of ACEs (as described
+in {{acls-in-operation}}), the server responds by
+setting SETACL2res.status to ????.
+
 #### ERRORS
 
-- Read-only file system
-- No permission
-- File system or object does not implement Access Control Lists
+- ACL2ERR_ROFS
+- ACL2ERR_PERM
+- ACL2ERR_IO
+- ACL2ERR_ACCES
+- ACL2ERR_NOSPC
+- ACL2ERR_DQUOT
+- ACL2ERR_STALE
 
 ### Procedure 3: GETATTR - Get file attributes
 
@@ -918,39 +985,26 @@ default:
 
 #### DESCRIPTION
 
-The GETATTR procedure retrieves the attributes for a specified
-file system object. The object is identified by the file
-handle that the server returned as part of the response
-from an NFS version 2 LOOKUP, CREATE, MKDIR, or SYMLINK
-procedure (or from the MOUNT service, described elsewhere).
+The GETATTR procedure retrieves the current file
+atttributes associated with the file system object
+specified by the GETATTR2args.fh field. The client
+obtains this file handle using one of the NFS
+version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
+or the MOUNT service, as described in {{RFC1094}}.
 
-On entry, the arguments in GETATTR2args are:
+If the GETATTR procedure is successful, the server
+sets the GETATTR2res.status field to ACL2_OK, and
+fills in the GETATTR2resok.attr field with the file
+object's current file attributes, as detailed in
+{{RFC1094}}.
 
-object
-: The file handle of an object whose attributes are to beretrieved.
-
-On successful return, GETATTR2res.status is ACL2_OK and
-GETATTR2res.resok contains:
-
-obj_attributes
-: The attributes for the object.
-
-Otherwise, GETATTR2res.status contains the error on failure and
-no other results are returned.
+Otherwise, GETATTR2res.status contains an error
+status on failure and no other results are returned.
 
 #### IMPLEMENTATION
 
-The attributes of file system objects is a point of major
-disagreement between different operating systems. Servers
-should make a best attempt to support all of the
-attributes in the fattr3 structure so that clients can
-count on this as a common ground. Some mapping may be
-required to map local attributes to those in the fattr3
-structure.
-
-Today, most client NFS version 2 protocol implementations
-implement a time-bounded attribute caching scheme to
-reduce over-the-wire attribute checks.
+Refer to {{Section 2.3.5 of RFC1094}} for details
+about the content of the returned file attributes.
 
 #### ERRORS
 
@@ -994,27 +1048,15 @@ default:
 
 #### DESCRIPTION
 
-The ACCESS procedure determines the access rights that a user,
-as identified by the credentials in the request, has with
-respect to a file system object. The client encodes the
-set of permissions that are to be checked in a bit mask.
-The server checks the permissions encoded in the bit mask.
-A status of ACL2_OK is returned along with a bit mask
-encoded with the permissions that the user is allowed.
-
-The results of this procedure are necessarily advisory in
-nature.  That is, a return status of ACL2_OK and the
-appropriate bit set in the bit mask does not imply that
-such access will be allowed to the file system object in
-the future, as access rights can be revoked by the server
-at any time.
-
-On entry, the arguments in ACCESS3args are:
-
-object
-: The file handle for the file system object to which access is to be checked.
-access
-: A bit mask of access permissions to check.
+The ACCESS procedure determines the access rights
+that a user, as identified by the RPC credentials
+in the request, has with respect to the file system
+specified by the ACCESS2args.fh field. The client
+obtains this file handle using one of the NFS
+version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
+or the MOUNT service, as described in {{RFC1094}}.
+The client encodes the set of permissions that are
+to be checked in the ACCESS2args.access field.
 
 The following access permissions may be requested:
 
@@ -1031,19 +1073,13 @@ ACCESS2_DELETE
 ACCESS2_EXECUTE
 : Execute file (no meaning for a directory).
 
-On successful return, ACCESS2res.status is ACL2_OK. The
-server should return a status of ACL2_OK if no errors
-occurred that prevented the server from making the
-required access checks.
-
-The results in ACCESS2res.resok are:
-
-obj_attributes
-: The post-operation attributes of object.
-access
-: A bit mask of access permissions indicating access rights for the authentication credentials provided with the request.
-
-Otherwise, ACCESS2res.status contains the error on failure.
+If the ACCESS procedure is successful, the server
+sets the ACCESS2res.status field to ACL2_OK. It
+fills in the ACCESS2resok.attr field with the file
+object's current file attributes, as detailed in
+{{RFC1094}}. Lastly, it encodes the set of
+permissions that the requesting user is granted
+in the ACCESS2resok.access field.
 
 #### IMPLEMENTATION
 
@@ -1054,39 +1090,32 @@ procedure in the NFSACL version 2 protocol, a client can
 ask the server to indicate whether or not one or more
 classes of operations are permitted.
 
-This is useful in operating systems, such as UNIX, where
-permission checking is done only when a file or directory
-is opened. The intent is to make the behavior of
-opening a remote file more consistent with the behavior of
-opening a local file.
-
 In general, it is not sufficient for a client to attempt
 to deduce access permissions by inspecting the uid, gid,
 and mode fields in the file attributes, since the server
 may perform uid or gid mapping or enforce additional
 access control restrictions. It is also possible that the
-NFS version 3 protocol server may not be in the same ID
-space as the NFS version 3 protocol client. In these cases,
-the NFS version 3 protocol client can not reliably perform
+NFS version 2 protocol server may not be in the same ID
+space as the NFS version 2 protocol client. In these cases,
+the NFS version 2 protocol client can not reliably perform
 an access check with only current file attributes.
 
 The information returned by the server in response to an
-ACCESS call is not permanent. It was correct at the exact
+ACCESS call is advisory only. It was correct at the exact
 time that the server performed the checks, but not
 necessarily afterwards. The server can revoke access
 permission to a file object at any time.
 
-The NFSACL version 2 protocol client should use the effective
-credentials of the user to build the authentication
-information in the ACCESS request used to determine access
-rights. It is the effective user and group credentials
-that are used in subsequent read and write operations. See
-the comments in Permission issues on page 98 for more
-information on this topic.
+The NFSACL version 2 protocol client should use the
+effective credentials of the user to build the
+authentication information in the ACCESS request used
+to determine access rights. It is the effective user
+and group credentials that are used in subsequent read
+and write operations.
 
 Many implementations do not directly support the
-ACCESS3_DELETE permission. Operating systems like UNIX
-may ignore the ACCESS3_DELETE bit if set on an access
+ACCESS2_DELETE permission. Operating systems like UNIX
+may ignore the ACCESS2_DELETE bit if set on an access
 request on a non-directory object. In these systems,
 delete permission on a file is determined by the access
 permissions on the directory in which the file resides,
@@ -1095,20 +1124,26 @@ itself.  Thus, the bit mask returned for such a request
 will have the ACCESS3_DELETE bit set to 0, indicating that
 the client does not have this permission.
 
+The server should return a status of ACL2_OK if no
+errors occurred that prevented the server from making
+the required access checks.
+
 #### ERRORS
 
 - ACL2ERR_IO
 - ACL2ERR_STALE
-
 
 # NFSACL Version 3
 
 Version 3 of the NFSACL protocol is used in conjunction only with
 version 3 of the NFS protocol.
 
-An NFS version 3 server denies an NFS request by terminating the
-requested procedure before it is executed and returning a status
-value of NFS3ERR_ACCESS.
+## NFS Version 3 Behavior Changes
+
+When an NFS version 3 server receives an NFS request on a file
+object where an ACL denies permission, the server responds by
+terminating the procedure before it is executed and returning
+a status value of NFS3ERR_ACCESS.
 
 If an Access Control List does not contain an ACE that grants a
 requesting user "read" or execute access to the object represented
@@ -1294,32 +1329,16 @@ NFSACL protocol.
 enum aclstat3 {
     ACL3_OK             = 0,
     ACL3ERR_PERM        = 1,
-    ACL3ERR_NOENT       = 2,
     ACL3ERR_IO          = 5,
-    ACL3ERR_NXIO        = 6,
     ACL3ERR_ACCES       = 13,
-    ACL3ERR_EXIST       = 17,
-    ACL3ERR_XDEV        = 18,
-    ACL3ERR_NODEV       = 19,
-    ACL3ERR_NOTDIR      = 20,
-    ACL3ERR_ISDIR       = 21,
     ACL3ERR_INVAL       = 22,
-    ACL3ERR_FBIG        = 27,
     ACL3ERR_NOSPC       = 28,
     ACL3ERR_ROFS        = 30,
-    ACL3ERR_MLINK       = 31,
-    ACL3ERR_NAMETOOLONG = 63,
-    ACL3ERR_NOTEMPTY    = 66,
     ACL3ERR_DQUOT       = 69,
     ACL3ERR_STALE       = 70,
-    ACL3ERR_REMOTE      = 71,
     ACL3ERR_BADHANDLE   = 10001,
-    ACL3ERR_NOT_SYNC    = 10002,
-    ACL3ERR_BAD_COOKIE  = 10003,
     ACL3ERR_NOTSUPP     = 10004,
-    ACL3ERR_TOOSMALL    = 10005,
     ACL3ERR_SERVERFAULT = 10006,
-    ACL3ERR_BADTYPE     = 10007,
     ACL3ERR_JUKEBOX     = 10008
 };
 ~~~
@@ -1332,38 +1351,14 @@ ACL3_OK
 ACL3ERR_PERM
 : Not owner. The operation was not allowed because the caller is either not a privileged user (root) or not the owner of the target of the operation.
 
-ACL3ERR_NOENT
-: No such file or directory. The file or directory name specified does not exist.
-
 ACL3ERR_IO
 : I/O error. A hard error (for example, a disk error) occurred while processing the requested operation.
-
-ACL3ERR_NXIO
-: I/O error. No such device or address.
 
 ACL3ERR_ACCES
 : Permission denied. The caller does not have the correct permission to perform the requested operation. Contrast this with NFS3ERR_PERM, which restricts itself to owner or privileged user permission failures.
 
-ACL3ERR_EXIST
-: File exists. The file specified already exists.
-
-ACL3ERR_XDEV
-: Attempt to do a cross-device hard link.
-
-ACL3ERR_NODEV
-: No such device.
-
-ACL3ERR_NOTDIR
-: Not a directory. The caller specified a non-directory in a directory operation.
-
-ACL3ERR_ISDIR
-: Is a directory. The caller specified a directory in a non-directory operation.
-
 ACL3ERR_INVAL
 : An invalid or unsupported argument was specified for procedure.
-
-ACL3ERR_FBIG
-: File too large. The operation would have caused a file to grow beyond the server's limit.
 
 ACL3ERR_NOSPC
 : No space left on device. The operation would have caused the server's file system to exceed its limit.
@@ -1371,44 +1366,20 @@ ACL3ERR_NOSPC
 ACL3ERR_ROFS
 : Read-only file system. A modifying operation was attempted on a read-only file system.
 
-ACL3ERR_MLINK
-: Too many hard links.
-
-ACL3ERR_NAMETOOLONG
-: The filename in an operation was too long.
-
-ACL3ERR_NOTEMPTY
-: An attempt was made to remove a directory that was not empty.
-
 ACL3ERR_DQUOT
 : Resource (quota) hard limit exceeded. The user's resource limit on the server has been exceeded.
 
 ACL3ERR_STALE
 : Invalid file handle. The file handle given in the arguments was invalid. The file referred to by that file handle no longer exists or access to it has been revoked.
 
-ACL3ERR_REMOTE
-: Too many levels of remote in path. The file handle given in the arguments referred to a file on a non-local file system on the server.
-
 ACL3ERR_BADHANDLE
 : Illegal NFS file handle. The file handle failed internal consistency checks.
-
-ACL3ERR_NOT_SYNC
-: Update synchronization mismatch was detected during a SETATTR operation.
-
-ACL3ERR_BAD_COOKIE
-: READDIR or READDIRPLUS cookie is stale.
 
 ACL3ERR_NOTSUPP
 : Operation is not supported.
 
-ACL3ERR_TOOSMALL
-: Buffer or request is too small.
-
 ACL3ERR_SERVERFAULT
 : An error occurred on the server which does not map to any of the legal NFS version 3 protocol error values.  The client should translate this into an appropriate error. UNIX clients may choose to translate this to EIO.
-
-AC:3ERR_BADTYPE
-: An attempt was made to create an object of a type not supported by the server.
 
 ACL3ERR_JUKEBOX
 : The server initiated the request, but was not able to complete it in a timely fashion. The client should wait and then try the request with a new RPC transaction ID. For example, this error should be returned from a server that supports hierarchical storage and receives a request to process a file that has been migrated. In this case, the server should start the immigration process and respond to client with this error.
@@ -1483,21 +1454,52 @@ default:
 
 #### DESCRIPTION
 
-This procedure returns the Access Control list associated with
-a file system object.
+The GETACL procedure retrieves Access Control List
+information associated with the file system object
+specified by the GETACL3args.fh field. The client
+obtains this file handle using one of the NFS
+version 2 LOOKUP, CREATE, MKDIR, SYMLINK, MKNOD,
+or READDIRPLUS procedures, or the MOUNT service,
+as described in {{RFC1813}}.
+
+The GETACL3args.mask field specifies which information
+is to be returned in the response:
+
+* If the NA_ACL bit is set, the server fills in the
+object's access ACL.
+* If the NA_ACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's access ACL.
+* If the NA_DFACL bit is set, the server fills in
+the object's default ACL.
+* if the NA_DFACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's default ACL.
+
+If the GETACL procedure is successful, the server sets the
+GETACL3res.status field to ACL3_OK. It fills in the
+GETACL3resok.attr field with the file object's post
+operation file attributes, as detailed in {{RFC1813}}.
+Lastly, it fills in the GETACL3res.acl field with two
+counted arrays of Access Control Entries (ACEs).
+
+Otherwise, GETACL3res.status contains an error status
+on failure and no other results are returned.
 
 #### IMPLEMENTATION
 
-On success, the result of the GETACL procedure contains
-a counted array of Access Control Entries (ACEs)
-that are associated with the file system object
-represented by the file handle in the argument.
+When GETACL3args.fh represents a file object that does
+not currently have an ACL associated with it or does not
+implement support for ACLs, the server responds by
+returning a manufactured minimal NFS ACL that reflects
+the current owner, group, and mode bits of the object
+(see {{acls-in-operation}}).
 
 #### ERRORS
 
-- No permission
-- File system or object does not support Access Control List
-- Object does not currently have an Access Control List
+- ACL3ERR_IO
+- ACL3ERR_STALE
+- ACL3ERR_BADHANDLE
+- ACL3ERR_SERVERFAULT
+- ACL3ERR_JUKEBOX
 
 ### SETACL Procedure
 
@@ -1531,17 +1533,62 @@ default:
 
 #### DESCRIPTION
 
-This procedure updates the Access Control List associated with
-a file system object.
+The SETACL procedure replaces the Access Control Lists
+associated with the file system object specified by the
+SETACL3args.fh field with the ACLs specified by the
+SETACL3args.acl field.  The client obtains the file
+handle using one of the NFS version 3 LOOKUP, CREATE,
+MKDIR, MKNOD, SYMLINK, or READDIRPLUS procedures, or
+the MOUNT service, as described in {{RFC1813}}.
+
+{:aside}
+> How are ACLs removed?
+
+If the SETACL procedure is successful, the server sets
+the SETACL3res.status field to ACL3_OK and fills in the
+SETACL3resok.attr field with the file object's post
+operation file attributes, as detailed in {{RFC1813}}.
+
+Otherwise, SETACL3res.status contains an error status
+on failure and no other results are returned.
 
 #### IMPLEMENTATION
 
+On success, the server does not send the reply until
+the ACL change is durable locally.
+
+Changing a file object's ACL changes the object's mtime.
+The mtime change is reflected in the attributes returned
+in the SETACL response.
+
+A high-quality server implementation ensures that a
+GETACL procedure running concurrently with a SETACL
+procedure does not return partially updated (torn)
+ACL contents. However, a failed SETACL may partially
+change a file's ACLs.
+
+When SETACL3args.fh represents a file object that does
+not implement support for ACLs, the server responds
+by setting SETACL3res.status to ACL3ERR_NOTSUPP.
+
+When SETACL3args.acl does not contain at least the
+minimal set of ACEs (as described in
+{{acls-in-operation}}), the server responds by setting
+SETACL3res.status to ACL3ERR_INVAL.
+
 #### ERRORS
 
-- Read-only file system
-- No permission
-- File system or object does not implement Access Control Lists
-
+- ACL3ERR_PERM
+- ACL3ERR_IO
+- ACL3ERR_ACCES
+- ACL3ERR_INVAL
+- ACL3ERR_NOSPC
+- ACL3ERR_ROFS
+- ACL3ERR_DQUOT
+- ACL3ERR_STALE
+- ACL3ERR_BADHANDLE
+- ACL3ERR_SERVERFAULT
+- ACL3ERR_JUKEBOX
 
 # Implementation Issues
 
@@ -1660,6 +1707,13 @@ The NFS version 3 protocol does not define a policy for
 caching on the client or server. In particular, there is no
 support for strict cache consistency between a client and
 server, nor between different clients.
+
+The NFSACL protocol does not mandate a specific caching
+policy for ACLs or information retrieved via the ACCESS
+procedure. However, a high-quality client implementation
+that seeks good performance might choose to revalidate
+cached access control information with the same regularity
+that it invalidates normal file attributes.
 
 # XDR Protocol Definition
 
@@ -1847,19 +1901,10 @@ text need be preserved.
 /// enum aclstat2 {
 ///     ACL2_OK = 0,
 ///     ACL2ERR_PERM = 1,
-///     ACL2ERR_NOENT = 2,
 ///     ACL2ERR_IO = 5,
-///     ACL2ERR_NXIO = 6,
 ///     ACL2ERR_ACCES = 13,
-///     ACL2ERR_EXIST = 17,
-///     ACL2ERR_NODEV = 19,
-///     ACL2ERR_NOTDIR = 20,
-///     ACL2ERR_ISDIR = 21,
-///     ACL2ERR_FBIG = 27,
 ///     ACL2ERR_NOSPC = 28,
 ///     ACL2ERR_ROFS = 30,
-///     ACL2ERR_NAMETOOLONG = 63,
-///     ACL2ERR_NOTEMPTY = 66,
 ///     ACL2ERR_DQUOT = 69,
 ///     ACL2ERR_STALE = 70,
 /// };
@@ -2011,30 +2056,15 @@ text need be preserved.
 ///     ACL3ERR_PERM = 1,
 ///     ACL33ERR_NOENT = 2,
 ///     ACL3ERR_IO = 5,
-///     ACL3ERR_NXIO = 6,
 ///     ACL3ERR_ACCES = 13,
-///     ACL3ERR_EXIST = 17,
-///     ACL3ERR_XDEV = 18,
-///     ACL3ERR_NODEV = 19,
-///     ACL3ERR_NOTDIR = 20,
-///     ACL3ERR_ISDIR = 21,
 ///     ACL3ERR_INVAL = 22,
-///     ACL3ERR_FBIG = 27,
 ///     ACL3ERR_NOSPC = 28,
 ///     ACL3ERR_ROFS = 30,
-///     ACL3ERR_MLINK = 31,
-///     ACL3ERR_NAMETOOLONG = 63,
-///     ACL3ERR_NOTEMPTY = 66,
 ///     ACL3ERR_DQUOT = 69,
 ///     ACL3ERR_STALE = 70,
-///     ACL3ERR_REMOTE = 71,
 ///     ACL3ERR_BADHANDLE = 10001,
-///     ACL3ERR_NOT_SYNC = 10002,
-///     ACL3ERR_BAD_COOKIE = 10003,
 ///     ACL3ERR_NOTSUPP = 10004,
-///     ACL3ERR_TOOSMALL = 10005,
 ///     ACL3ERR_SERVERFAULT = 10006,
-///     ACL3ERR_BADTYPE = 10007,
 ///     ACL3ERR_JUKEBOX = 10008,
 /// };
 ///
@@ -2158,11 +2188,18 @@ Coverage:  All procedures described in this document are implemented in both ver
 
 Licensing: GPLv2
 
-Implementation experience:  A Linux in-kernel prototype is underway,
-           but implementation delays have resulted from the
-           challenges of handling a TLS handshake in a kernel
-           environment.  Those issues stem from the architecture of
-           TLS and the kernel, not from the design of RPC-with-TLS.
+Implementation experience:  The initial Linux implementation
+of the NFSACL protocol is described in {{Gruenbacher}}, and
+subsequent modifications can be found in the Linux kernel
+source code repository {{Linux}}.
+
+{{Gruenbacher}} notes several minor differences between the
+Linux and Solaris implementations of ACLs, and remarks that:
+> Solaris ACLs are based on an earlier draft of POSIX 1003.1e,
+> so its handling of the mask ACL entry is slightly different
+> than in draft 17 for ACLs with only four ACL entries. This
+> is a corner case that occurs only rarely, so the semantic
+> differences may not be noticeable.
 
 # Security Considerations
 
@@ -2247,23 +2284,12 @@ The XDR specification provided in this document rectifies those
 omisiions to provide a complete and compilable XDR language
 description of the NFSACL protocol.
 
-## Alignment with the Linux Implementation of NFSACL
-
-The initial Linux implementation of the NFSACL protocol is
-described in {{Gruenbacher}}, and subsequent modifications
-can be found in the Linux kernel source code repository {{Linux}}.
-
-Because it was reverse-engineered, it does not include ...
-rewrite as necessary.
-
 # Open Questions
 
 Should the CDDL .x file be explicitly cited, or otherwise
 referenced, in this document?
 
 How should the XDR language copyright notice read?
-
-How are ACLs removed?
 
 # Acknowledgments
 {:numbered="false"}
