@@ -1587,19 +1587,16 @@ SETACL3res.status to ACL3ERR_INVAL.
 
 ## Permission issues
 
-The NFS version 3 protocol, strictly speaking, does not
-define the permission checking used by servers. However, it
-is expected that a server will do normal operating system
+The NFS protocol, strictly speaking, does not
+define the permission checking used by NFS servers. However, it
+is expected that an NFS server will do normal operating system
 permission checking using AUTH_UNIX style authentication as
 the basis of its protection mechanism, or another stronger
-form of authentication such as AUTH_DES or AUTH_KERB. With
+form of authentication such as RPC_AUTH_GSS. With
 AUTH_UNIX authentication, the server gets the client's
 effective uid, effective gid, and groups on each call and
 uses them to check permission. These are the so-called UNIX
-credentials. AUTH_DES and AUTH_KERB use a network name, or
-netname, as the basis for identification (from which a UNIX
-server derives the necessary standard UNIX credentials).
-There are problems with this method that have been solved.
+credentials.
 
 Using uid and gid implies that the client and server share
 the same uid list. Every server and client pair must have the
@@ -1613,27 +1610,22 @@ techniques for managing a shared user space or for providing
 mechanisms for user ID mapping is beyond the scope of this
 specification.
 
-In most operating systems, a particular user (on UNIX, the
+In POSIX-based operating systems, a particular user (on UNIX, the
 uid 0) has access to all files, no matter what permission and
 ownership they have. This superuser permission may not be
 allowed on the server, since anyone who can become superuser
-on their client could gain access to all remote files. A UNIX
-server by default maps uid 0 to a distinguished value
-(UID_NOBODY), as well as mapping the groups list, before
-doing its access checking. A server implementation may
-provide a mechanism to change this mapping. This works except
-for NFS version 3 protocol root file systems (required for
-diskless NFS version 3 protocol client support), where
-superuser access cannot be avoided.  Export options are used,
-on the server, to restrict the set of clients allowed
-superuser access.
+on their client could gain access to all remote files. A
+POSIX-based NFS server by default maps uid 0 to a distinguished
+value (for instance, UID_NOBODY), as well as mapping the groups
+list, before doing its access checking. A server implementation
+may provide a mechanism to change this mapping.
 
 ## Duplicate Request Cache
 
-The typical NFS version 3 protocol failure recovery model
+The typical NFS protocol failure recovery model
 uses client time-out and retry to handle server crashes,
 network partitions, and lost server replies. A retried
-request is called a duplicate of the original.
+request is referred to as a duplicate of the original.
 
 When used in a file server context, the term idempotent can
 be used to distinguish between operation types. An idempotent
@@ -1642,61 +1634,43 @@ equivalent results (though it may in fact change, as a side
 effect, the access time on a file, say for READ). Some NFS
 operations are obviously non-idempotent. They cannot be
 reprocessed without special attention simply because they may
-fail if tried a second time. The CREATE request, for example,
+fail if tried a second time. A CREATE request, for example,
 can be used to create a file for which the owner does not
 have write permission. A duplicate of this request cannot
 succeed if the original succeeded. Likewise, a file can be
 removed only once.
 
 The side effects caused by performing a duplicate
-non-idempotent request can be destructive (for example, a
-truncate operation causing lost writes). The combination of a
-stateless design with the common choice of an unreliable
-network transport (UDP) implies the possibility of
-destructive replays of non-idempotent requests. Though to be
-more accurate, it is the inherent stateless design of the NFS
-version 3 protocol on top of an unreliable RPC mechanism that
-yields the possibility of destructive replays of
-non-idempotent requests, since even in an implementation of
-the NFS version 3 protocol over a reliable
-connection-oriented transport, a connection break with
-automatic reestablishment requires duplicate request
-processing (the client will retransmit the request, and the
-server needs to deal with a potential duplicate
-non-idempotent request).
+non-idempotent request can be destructive. A duplicate
+file truncation can result in lost writes. It is the
+inherent stateless design of the NFS protocol on top
+of an unreliable RPC transport that yields the
+possibility of destructive replays of non-idempotent
+requests. Even in an implementation of the NFS protocol
+over a reliable connection-oriented transport,
+a connection break with automatic reestablishment
+requires duplicate request processing: the client
+retransmits requests that were pending before the
+connection loss, and the server needs to recognize
+and deal with potential duplicate non-idempotent requests.
 
-Most NFS version 3 protocol server implementations use a
-cache of recent requests (called the duplicate request cache)
-for the processing of duplicate non-idempotent requests. The
-duplicate request cache provides a short-term memory
-mechanism in which the original completion status of a
-request is remembered and the operation attempted only once.
-If a duplicate copy of this request is received, then the
-original completion status is returned.
-
-The duplicate-request cache mechanism has been useful in
-reducing destructive side effects caused by duplicate NFS
-version 3 protocol requests. This mechanism, however, does
-not guarantee against these destructive side effects in all
-failure modes. Most servers store the duplicate request cache
-in RAM, so the contents are lost if the server crashes.  The
-exception to this may possibly occur in a redundant server
-approach to high availability, where the file system itself
-may be used to share the duplicate request cache state. Even
-if the cache survives server reboots (or failovers in the
-high availability case), its effectiveness is a function of
-its size. A network partition can cause a cache entry to be
-reused before a client receives a reply for the corresponding
-request. If this happens, the duplicate request will be
-processed as a new one, possibly with destructive side
-effects.
+Most NFS server implementations maintain a cache of
+recent requests, called the duplicate request cache,
+for recognizing duplicate non-idempotent requests. If
+the server receives a request and recognizes it as a
+duplicate of a recently completed request, the server
+returns the original completion status instead of
+processing the duplicate request again.
 
 A description of an early implementation of a
 duplicate request cache can be found in {{Juszczak}}.
 
+For all versions of the NFSACL protocol, the SETACL
+procedure is considered to be non-idempotent.
+
 ## Caching Policies
 
-The NFS version 3 protocol does not define a policy for
+The NFS protocol does not define a policy for
 caching on the client or server. In particular, there is no
 support for strict cache consistency between a client and
 server, nor between different clients.
