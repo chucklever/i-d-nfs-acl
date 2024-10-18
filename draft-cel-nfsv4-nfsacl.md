@@ -106,7 +106,7 @@ that reside on a remote host {{RFC1094}}.
 
 Traditionally, permission to access files stored in NFS file
 systems is granted by permission bits, mimicking {{POSIX}}.
-Permission bits provide course-grained access control. The
+Permission bits provide coarse-grained access control. The
 file owner can control only whether members of her group can
 read, write, or execute the file contents, or whether anyone
 else (without exception) has those rights.
@@ -124,13 +124,6 @@ gave local users mechanisms to read and update them.
 
 Sun created the NFSACL protocol to provide that
 mechanism for files accessed remotely via NFS.
-
-The NFSACL protocol described in this document is not new.
-The protocol has been implemented in several operating systems
-besides the original Sun implementation. However, there has
-never been an unencumbered and official description of the
-protocol until now. As a consequence, previous non-Sun
-implementations have been reverse-engineered.
 
 This document describes the protocol based on the nfs_acl.x
 file that is publicly available in the OpenSolaris and
