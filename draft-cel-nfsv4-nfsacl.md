@@ -83,9 +83,9 @@ informative:
   Linux:
     title: Linux kernel source code
     target: https://www.kernel.org
-  Illumos:
-    title: Illumos source code
-    target: https://github.com/OpenIndiana
+  OpenSolaris:
+    title: Archived OpenSolaris source code
+    target:  https://github.com/kofemann/opensolaris
 
 --- abstract
 
@@ -126,8 +126,8 @@ Sun created the NFSACL protocol to provide that
 mechanism for files accessed remotely via NFS.
 
 This document describes the protocol based on the nfs_acl.x
-file that is publicly available in the OpenSolaris and
-Illumos code bases {{Illumos}}. The editor has strived to
+file that is publicly available in the OpenSolaris
+code base {{OpenSolaris}}. The editor has strived to
 introduce no changes to the protocol as it is implemented
 in those operating systems and in Linux.
 
@@ -2216,7 +2216,7 @@ match existing de factor implementations of NFSACL.
 
 The source for the XDR specification provided in this
 document is the nfs_acl.x file as found in published
-versions of the Illumos source code base {{Illumos}},
+versions of the OpenSolaris source code base {{OpenSolaris}},
 an open source descendant of Solaris.
 
 However, there are a few changes to the protocol as it
