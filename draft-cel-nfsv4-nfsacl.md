@@ -1754,7 +1754,7 @@ text need be preserved.
 ///  * identified as authors of the code.  All rights reserved.
 ///  *
 ///  * The authors of the code are:
-///  * Sun Microsystems
+///  * Oracle
 ///  *
 ///  * Redistribution and use in source and binary forms, with
 ///  * or without modification, are permitted provided that the
@@ -1789,12 +1789,6 @@ text need be preserved.
 ///  *   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 ///  *   IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ///  *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-///  */
-///
-/// /*
-///  *  Copyright 1994,2001-2003 Sun Microsystems, Inc.
-///  *  All rights reserved.
-///  *  Use is subject to license terms.
 ///  */
 ///
 /// const NFS_ACL_MAX_ENTRIES = 1024;
