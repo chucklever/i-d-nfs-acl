@@ -127,7 +127,7 @@ mechanism for files accessed remotely via NFS.
 
 This document describes the protocol based on the nfs_acl.x
 file that is publicly available in the OpenSolaris
-code base {{OpenSolaris}}. The editor has strived to
+code base {{OpenSolaris}}. The editor has attempted to
 introduce no changes to the protocol as it is implemented
 in those operating systems and in Linux.
 
@@ -332,7 +332,7 @@ Only ACEs that match the requester are considered. Each
 ACE is processed until all of the bits of the requester's
 access have been ALLOWED. Once a bit has been ALLOWED,
 that bit is no longer considered in the processing
-of subsquent ACEs in the list.
+of subsequent ACEs in the list.
 
 When the ACL has been fully processed, if there are bits
 in the requester's mask that have not been ALLOWED,
@@ -440,7 +440,7 @@ How file ownership relates to @OWNER, @GROUP, and @EVERYONE
 
 Setting a file object's mode bits via the NFS SETATTR procedure
 can change the ACL and setting the NFS access ACL can change
-the a file object's mode mode bits. As such, the order of setting
+the file object's mode mode bits. As such, the order of setting
 the attributes related to mode and NFS ACLs is important.
 
 #### ACL Inheritance
@@ -475,7 +475,7 @@ service.  They are given in decimal.
 100227
 : The RPC program number for the NFSACL protocol
 
-Only versions 2 and 3 of this RPC progream are valid.
+Only versions 2 and 3 of this RPC program are valid.
 
 ## Transport address
 
@@ -573,7 +573,7 @@ GETACL2args and GETACL3args structures.
 Interoperability between NFS peers that do not implement
 the NFSACL protocol is what we already have today.
 Interoperability between peers that both implement the NFSACL
-procotol is described in the rest of this document.
+protocol is described in the rest of this document.
 
 The following subsections briefly discuss three new
 interoperability scenarios.
@@ -606,7 +606,7 @@ This is a quality of implementation issue for the client.
 An NFS server that implements the NFSACL protocol might
 share both file systems that implement ACLs and
 file systems that do not. In this case, NFS clients
-detect the presense of an NFSACL service on the NFS
+detect the presence of an NFSACL service on the NFS
 server.
 
 For file objects that do not implement ACL support:
@@ -754,10 +754,10 @@ ACL2ERR_ACCES
 : Permission denied.  The caller does not have the correct permission to perform the requested operation.
 
 ACL2ERR_NOSPC
-: No space left on device.  The operation caused the server's filesystem to reach its limit.
+: No space left on device.  The operation caused the server's file system to reach its limit.
 
 ACL2ERR_ROFS
-: Read-only filesystem.  Write attempted on a read-only filesystem.
+: Read-only file system.  Write attempted on a read-only file system.
 
 ACL2ERR_DQUOT
 : Disk quota exceeded.  The client's disk quota on the server has been exceeded.
@@ -791,7 +791,7 @@ It is important that this procedure do no work at all so that clients
 can use it to measure the overhead of processing a service request.
 By convention, the NULL procedure should never require any
 authentication.
-A server implmentation may choose to ignore this convention, if
+A server implementation may choose to ignore this convention, if
 responding to the NULL procedure call acknowledges the existence
 of a resource to an unauthenticated client.
 
@@ -979,7 +979,7 @@ default:
 #### DESCRIPTION
 
 The GETATTR procedure retrieves the current file
-atttributes associated with the file system object
+attributes associated with the file system object
 specified by the GETATTR2args.fh field. The client
 obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
@@ -1303,7 +1303,7 @@ case FALSE:
 ~~~
 
 The format of this data type appears to make returning file
-attributes optional. However, server implementors are strongly
+attributes optional. However, server implementers are strongly
 encouraged to make a best effort to return attributes whenever
 possible, even when returning an error.
 
@@ -2231,8 +2231,8 @@ the protocol description appearing in this document.
 
 ## Code Compilation Requirements
 
-THe original nfs_acl.x file provided in the OpenSolaris code
-base did not compile (usig the widely-available rpcgen tool).
+The original nfs_acl.x file that appears in the OpenSolaris code
+base did not compile using the widely-available rpcgen tool).
 
 * The file does not include a definition of the ACL2_OK or
 ACL3_OK constants used in definitions of result unions.
@@ -2242,15 +2242,13 @@ that are shared with the NFSACL protocol, such as fhandle_t and
 post_op_attr.
 
 The XDR specification provided in this document rectifies those
-omisiions to provide a complete and compilable XDR language
+omissions to provide a complete and compilable XDR language
 description of the NFSACL protocol.
 
 # Open Questions
 
 Should the CDDL .x file be explicitly cited, or otherwise
 referenced, in this document?
-
-How should the XDR language copyright notice read?
 
 # Acknowledgments
 {:numbered="false"}
@@ -2261,8 +2259,9 @@ Wim Coekaerts,
 Andreas Gruenbacher,
 Rick Macklem,
 Greg Marsden,
+Martin Thomson,
 and
-Martin Thomson
+Jim Wright
 for their input and support.
 
 Special thanks to
