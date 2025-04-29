@@ -121,8 +121,10 @@ with files shared via the NFS protocol, even though the
 local file systems shared via NFS often implemented ACLs and
 gave local users mechanisms to read and update them.
 
-Sun created the NFS_ACL protocol to provide that
-mechanism for files accessed remotely via NFS.
+Sun created the NFS_ACL protocol to provide that mechanism
+for files accessed remotely via NFS. Later, other operating
+systems, including Linux, implemented NFS_ACL for similar
+reasons.
 
 This document describes the protocol based on the nfs_acl.x
 file that is publicly available in the OpenSolaris
