@@ -2220,14 +2220,20 @@ that was meant to provide clients access to named attributes
 (auxiliary streams) stored with each shared file. These
 procedures were later introduced in NFS version 4 {{RFC8881}}.
 
-As far as this editor is aware, named attribute support was
-only ever implemented in Solaris, and the procedures here
-were strictly prototypes. There is little to no public
+As far as this editor is aware, support for NFSv4 named
+attributes was only ever implemented in Solaris, which uses
+these procedures make named attributes visible over NFSv2 and
+NFSv3 as they are in NFSv4. There is little to no public
 documentation beyond what can be found in the original
 nfs_acl.x file.
 
 Therefore, the GETXATTRDIR procedures are not included in
 the protocol description appearing in this document.
+
+{:aside}
+> Perhaps this document should provide rules for extending the
+> NFS_ACL protocol, in case some other implementation wishes to
+> provide named attribute visibility for NFSv3.
 
 ## Code Compilation Requirements
 
