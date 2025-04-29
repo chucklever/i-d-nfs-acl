@@ -487,17 +487,23 @@ In both cases, this is the same as the base NFS protocol.
 
 ## Sizes
 
+~~~ xdr
 NFS_ACL_MAX_ENTRIES 1024
-: The maximum number of Access Control Entries allowed in one Access Control List array.
+~~~
+
+The maximum number of Access Control Entries allowed in one Access Control List array.
 
 ## Basic Data Types
 
 The following XDR definitions are basic scalar types that are used in other structures.
 
-uid:
-: typedef int uid;
-o_mode:
-: typedef unsigned short o_mode;
+~~~ xdr
+typedef int uid;
+~~~
+
+~~~ xdr
+typedef unsigned short o_mode;
+~~~
 
 ## Structured Data types
 
