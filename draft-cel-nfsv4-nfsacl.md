@@ -7,7 +7,6 @@ docname: draft-cel-nfsv4-nfsacl-latest
 pi: [sortrefs, symrefs, docmapping]
 submissiontype: IETF
 ipr: trust200902
-area: "Web and Internet Transport"
 stand_alone: yes
 v: 3
 area: "Web and Internet Transport"
