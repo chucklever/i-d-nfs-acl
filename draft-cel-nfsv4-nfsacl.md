@@ -428,21 +428,20 @@ the "id" field is ignored.
 
 #### Relationship Between ACLs and Other File Attributes
 
-How file ownership relates to @OWNER, @GROUP, and @EVERYONE
+When an ACL is present on a file, the ACL controls the
+requesting user's access to the file. The server ignores the
+file's mode bits. Changing the file's ACL via the SETACL
+procedure does not alter the file's mode bits, and changing
+the mode bits via the SETATTR procedure does not alter the
+content of the ACL in any way.
 
-* chown changes the meaning of @OWNER
+When an ACL is present on a file, changing the file's owner
+(say, via the SETATTR operation) alters the server's
+interpretation of any ACE that targets @OWNER.
 
-* Does chmod change the content of the file's ACL as well, and if so, how?
-
-* Are changes to the file's ACL reflected in the file's mode bits, and if so, how?
-
-{:aside}
-> From rmacklem's draft. Is the following true of legacy NFS ACLs?
-
-Setting a file object's mode bits via the NFS SETATTR procedure
-can change the ACL and setting the NFS access ACL can change
-the file object's mode mode bits. As such, the order of setting
-the attributes related to mode and NFS ACLs is important.
+When an ACL is present on a file, changing the file's group
+(say, via the SETATTR operation) alters the server's
+interpretation of any ACE that targets @GROUP.
 
 #### ACL Inheritance
 
