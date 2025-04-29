@@ -1,3 +1,5 @@
+<!-- regenerate: on (set to off if you edit this file) -->
+
 # The Network File System Access Control List Protocol
 
 This is the working area for the individual Internet-Draft, "The Network File System Access Control List Protocol".
