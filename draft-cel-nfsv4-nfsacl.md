@@ -323,6 +323,10 @@ one for the file's owner group, and one for everyone else.
 
 #### Interpreting Access Control Lists
 
+NFS clients do not perform access checks based on their
+interpretation of an ACL read from the server. NFS servers
+are solely responsible for enforcing access control.
+
 An NFS Access Control List is a list of three or more
 Access Control Entries (ACEs) associated with one file
 system object. Each Access Control Entry in this list
@@ -363,20 +367,12 @@ The superuser may be able to read or write data or metadata
 in ways that would otherwise not be permitted by the object's
 ACL.
 
-Clients do not perform their own access checks based
-on their interpretation of an ACL, but rather use either
-the NFS_ACL version 2 ACCESS procedure or the NFS version 3
-ACCESS procedure to perform access checks. This enables a
-client to act on the results of having the server determine
-whether or not access should be granted based on its
-interpretation of the ACL.
-
-In particular, clients must be aware of situations in which
-an object's ACL grants a certain access even though the
-server will not enforce it. A client sends an appropriate
-ACCESS operation prior to servicing an application request
-to determine whether the user or application should be
-granted the access requested.
+NFS clients can use either the NFS_ACL version 2 ACCESS
+procedure or the NFS version 3 ACCESS procedure to ask the
+server to perform an access check based on the requesting
+user and the ACL present on a filesystem object. Clients are
+also free to simply try an operation to see what works, then
+recover it the server denies access.
 
 #### ACLs in Operation {#acls-in-operation}
 
