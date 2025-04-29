@@ -637,34 +637,6 @@ returning ACL3ERR_NOTSUPP.
 Version 2 of the NFS_ACL protocol is used in conjunction only with
 version 2 of the NFS protocol.
 
-## NFS Version 2 Behavior Changes
-
-When an NFS version 2 server receives an NFS request on a file
-object where an ACL denies permission, the server responds by
-terminating the procedure before it is executed and returning
-a status value of NFSERR_ACCESS.
-
-If an Access Control List does not contain an ACE that grants a
-requesting user "read" or execute access to the object represented
-by the procedure's file handle argument, the following NFS
-procedures fail with a status of NFSERR_ACCESS:
-
-READ, READDIR
-
-If an Access Control List does not contain an ACE that grants a
-requesting user "write" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFSERR_ACCESS:
-
-WRITE, CREATE, MKNOD, MKDIR, SYMLINK
-
-If an Access Control List does not contain an ACE that grants a
-requesting user "execute" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFSERR_ACCESS:
-
-LOOKUP
-
 ## Data types inherited from NFS version 2
 
 ### ftype
@@ -1141,34 +1113,6 @@ the required access checks.
 
 Version 3 of the NFS_ACL protocol is used in conjunction only with
 version 3 of the NFS protocol.
-
-## NFS Version 3 Behavior Changes
-
-When an NFS version 3 server receives an NFS request on a file
-object where an ACL denies permission, the server responds by
-terminating the procedure before it is executed and returning
-a status value of NFS3ERR_ACCESS.
-
-If an Access Control List does not contain an ACE that grants a
-requesting user "read" or execute access to the object represented
-by the procedure's file handle argument, the following NFS
-procedures fail with a status of NFS3ERR_ACCESS:
-
-READ, READDIR, READDIRPLUS
-
-If an Access Control List does not contain an ACE that grants a
-requesting user "write" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFS3ERR_ACCESS:
-
-WRITE, CREATE, MKNOD, MKDIR, SYMLINK
-
-If an Access Control List does not contain an ACE that grants a
-requesting user "execute" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFS3ERR_ACCESS:
-
-LOOKUP
 
 ## Data types inherited from NFS version 3
 
