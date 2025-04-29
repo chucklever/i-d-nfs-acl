@@ -13,10 +13,10 @@ Expires: 31 October 2025
 
 Abstract
 
-   This Informational document describes the NFSACL protocol.  NFSACL is
-   a legacy member of the Network File System family of protocols that
-   NFS clients use to access and modify Access Control Lists stored on
-   an NFS version 2 or version 3 server.
+   This Informational document describes the NFS_ACL protocol.  NFS_ACL
+   is a legacy member of the Network File System family of protocols
+   that NFS clients use to access and modify Access Control Lists stored
+   on an NFS version 2 or version 3 server.
 
 About This Document
 
@@ -90,36 +90,34 @@ Table of Contents
        4.6.1.  aclent
        4.6.2.  secattr
        4.6.3.  Interoperability Considerations
-   5.  NFSACL Version 2
-     5.1.  NFS Version 2 Behavior Changes
-     5.2.  Data types inherited from NFS version 2
-       5.2.1.  ftype
-       5.2.2.  fhandle_t
-       5.2.3.  timeval
-       5.2.4.  nfsfattr
-       5.2.5.  Defined Error Numbers
-     5.3.  Server Procedures
-       5.3.1.  Procedure 0: NULL - No Operation
-       5.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
-       5.3.3.  Procedure 2: SETACL - Set or replace an Access Control
+   5.  NFS_ACL Version 2
+     5.1.  Data types inherited from NFS version 2
+       5.1.1.  ftype
+       5.1.2.  fhandle_t
+       5.1.3.  timeval
+       5.1.4.  nfsfattr
+       5.1.5.  Defined Error Numbers
+     5.2.  Server Procedures
+       5.2.1.  Procedure 0: NULL - No Operation
+       5.2.2.  Procedure 1: GETACL - Retrieve an Access Control List
+       5.2.3.  Procedure 2: SETACL - Set or replace an Access Control
                List
-       5.3.4.  Procedure 3: GETATTR - Get file attributes
-       5.3.5.  Procedure 4: ACCESS - Check access permission
-   6.  NFSACL Version 3
-     6.1.  NFS Version 3 Behavior Changes
-     6.2.  Data types inherited from NFS version 3
-       6.2.1.  Scalar Data types
-       6.2.2.  ftype3
-       6.2.3.  specdata3
-       6.2.4.  nfs_fh3
-       6.2.5.  nfstime3
-       6.2.6.  nfsfattr3
-       6.2.7.  post_op_attr
-     6.3.  Error Values
-     6.4.  Server Procedures
-       6.4.1.  Procedure 0: NULL - No Operation
-       6.4.2.  Procedure 1: GETACL - Retrieve an Access Control List
-       6.4.3.  SETACL Procedure
+       5.2.4.  Procedure 3: GETATTR - Get file attributes
+       5.2.5.  Procedure 4: ACCESS - Check access permission
+   6.  NFS_ACL Version 3
+     6.1.  Data types inherited from NFS version 3
+       6.1.1.  Scalar Data types
+       6.1.2.  ftype3
+       6.1.3.  specdata3
+       6.1.4.  nfs_fh3
+       6.1.5.  nfstime3
+       6.1.6.  nfsfattr3
+       6.1.7.  post_op_attr
+     6.2.  Error Values
+     6.3.  Server Procedures
+       6.3.1.  Procedure 0: NULL - No Operation
+       6.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
+       6.3.3.  SETACL Procedure
    7.  Implementation Issues
      7.1.  Permission issues
      7.2.  Duplicate Request Cache
@@ -135,7 +133,7 @@ Table of Contents
      12.1.  Normative References
      12.2.  Informative References
    Appendix A.  Source Material
-     A.1.  Redaction of NFSACL Version 4
+     A.1.  Redaction of NFS_ACL Version 4
      A.2.  Redaction of GETXATTRDIR Procedures
      A.3.  Code Compilation Requirements
    Appendix B.  Open Questions
@@ -161,13 +159,14 @@ Table of Contents
    content [IEEE].
 
    Version 2 of NFS is described in [RFC1094], and version 3 in
-   [RFC1813].  Neither of these protocols include a method for accessing
+   [RFC1813].  Neither of these protocols include a method for viewing
    or managing ACLs associated with files shared via the NFS protocol,
    even though the local file systems shared via NFS often implemented
    ACLs and gave local users mechanisms to read and update them.
 
-   Sun created the NFSACL protocol to provide that mechanism for files
-   accessed remotely via NFS.
+   Sun created the NFS_ACL protocol to provide that mechanism for files
+   accessed remotely via NFS.  Later, other operating systems, including
+   Linux, implemented NFS_ACL for similar reasons.
 
    This document describes the protocol based on the nfs_acl.x file that
    is publicly available in the OpenSolaris code base [OpenSolaris].
@@ -230,9 +229,9 @@ Table of Contents
    procedure.  Servers can support multiple versions of a program by
    using different protocol version numbers.
 
-   The NFS and NFSACL protocols are both based on SunRPC.  The remainder
-   of this document assumes an NFS environment that is implemented on
-   top of SunRPC, as it is specified in [RFC5531].
+   The NFS and NFS_ACL protocols are both based on SunRPC.  The
+   remainder of this document assumes an NFS environment that is
+   implemented on top of SunRPC, as it is specified in [RFC5531].
 
 3.3.  External Data Representation
 
@@ -244,7 +243,7 @@ Table of Contents
 
    This document utilizes the RPC Data Description Language to specify
    the XDR format arguments and results to each of the RPC service
-   procedures that an NFSACL server provides.
+   procedures that an NFS_ACL server provides.
 
    Readers can find a full guide to XDR and the RPC Data Description
    Language in [RFC4506].
@@ -262,7 +261,7 @@ Table of Contents
    purposes:
 
    *  When setting an ACL via the SETACL procedure or retrieving an ACL
-      via the GETACL procedure, the NFSACL service verifies that the
+      via the GETACL procedure, the NFS_ACL service verifies that the
       calling user has been granted permission to perform the procedure.
 
    *  Each Access Control Entry (see below) contains an element that
@@ -279,12 +278,11 @@ Table of Contents
    typically performed on the server, following a static mapping scheme
    or a mapping established by the user from a client at mount time.
 
-   The AUTH_GSS style of authentication provides stronger security
-   through the use of cryptographic authentication.  The server and
-   client must agree on the mapping of the user's GSS principal to a
-   local UID on the server, but the name to identity mapping is more
-   operating system independent than the uid and gid mapping in
-   AUTH_UNIX.
+   RPCSEC_GSS authentication provides stronger security through the use
+   of cryptographic authentication.  The server and client must agree on
+   the mapping of the user's GSS principal to a local UID on the server,
+   but the name to identity mapping is more operating system independent
+   than the uid and gid mapping in AUTH_UNIX.
 
 3.5.  File Access Control
 
@@ -356,6 +354,10 @@ Table of Contents
 
 3.5.4.1.  Interpreting Access Control Lists
 
+   NFS clients do not perform access checks based on their
+   interpretation of an ACL read from the server.  NFS servers are
+   solely responsible for enforcing access control.
+
    An NFS Access Control List is a list of three or more Access Control
    Entries (ACEs) associated with one file system object.  Each Access
    Control Entry in this list specifies a user and a set of access types
@@ -396,18 +398,11 @@ Table of Contents
       to read or write data or metadata in ways that would otherwise not
       be permitted by the object's ACL.
 
-   Clients do not perform their own access checks based on their
-   interpretation of an ACL, but rather use either the NFSACL version 2
-   ACCESS procedure or the NFS version 3 ACCESS procedure to perform
-   access checks.  This enables a client to act on the results of having
-   the server determine whether or not access should be granted based on
-   its interpretation of the ACL.
-
-   In particular, clients must be aware of situations in which an
-   object's ACL grants a certain access even though the server will not
-   enforce it.  A client sends an appropriate ACCESS operation prior to
-   servicing an application request to determine whether the user or
-   application should be granted the access requested.
+   NFS clients can use either the NFS_ACL version 2 ACCESS procedure or
+   the NFS version 3 ACCESS procedure to ask the server to perform an
+   access check based on the requesting user and the ACL present on a
+   file system object.  Clients are also free to simply try an operation
+   to see what works, then recover it the server denies access.
 
 3.5.4.2.  ACLs in Operation
 
@@ -423,22 +418,34 @@ Table of Contents
       default ACL does not affect access to the object on which it is
       set.
 
-      |  What error, if any, is returned if a client attempts to set a
-      |  default ACL on a non-directory object?  What error is returned
-      |  if an invalid mask bit is set or the ACL argument has too many
-      |  ACEs?
-
-   Each NFS ACL must have one ACE for each of NA_USER_OBJ, NA_GROUP_OBJ
+   Each NFS ACL must have one ACE for each of NA_USER_OBJ, NA_GROUP_OBJ,
    and NA_OTHER_OBJ.  An NFS ACL that consists only of these three ACEs
-   is referred to as a minimal NFS ACL.  A server responds with
-   ACL2ERR_IO or ACL3ERR_INVAL, depending on the version of NFSACL that
-   is in use, if a client attempts to set an NFS ACL that does not
-   contain these ACEs.
+   is referred to as a minimal NFS ACL.
 
    An NFS ACL may zero or more NA_USER and/or NA_GROUP ACEs.
 
-      |  What happens when more than one bit is set in the "type" field?
-      |  What does the NA_ACL_DEFAULT bit do?
+   When a client presents a SETACL operation that a server finds is
+   invalid or it cannot process, the server responds with ACL2ERR_IO or
+   ACL3ERR_INVAL, depending on the version of NFS_ACL that is in use.
+   ACLs that are not valid include:
+
+   *  The presented ACL does not contain one ACE for each of
+      NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ
+
+   *  The presented ACL is a default ACL but the target object is not a
+      directory
+
+   *  The presented ACL contains too many ACEs
+
+   *  The presented ACL's type field contains more than one set bit
+
+      |  cel: What does the NA_ACL_DEFAULT bit do?
+
+      |  rthurlow: In the Solaris acl(2)/facl(2) system calls, the
+      |  equivalently-defined ACL_DEFAULT is used after aclent sorting
+      |  to note where regular entries end and where default entries
+      |  start in a single list.  So perhaps it would be normal for the
+      |  dfaclent entries to all be so marked.
 
    The "id" field in an Access Control Entry is interpreted as follows:
 
@@ -452,23 +459,19 @@ Table of Contents
 
 3.5.4.3.  Relationship Between ACLs and Other File Attributes
 
-   How file ownership relates to @OWNER, @GROUP, and @EVERYONE
+   When an ACL is present on a file, the ACL controls the requesting
+   user's access to the file.  The server ignores the file's mode bits.
+   Changing the file's ACL via the SETACL procedure does not alter the
+   file's mode bits, and changing the mode bits via the SETATTR
+   procedure does not alter the content of the ACL in any way.
 
-   *  chown changes the meaning of @OWNER
+   When an ACL is present on a file, changing the file's owner (say, via
+   the SETATTR operation) alters the server's interpretation of any ACE
+   that targets @OWNER.
 
-   *  Does chmod change the content of the file's ACL as well, and if
-      so, how?
-
-   *  Are changes to the file's ACL reflected in the file's mode bits,
-      and if so, how?
-
-      |  From rmacklem's draft.  Is the following true of legacy NFS
-      |  ACLs?
-
-   Setting a file object's mode bits via the NFS SETATTR procedure can
-   change the ACL and setting the NFS access ACL can change the file
-   object's mode mode bits.  As such, the order of setting the
-   attributes related to mode and NFS ACLs is important.
+   When an ACL is present on a file, changing the file's group (say, via
+   the SETATTR operation) alters the server's interpretation of any ACE
+   that targets @GROUP.
 
 3.5.4.4.  ACL Inheritance
 
@@ -490,7 +493,7 @@ Table of Contents
 
 4.1.  RPC Authentication
 
-   The NFSACL service uses AUTH_NONE in the NULL procedure.  All RPC
+   The NFS_ACL service uses AUTH_NONE in the NULL procedure.  All RPC
    authentication flavors can be used for other procedures.
 
 4.2.  Constants
@@ -498,34 +501,37 @@ Table of Contents
    These are the RPC constants needed to call the NFS Version 3 service.
    They are given in decimal.
 
-   100227  The RPC program number for the NFSACL protocol
+   100227  The RPC program number for the NFS_ACL protocol
 
    Only versions 2 and 3 of this RPC program are valid.
 
 4.3.  Transport address
 
-   The NFSACL protocol can operate over the TCP, UDP, and RDMA transport
-   protocols.  For TCP and UDP, it uses port 2049, and for RDMA, it uses
-   20049.  In both cases, this is the same as the base NFS protocol.
+   The NFS_ACL protocol can operate over the TCP, UDP, and RDMA
+   transport protocols.  For TCP and UDP, it uses port 2049, and for
+   RDMA, it uses 20049.  In both cases, this is the same as the base NFS
+   protocol.
 
 4.4.  Sizes
 
-   NFS_ACL_MAX_ENTRIES 1024  The maximum number of Access Control
-      Entries allowed in one Access Control List array.
+   NFS_ACL_MAX_ENTRIES 1024
+
+   The maximum number of Access Control Entries allowed in one Access
+   Control List array.
 
 4.5.  Basic Data Types
 
    The following XDR definitions are basic scalar types that are used in
    other structures.
 
-   uid:  typedef int uid; o_mode:
+   typedef int uid;
 
-      typedef unsigned short o_mode;
+   typedef unsigned short o_mode;
 
 4.6.  Structured Data types
 
    The following XDR definitions are common structured data types that
-   are used in all versions of the NFSACL protocol.
+   are used in all versions of the NFS_ACL protocol.
 
 4.6.1.  aclent
 
@@ -584,26 +590,26 @@ Table of Contents
 
 4.6.3.  Interoperability Considerations
 
-   Interoperability between NFS peers that do not implement the NFSACL
+   Interoperability between NFS peers that do not implement the NFS_ACL
    protocol is what we already have today.  Interoperability between
-   peers that both implement the NFSACL protocol is described in the
+   peers that both implement the NFS_ACL protocol is described in the
    rest of this document.
 
    The following subsections briefly discuss three new interoperability
    scenarios.
 
-4.6.3.1.  Client Implements NFSACL, Server Does Not
+4.6.3.1.  Client Implements NFS_ACL, Server Does Not
 
-   Typically an NFS server that implements the NFSACL program will
-   advertise the presence of NFSACL via an rpcbind registration.  An NFS
-   client that implements NFSACL should perform an rpcbind query before
-   attempting any NFSACL procedure [RFC1833].
+   Typically an NFS server that implements the NFS_ACL program will
+   advertise the presence of NFS_ACL via an rpcbind registration.  An
+   NFS client that implements NFS_ACL should perform an rpcbind query
+   before attempting any NFS_ACL procedure [RFC1833].
 
-   If the client sends any NFSACL procedure without sending an rpcbind
-   query first, and the server does not implement the NFSACL program,
+   If the client sends any NFS_ACL procedure without sending an rpcbind
+   query first, and the server does not implement the NFS_ACL program,
    the server responds with an RPC access_stat of PROG_UNAVAIL.
 
-4.6.3.2.  Server Implements NFSACL, Client Does Not
+4.6.3.2.  Server Implements NFS_ACL, Client Does Not
 
    An NFS server that implements advanced access control can deny
    requests made by a client by responding with NFS2ERR_ACCESS or
@@ -615,9 +621,9 @@ Table of Contents
 
 4.6.3.3.  Client Implements, Exported File System Does Not
 
-   An NFS server that implements the NFSACL protocol might share both
+   An NFS server that implements the NFS_ACL protocol might share both
    file systems that implement ACLs and file systems that do not.  In
-   this case, NFS clients detect the presence of an NFSACL service on
+   this case, NFS clients detect the presence of an NFS_ACL service on
    the NFS server.
 
    For file objects that do not implement ACL support:
@@ -629,45 +635,17 @@ Table of Contents
    *  The server responds to a SETACL version 3 procedure by returning
       ACL3ERR_NOTSUPP.
 
-      |  Linux returns NFS3ERR_NOTSUPP even for NFSACLv2.  Check
+      |  Linux returns NFS3ERR_NOTSUPP even for NFS_ACLv2.  Check
       |  Solaris.
 
-5.  NFSACL Version 2
+5.  NFS_ACL Version 2
 
-   Version 2 of the NFSACL protocol is used in conjunction only with
+   Version 2 of the NFS_ACL protocol is used in conjunction only with
    version 2 of the NFS protocol.
 
-5.1.  NFS Version 2 Behavior Changes
+5.1.  Data types inherited from NFS version 2
 
-   When an NFS version 2 server receives an NFS request on a file object
-   where an ACL denies permission, the server responds by terminating
-   the procedure before it is executed and returning a status value of
-   NFSERR_ACCESS.
-
-   If an Access Control List does not contain an ACE that grants a
-   requesting user "read" or execute access to the object represented by
-   the procedure's file handle argument, the following NFS procedures
-   fail with a status of NFSERR_ACCESS:
-
-   READ, READDIR
-
-   If an Access Control List does not contain an ACE that grants a
-   requesting user "write" access to the object represented by the
-   procedure's file handle argument, the following NFS procedures fail
-   with a status of NFSERR_ACCESS:
-
-   WRITE, CREATE, MKNOD, MKDIR, SYMLINK
-
-   If an Access Control List does not contain an ACE that grants a
-   requesting user "execute" access to the object represented by the
-   procedure's file handle argument, the following NFS procedures fail
-   with a status of NFSERR_ACCESS:
-
-   LOOKUP
-
-5.2.  Data types inherited from NFS version 2
-
-5.2.1.  ftype
+5.1.1.  ftype
 
    The enumeration "ftype" gives the type of an NFS version 3 file.
    This definition comes from Section 2.3.2 of [RFC1094]:
@@ -681,14 +659,14 @@ Table of Contents
        NFLNK = 5,
    };
 
-5.2.2.  fhandle_t
+5.1.2.  fhandle_t
 
    NFS version 2 uses a fixed-size file handle.  The following
    definition comes from Section 2.3.3 of [RFC1094]:
 
    typedef opaque fhandle[FHSIZE];
 
-5.2.3.  timeval
+5.1.3.  timeval
 
    NFS version 2's "timeval" structure represents the number of seconds
    and microseconds since midnight January 1, 1970, Greenwich Mean Time.
@@ -699,7 +677,7 @@ Table of Contents
        unsigned int useconds;
    };
 
-5.2.4.  nfsfattr
+5.1.4.  nfsfattr
 
    This document refers to NFS version 2's file attribute structure as
    "nfsfattr".  This is the same as the fattr structure described in
@@ -722,14 +700,14 @@ Table of Contents
        timeval      ctime;
    };
 
-5.2.5.  Defined Error Numbers
+5.1.5.  Defined Error Numbers
 
    Section 2.3.1 of [RFC1094] describes an enumerated type called "stat"
    which provides a status code for NFS version 2 results.  A matching
    type called "aclstat2" is defined in this document for the similar
-   purpose of returning NFSACL version 2 procedure status codes.  The
+   purpose of returning NFS_ACL version 2 procedure status codes.  The
    numeric values of these two types match up, though aclstat2 omits
-   some codes that are not relevant to the NFSACL protocol.
+   some codes that are not relevant to the NFS_ACL protocol.
 
    enum aclstat2 {
        ACL2_OK = 0,
@@ -766,24 +744,24 @@ Table of Contents
       That is, the file referred to by that file handle no longer
       exists, or access to it has been revoked.
 
-5.3.  Server Procedures
+5.2.  Server Procedures
 
-5.3.1.  Procedure 0: NULL - No Operation
+5.2.1.  Procedure 0: NULL - No Operation
 
-5.3.1.1.  ARGUMENTS
-
-   void;
-
-5.3.1.2.  RESULTS
+5.2.1.1.  ARGUMENTS
 
    void;
 
-5.3.1.3.  DESCRIPTION
+5.2.1.2.  RESULTS
+
+   void;
+
+5.2.1.3.  DESCRIPTION
 
    This is the usual NULL procedure with a void argument and void
    result.
 
-5.3.1.4.  IMPLEMENTATION
+5.2.1.4.  IMPLEMENTATION
 
    It is important that this procedure do no work at all so that clients
    can use it to measure the overhead of processing a service request.
@@ -792,23 +770,23 @@ Table of Contents
    convention, if responding to the NULL procedure call acknowledges the
    existence of a resource to an unauthenticated client.
 
-5.3.1.5.  ERRORS
+5.2.1.5.  ERRORS
 
    Since the NULL procedure returns no result, it can not return an
-   NFSACL error status code.  However, some server implementations may
+   NFS_ACL error status code.  However, some server implementations may
    return RPC-level errors based on security or authentication policy
    settings.
 
-5.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
+5.2.2.  Procedure 1: GETACL - Retrieve an Access Control List
 
-5.3.2.1.  ARGUMENTS
+5.2.2.1.  ARGUMENTS
 
    struct GETACL2args {
        fhandle_t fh;
        u_int mask;
    };
 
-5.3.2.2.  RESULTS
+5.2.2.2.  RESULTS
 
    struct GETACL2resok {
        struct nfsfattr attr;
@@ -822,7 +800,7 @@ Table of Contents
        void;
    };
 
-5.3.2.3.  DESCRIPTION
+5.2.2.3.  DESCRIPTION
 
    The GETACL procedure retrieves Access Control List information
    associated with the file system object specified by the
@@ -855,7 +833,7 @@ Table of Contents
    Otherwise, GETACL2res.status contains an error status on failure and
    no other results are returned.
 
-5.3.2.4.  IMPLEMENTATION
+5.2.2.4.  IMPLEMENTATION
 
    When GETACL2args.fh represents a file object that does not currently
    have an ACL associated with it or does not implement support for
@@ -863,22 +841,22 @@ Table of Contents
    that reflects the current owner, group, and mode bits of the object
    (see Section 3.5.4.2).
 
-5.3.2.5.  ERRORS
+5.2.2.5.  ERRORS
 
    *  ACL2ERR_IO
 
    *  ACL2ERR_STALE
 
-5.3.3.  Procedure 2: SETACL - Set or replace an Access Control List
+5.2.3.  Procedure 2: SETACL - Set or replace an Access Control List
 
-5.3.3.1.  ARGUMENTS
+5.2.3.1.  ARGUMENTS
 
    struct SETACL2args {
        fhandle_t fh;
        secattr acl;
    };
 
-5.3.3.2.  RESULTS
+5.2.3.2.  RESULTS
 
    struct SETACL2resok {
        struct nfsfattr attr;
@@ -891,7 +869,7 @@ Table of Contents
        void;
    };
 
-5.3.3.3.  DESCRIPTION
+5.2.3.3.  DESCRIPTION
 
    The SETACL procedure replaces the Access Control Lists associated
    with the file system object specified by the SETACL2args.fh field
@@ -910,7 +888,7 @@ Table of Contents
    Otherwise, SETACL2res.status contains an error status on failure and
    no other results are returned.
 
-5.3.3.4.  IMPLEMENTATION
+5.2.3.4.  IMPLEMENTATION
 
    On success, the server does not send the reply until the ACL change
    is durable locally.
@@ -929,7 +907,7 @@ Table of Contents
    minimal set of ACEs (as described in Section 3.5.4.2), the server
    responds by setting SETACL2res.status to ????.
 
-5.3.3.5.  ERRORS
+5.2.3.5.  ERRORS
 
    *  ACL2ERR_ROFS
 
@@ -945,15 +923,15 @@ Table of Contents
 
    *  ACL2ERR_STALE
 
-5.3.4.  Procedure 3: GETATTR - Get file attributes
+5.2.4.  Procedure 3: GETATTR - Get file attributes
 
-5.3.4.1.  ARGUMENTS
+5.2.4.1.  ARGUMENTS
 
    struct GETATTR2args {
        fhandle_t fh;
    };
 
-5.3.4.2.  RESULTS
+5.2.4.2.  RESULTS
 
    struct GETATTR2resok {
        struct nfsfattr attr;
@@ -966,7 +944,7 @@ Table of Contents
        void;
    };
 
-5.3.4.3.  DESCRIPTION
+5.2.4.3.  DESCRIPTION
 
    The GETATTR procedure retrieves the current file attributes
    associated with the file system object specified by the
@@ -982,27 +960,27 @@ Table of Contents
    Otherwise, GETATTR2res.status contains an error status on failure and
    no other results are returned.
 
-5.3.4.4.  IMPLEMENTATION
+5.2.4.4.  IMPLEMENTATION
 
    Refer to Section 2.3.5 of [RFC1094] for details about the content of
    the returned file attributes.
 
-5.3.4.5.  ERRORS
+5.2.4.5.  ERRORS
 
    *  ACL2ERR_IO
 
    *  ACL2ERR_STALE
 
-5.3.5.  Procedure 4: ACCESS - Check access permission
+5.2.5.  Procedure 4: ACCESS - Check access permission
 
-5.3.5.1.  ARGUMENTS
+5.2.5.1.  ARGUMENTS
 
    struct ACCESS2args {
        fhandle_t fh;
        uint32 access;
    };
 
-5.3.5.2.  RESULTS
+5.2.5.2.  RESULTS
 
    const ACCESS2_READ = 0x1;       /* read data or readdir a directory */
    const ACCESS2_LOOKUP = 0x2;     /* lookup a name in a directory */
@@ -1024,7 +1002,7 @@ Table of Contents
        void;
    };
 
-5.3.5.3.  DESCRIPTION
+5.2.5.3.  DESCRIPTION
 
    The ACCESS procedure determines the access rights that a user, as
    identified by the RPC credentials in the request, has with respect to
@@ -1058,11 +1036,11 @@ Table of Contents
    permissions that the requesting user is granted in the
    ACCESS2resok.access field.
 
-5.3.5.4.  IMPLEMENTATION
+5.2.5.4.  IMPLEMENTATION
 
    In the NFS version 2 protocol, the only reliable way to determine
    whether an operation is allowed is to try it and see if it succeeded
-   or failed.  Using the ACCESS procedure in the NFSACL version 2
+   or failed.  Using the ACCESS procedure in the NFS_ACL version 2
    protocol, a client can ask the server to indicate whether or not one
    or more classes of operations are permitted.
 
@@ -1080,7 +1058,7 @@ Table of Contents
    performed the checks, but not necessarily afterwards.  The server can
    revoke access permission to a file object at any time.
 
-   The NFSACL version 2 protocol client should use the effective
+   The NFS_ACL version 2 protocol client should use the effective
    credentials of the user to build the authentication information in
    the ACCESS request used to determine access rights.  It is the
    effective user and group credentials that are used in subsequent read
@@ -1099,66 +1077,38 @@ Table of Contents
    The server should return a status of ACL2_OK if no errors occurred
    that prevented the server from making the required access checks.
 
-5.3.5.5.  ERRORS
+5.2.5.5.  ERRORS
 
    *  ACL2ERR_IO
 
    *  ACL2ERR_STALE
 
-6.  NFSACL Version 3
+6.  NFS_ACL Version 3
 
-   Version 3 of the NFSACL protocol is used in conjunction only with
+   Version 3 of the NFS_ACL protocol is used in conjunction only with
    version 3 of the NFS protocol.
 
-6.1.  NFS Version 3 Behavior Changes
+6.1.  Data types inherited from NFS version 3
 
-   When an NFS version 3 server receives an NFS request on a file object
-   where an ACL denies permission, the server responds by terminating
-   the procedure before it is executed and returning a status value of
-   NFS3ERR_ACCESS.
-
-   If an Access Control List does not contain an ACE that grants a
-   requesting user "read" or execute access to the object represented by
-   the procedure's file handle argument, the following NFS procedures
-   fail with a status of NFS3ERR_ACCESS:
-
-   READ, READDIR, READDIRPLUS
-
-   If an Access Control List does not contain an ACE that grants a
-   requesting user "write" access to the object represented by the
-   procedure's file handle argument, the following NFS procedures fail
-   with a status of NFS3ERR_ACCESS:
-
-   WRITE, CREATE, MKNOD, MKDIR, SYMLINK
-
-   If an Access Control List does not contain an ACE that grants a
-   requesting user "execute" access to the object represented by the
-   procedure's file handle argument, the following NFS procedures fail
-   with a status of NFS3ERR_ACCESS:
-
-   LOOKUP
-
-6.2.  Data types inherited from NFS version 3
-
-6.2.1.  Scalar Data types
+6.1.1.  Scalar Data types
 
    These are defined in Section 2.5 of [RFC1813].
 
-   uint64  typedef unsigned hyper uint64; uint32
+   typedef unsigned hyper uint64;
 
-      typedef unsigned long uint32; fileid3
+   typedef unsigned long uint32;
 
-      typedef uint64 fileid3; uid3
+   typedef uint64 fileid3;
 
-      typedef uint32 uid3; gid3
+   typedef uint32 uid3;
 
-      typedef uint32 gid3; size3
+   typedef uint32 gid3;
 
-      typedef uint64 size3; mode3
+   typedef uint64 size3;
 
-      typedef uint32 mode3;
+   typedef uint32 mode3;
 
-6.2.2.  ftype3
+6.1.2.  ftype3
 
    The enumeration "ftype3" represents the type of a file object.  This
    definition is further explained in Section 2.6 of [RFC1813].
@@ -1173,7 +1123,7 @@ Table of Contents
        NF3FIFO   = 7
    };
 
-6.2.3.  specdata3
+6.1.3.  specdata3
 
    struct specdata3 {
        uint32     specdata1;
@@ -1189,7 +1139,7 @@ Table of Contents
 
    Further detail is available in Section 2.6 of [RFC1813].
 
-6.2.4.  nfs_fh3
+6.1.4.  nfs_fh3
 
    The nfs_fh3 data type is a variable-length opaque object returned by
    the NFS version 3 LOOKUP, CREATE, SYMLINK, MKNOD, LINK, or
@@ -1197,7 +1147,9 @@ Table of Contents
    NFS operations to reference the file.  This definition comes from
    Section 2.6 of [RFC1813].
 
-   NFS3_FHSIZE 64  The maximum size in bytes of the opaque file handle.
+   NFS3_FHSIZE 64
+
+   The maximum size in bytes of the opaque file handle.
 
    struct nfs_fh3 {
        opaque       data<NFS3_FHSIZE>;
@@ -1216,7 +1168,7 @@ Table of Contents
    no longer exists on the server or access for that file handle has
    been revoked, the error, ACL3ERR_STALE, is returned.
 
-6.2.5.  nfstime3
+6.1.5.  nfstime3
 
    NFS version 3's "nfstime3" structure represents the number of seconds
    and nanoseconds since midnight January 1, 1970 Greenwich Mean Time.
@@ -1227,7 +1179,7 @@ Table of Contents
        uint32   nseconds;
    };
 
-6.2.6.  nfsfattr3
+6.1.6.  nfsfattr3
 
    This document refers to NFS version 3's file attribute structure as
    "nfsfattr3".  This is the same as the fattr3 structure described in
@@ -1251,7 +1203,7 @@ Table of Contents
        nfstime3   ctime;
    };
 
-6.2.7.  post_op_attr
+6.1.7.  post_op_attr
 
    The NFS version 3 "post_op_attr" data type returns file attributes
    that are not directly involved in the requested procedure.  See
@@ -1269,15 +1221,15 @@ Table of Contents
    encouraged to make a best effort to return attributes whenever
    possible, even when returning an error.
 
-6.3.  Error Values
+6.2.  Error Values
 
    Section 2.5 of [RFC1813] describes an enumerated type called
    "nfsstat3" which provides a status code for NFS version 3 procedure
    results.  A matching type called "aclstat3" is defined in this
-   document for the similar purpose of returning NFSACL version 3
+   document for the similar purpose of returning NFS_ACL version 3
    procedure status codes.  The numeric values of these two types match
    up, although aclstat3 omits some codes that are not relevant to the
-   NFSACL protocol.
+   NFS_ACL protocol.
 
    enum aclstat3 {
        ACL3_OK             = 0,
@@ -1345,24 +1297,24 @@ Table of Contents
       has been migrated.  In this case, the server should start the
       immigration process and respond to client with this error.
 
-6.4.  Server Procedures
+6.3.  Server Procedures
 
-6.4.1.  Procedure 0: NULL - No Operation
+6.3.1.  Procedure 0: NULL - No Operation
 
-6.4.1.1.  ARGUMENTS
-
-   void;
-
-6.4.1.2.  RESULTS
+6.3.1.1.  ARGUMENTS
 
    void;
 
-6.4.1.3.  DESCRIPTION
+6.3.1.2.  RESULTS
+
+   void;
+
+6.3.1.3.  DESCRIPTION
 
    This is the usual NULL procedure with a void argument and void
    result.
 
-6.4.1.4.  IMPLEMENTATION
+6.3.1.4.  IMPLEMENTATION
 
    It is important that this procedure do no work at all so that clients
    can use it to measure the overhead of processing a service request.
@@ -1371,23 +1323,23 @@ Table of Contents
    convention, if responding to the NULL procedure call acknowledges the
    existence of a resource to an unauthenticated client.
 
-6.4.1.5.  ERRORS
+6.3.1.5.  ERRORS
 
    Since the NULL procedure takes no argument and returns no result, it
-   can not return an NFS or NFSACL error status code.  However, some
+   can not return an NFS or NFS_ACL error status code.  However, some
    server implementations may return RPC errors based on security or
    authentication policy settings.
 
-6.4.2.  Procedure 1: GETACL - Retrieve an Access Control List
+6.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
 
-6.4.2.1.  ARGUMENTS
+6.3.2.1.  ARGUMENTS
 
    struct GETACL3args {
        nfs_fh3 fh;
        u_int mask;
    };
 
-6.4.2.2.  RESULTS
+6.3.2.2.  RESULTS
 
    struct GETACL3resok {
        post_op_attr attr;
@@ -1405,7 +1357,7 @@ Table of Contents
        GETACL3resfail resfail;
    };
 
-6.4.2.3.  DESCRIPTION
+6.3.2.3.  DESCRIPTION
 
    The GETACL procedure retrieves Access Control List information
    associated with the file system object specified by the
@@ -1439,7 +1391,7 @@ Table of Contents
    Otherwise, GETACL3res.status contains an error status on failure and
    no other results are returned.
 
-6.4.2.4.  IMPLEMENTATION
+6.3.2.4.  IMPLEMENTATION
 
    When GETACL3args.fh represents a file object that does not currently
    have an ACL associated with it or does not implement support for
@@ -1447,7 +1399,7 @@ Table of Contents
    that reflects the current owner, group, and mode bits of the object
    (see Section 3.5.4.2).
 
-6.4.2.5.  ERRORS
+6.3.2.5.  ERRORS
 
    *  ACL3ERR_IO
 
@@ -1459,16 +1411,16 @@ Table of Contents
 
    *  ACL3ERR_JUKEBOX
 
-6.4.3.  SETACL Procedure
+6.3.3.  SETACL Procedure
 
-6.4.3.1.  ARGUMENTS
+6.3.3.1.  ARGUMENTS
 
    struct SETACL3args {
        nfs_fh3 fh;
        secattr acl;
    };
 
-6.4.3.2.  RESULTS
+6.3.3.2.  RESULTS
 
    struct SETACL3resok {
        post_op_attr attr;
@@ -1485,7 +1437,7 @@ Table of Contents
        SETACL3resfail resfail;
    };
 
-6.4.3.3.  DESCRIPTION
+6.3.3.3.  DESCRIPTION
 
    The SETACL procedure replaces the Access Control Lists associated
    with the file system object specified by the SETACL3args.fh field
@@ -1504,7 +1456,7 @@ Table of Contents
    Otherwise, SETACL3res.status contains an error status on failure and
    no other results are returned.
 
-6.4.3.4.  IMPLEMENTATION
+6.3.3.4.  IMPLEMENTATION
 
    On success, the server does not send the reply until the ACL change
    is durable locally.
@@ -1526,7 +1478,7 @@ Table of Contents
    ACEs (as described in Section 3.5.4.2), the server responds by
    setting SETACL3res.status to ACL3ERR_INVAL.
 
-6.4.3.5.  ERRORS
+6.3.3.5.  ERRORS
 
    *  ACL3ERR_PERM
 
@@ -1559,7 +1511,7 @@ Table of Contents
    server will do normal operating system permission checking using
    AUTH_UNIX style authentication as the basis of its protection
    mechanism, or another stronger form of authentication such as
-   RPC_AUTH_GSS.  With AUTH_UNIX authentication, the server gets the
+   RPCSEC_GSS.  With AUTH_UNIX authentication, the server gets the
    client's effective uid, effective gid, and groups on each call and
    uses them to check permission.  These are the so-called UNIX
    credentials.
@@ -1624,7 +1576,7 @@ Table of Contents
    A description of an early implementation of a duplicate request cache
    can be found in [Juszczak].
 
-   For all versions of the NFSACL protocol, the SETACL procedure is
+   For all versions of the NFS_ACL protocol, the SETACL procedure is
    considered to be non-idempotent.
 
 7.3.  Caching Policies
@@ -1634,7 +1586,7 @@ Table of Contents
    consistency between a client and server, nor between different
    clients.
 
-   The NFSACL protocol does not mandate a specific caching policy for
+   The NFS_ACL protocol does not mandate a specific caching policy for
    ACLs or information retrieved via the ACCESS procedure.  However, a
    high-quality client implementation that seeks good performance might
    choose to revalidate cached access control information with the same
@@ -1643,13 +1595,13 @@ Table of Contents
 8.  XDR Protocol Definition
 
    This section contains a description of the core features of the
-   NFSACL protocol, version 2 and 3, expressed in the XDR language
+   NFS_ACL protocol, version 2 and 3, expressed in the XDR language
    [RFC4506].
 
    This description is provided in a way that makes it simple to extract
    into ready-to-compile form.  The reader can apply the following shell
    script to this document to produce a machine-readable XDR description
-   of the NFSACL protocol.
+   of the NFS_ACL protocol.
 
    #!/bin/sh
    grep '^ *///' | sed 's?^ /// ??' | sed 's?^ *///$??'
@@ -1822,7 +1774,7 @@ Table of Contents
    /// };
    ///
    /// /*
-   ///  * NFSACL version 2 procedure arguments and results
+   ///  * NFS_ACL version 2 procedure arguments and results
    ///  */
    ///
    /// struct GETACL2args {
@@ -1981,7 +1933,7 @@ Table of Contents
    /// };
    ///
    /// /*
-   ///  * NFSACL version 3 procedure arguments and results
+   ///  * NFS_ACL version 3 procedure arguments and results
    ///  */
    ///
    /// struct GETACL3args {
@@ -2101,7 +2053,7 @@ Table of Contents
    Licensing: GPLv2
 
    Implementation experience: The initial Linux implementation of the
-   NFSACL protocol is described in [Gruenbacher], and subsequent
+   NFS_ACL protocol is described in [Gruenbacher], and subsequent
    modifications can be found in the Linux kernel source code repository
    [Linux].
 
@@ -2118,7 +2070,7 @@ Table of Contents
    network, giving the attacker access to file content that the ACL is
    supposed to protect.
 
-   Therefore, implementations of NFSACL should protect the integrity of
+   Therefore, implementations of NFS_ACL should protect the integrity of
    ACL content when it transits a network.  The use of an integrity-
    preserving transport layer security service, such as the GSS Kerberos
    integrity service, is strongly recommended.
@@ -2206,7 +2158,7 @@ Table of Contents
 Appendix A.  Source Material
 
    The on-the-wire protocol described here is intended to match existing
-   de factor implementations of NFSACL.
+   de factor implementations of NFS_ACL.
 
    The source for the XDR specification provided in this document is the
    nfs_acl.x file as found in published versions of the OpenSolaris
@@ -2215,9 +2167,9 @@ Appendix A.  Source Material
    However, there are a few changes to the protocol as it was originally
    described in the OpenSolaris source code base.
 
-A.1.  Redaction of NFSACL Version 4
+A.1.  Redaction of NFS_ACL Version 4
 
-   Version 4 of NFSACL is described in the original nfs_acl.x source
+   Version 4 of NFS_ACL is described in the original nfs_acl.x source
    file is described this way:
 
       This is a transitional interface to enable Solaris NFSv4 clients
@@ -2225,25 +2177,30 @@ A.1.  Redaction of NFSACL Version 4
       enough to implement this inside the NFSv4 protocol itself.  NFSv4
       does handle extended attributes in-band.
 
-   Because the two non-NULL procedures in this version of the NFSACL
+   Because the two non-NULL procedures in this version of the NFS_ACL
    protocol were used only as part of a Solaris a prototype and there
-   are no other implementations of NFSACL version 4, it is not included
+   are no other implementations of NFS_ACL version 4, it is not included
    in the protocol description appearing in this document.
 
 A.2.  Redaction of GETXATTRDIR Procedures
 
-   The original NFSACL protocol contained a GETXATTRDIR procedure that
+   The original NFS_ACL protocol contained a GETXATTRDIR procedure that
    was meant to provide clients access to named attributes (auxiliary
    streams) stored with each shared file.  These procedures were later
    introduced in NFS version 4 [RFC8881].
 
-   As far as this editor is aware, named attribute support was only ever
-   implemented in Solaris, and the procedures here were strictly
-   prototypes.  There is little to no public documentation beyond what
-   can be found in the original nfs_acl.x file.
+   As far as this editor is aware, support for NFSv4 named attributes
+   was only ever implemented in Solaris, which uses these procedures
+   make named attributes visible over NFSv2 and NFSv3 as they are in
+   NFSv4.  There is little to no public documentation beyond what can be
+   found in the original nfs_acl.x file.
 
    Therefore, the GETXATTRDIR procedures are not included in the
    protocol description appearing in this document.
+
+      |  Perhaps this document should provide rules for extending the
+      |  NFS_ACL protocol, in case some other implementation wishes to
+      |  provide named attribute visibility for NFSv3.
 
 A.3.  Code Compilation Requirements
 
@@ -2254,12 +2211,12 @@ A.3.  Code Compilation Requirements
       constants used in definitions of result unions.
 
    *  The file does not include definitions of NFS protocol elements
-      that are shared with the NFSACL protocol, such as fhandle_t and
+      that are shared with the NFS_ACL protocol, such as fhandle_t and
       post_op_attr.
 
    The XDR specification provided in this document rectifies those
    omissions to provide a complete and compilable XDR language
-   description of the NFSACL protocol.
+   description of the NFS_ACL protocol.
 
 Appendix B.  Open Questions
 

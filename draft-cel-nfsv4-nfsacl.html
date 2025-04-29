@@ -7,8 +7,8 @@
 <title>The Network File System Access Control List Protocol</title>
 <meta content="Chuck Lever" name="author">
 <meta content="
-       This Informational document describes the NFSACL protocol.
-NFSACL is a legacy member of the Network File System family
+       This Informational document describes the NFS_ACL protocol.
+NFS_ACL is a legacy member of the Network File System family
 of protocols that NFS clients use to access and modify Access
 Control Lists stored on an NFS version 2 or version 3 server. 
     " name="description">
@@ -1084,8 +1084,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">The Network File System Access Control List Protocol</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This Informational document describes the NFSACL protocol.
-NFSACL is a legacy member of the Network File System family
+<p id="section-abstract-1">This Informational document describes the NFS_ACL protocol.
+NFS_ACL is a legacy member of the Network File System family
 of protocols that NFS clients use to access and modify Access
 Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
@@ -1228,99 +1228,93 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-nfsacl-version-2" class="internal xref">NFSACL Version 2</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-nfs_acl-version-2" class="internal xref">NFS_ACL Version 2</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-nfs-version-2-behavior-chan" class="internal xref">NFS Version 2 Behavior Changes</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-data-types-inherited-from-n" class="internal xref">Data types inherited from NFS version 2</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-data-types-inherited-from-n" class="internal xref">Data types inherited from NFS version 2</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
-                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-ftype" class="internal xref">ftype</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-ftype" class="internal xref">ftype</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.2">
-                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-fhandle_t" class="internal xref">fhandle_t</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
+                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-fhandle_t" class="internal xref">fhandle_t</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.3">
-                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="auto internal xref">5.2.3</a>.  <a href="#name-timeval" class="internal xref">timeval</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.3">
+                    <p id="section-toc.1-1.5.2.1.2.3.1"><a href="#section-5.1.3" class="auto internal xref">5.1.3</a>.  <a href="#name-timeval" class="internal xref">timeval</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.4">
-                    <p id="section-toc.1-1.5.2.2.2.4.1"><a href="#section-5.2.4" class="auto internal xref">5.2.4</a>.  <a href="#name-nfsfattr" class="internal xref">nfsfattr</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.4">
+                    <p id="section-toc.1-1.5.2.1.2.4.1"><a href="#section-5.1.4" class="auto internal xref">5.1.4</a>.  <a href="#name-nfsfattr" class="internal xref">nfsfattr</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.5">
-                    <p id="section-toc.1-1.5.2.2.2.5.1"><a href="#section-5.2.5" class="auto internal xref">5.2.5</a>.  <a href="#name-defined-error-numbers" class="internal xref">Defined Error Numbers</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.5">
+                    <p id="section-toc.1-1.5.2.1.2.5.1"><a href="#section-5.1.5" class="auto internal xref">5.1.5</a>.  <a href="#name-defined-error-numbers" class="internal xref">Defined Error Numbers</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-server-procedures" class="internal xref">Server Procedures</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-server-procedures" class="internal xref">Server Procedures</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.1">
-                    <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="auto internal xref">5.3.1</a>.  <a href="#name-procedure-0-null-no-operati" class="internal xref">Procedure 0: NULL - No Operation</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-procedure-0-null-no-operati" class="internal xref">Procedure 0: NULL - No Operation</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
-                    <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-procedure-1-getacl-retrieve" class="internal xref">Procedure 1: GETACL - Retrieve an Access Control List</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.2">
+                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-procedure-1-getacl-retrieve" class="internal xref">Procedure 1: GETACL - Retrieve an Access Control List</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
-                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-procedure-2-setacl-set-or-r" class="internal xref">Procedure 2: SETACL - Set or replace an Access Control List</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.3">
+                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="auto internal xref">5.2.3</a>.  <a href="#name-procedure-2-setacl-set-or-r" class="internal xref">Procedure 2: SETACL - Set or replace an Access Control List</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.4">
-                    <p id="section-toc.1-1.5.2.3.2.4.1"><a href="#section-5.3.4" class="auto internal xref">5.3.4</a>.  <a href="#name-procedure-3-getattr-get-fil" class="internal xref">Procedure 3: GETATTR - Get file attributes</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.4">
+                    <p id="section-toc.1-1.5.2.2.2.4.1"><a href="#section-5.2.4" class="auto internal xref">5.2.4</a>.  <a href="#name-procedure-3-getattr-get-fil" class="internal xref">Procedure 3: GETATTR - Get file attributes</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.5">
-                    <p id="section-toc.1-1.5.2.3.2.5.1"><a href="#section-5.3.5" class="auto internal xref">5.3.5</a>.  <a href="#name-procedure-4-access-check-ac" class="internal xref">Procedure 4: ACCESS - Check access permission</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.5">
+                    <p id="section-toc.1-1.5.2.2.2.5.1"><a href="#section-5.2.5" class="auto internal xref">5.2.5</a>.  <a href="#name-procedure-4-access-check-ac" class="internal xref">Procedure 4: ACCESS - Check access permission</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-nfsacl-version-3" class="internal xref">NFSACL Version 3</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-nfs_acl-version-3" class="internal xref">NFS_ACL Version 3</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-nfs-version-3-behavior-chan" class="internal xref">NFS Version 3 Behavior Changes</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-data-types-inherited-from-nf" class="internal xref">Data types inherited from NFS version 3</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-data-types-inherited-from-nf" class="internal xref">Data types inherited from NFS version 3</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.1">
-                    <p id="section-toc.1-1.6.2.2.2.1.1"><a href="#section-6.2.1" class="auto internal xref">6.2.1</a>.  <a href="#name-scalar-data-types" class="internal xref">Scalar Data types</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.1">
+                    <p id="section-toc.1-1.6.2.1.2.1.1"><a href="#section-6.1.1" class="auto internal xref">6.1.1</a>.  <a href="#name-scalar-data-types" class="internal xref">Scalar Data types</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.2">
-                    <p id="section-toc.1-1.6.2.2.2.2.1"><a href="#section-6.2.2" class="auto internal xref">6.2.2</a>.  <a href="#name-ftype3" class="internal xref">ftype3</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.2">
+                    <p id="section-toc.1-1.6.2.1.2.2.1"><a href="#section-6.1.2" class="auto internal xref">6.1.2</a>.  <a href="#name-ftype3" class="internal xref">ftype3</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.3">
-                    <p id="section-toc.1-1.6.2.2.2.3.1"><a href="#section-6.2.3" class="auto internal xref">6.2.3</a>.  <a href="#name-specdata3" class="internal xref">specdata3</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.3">
+                    <p id="section-toc.1-1.6.2.1.2.3.1"><a href="#section-6.1.3" class="auto internal xref">6.1.3</a>.  <a href="#name-specdata3" class="internal xref">specdata3</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.4">
-                    <p id="section-toc.1-1.6.2.2.2.4.1"><a href="#section-6.2.4" class="auto internal xref">6.2.4</a>.  <a href="#name-nfs_fh3" class="internal xref">nfs_fh3</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.4">
+                    <p id="section-toc.1-1.6.2.1.2.4.1"><a href="#section-6.1.4" class="auto internal xref">6.1.4</a>.  <a href="#name-nfs_fh3" class="internal xref">nfs_fh3</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.5">
-                    <p id="section-toc.1-1.6.2.2.2.5.1"><a href="#section-6.2.5" class="auto internal xref">6.2.5</a>.  <a href="#name-nfstime3" class="internal xref">nfstime3</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.5">
+                    <p id="section-toc.1-1.6.2.1.2.5.1"><a href="#section-6.1.5" class="auto internal xref">6.1.5</a>.  <a href="#name-nfstime3" class="internal xref">nfstime3</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.6">
-                    <p id="section-toc.1-1.6.2.2.2.6.1"><a href="#section-6.2.6" class="auto internal xref">6.2.6</a>.  <a href="#name-nfsfattr3" class="internal xref">nfsfattr3</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.6">
+                    <p id="section-toc.1-1.6.2.1.2.6.1"><a href="#section-6.1.6" class="auto internal xref">6.1.6</a>.  <a href="#name-nfsfattr3" class="internal xref">nfsfattr3</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.7">
-                    <p id="section-toc.1-1.6.2.2.2.7.1"><a href="#section-6.2.7" class="auto internal xref">6.2.7</a>.  <a href="#name-post_op_attr" class="internal xref">post_op_attr</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.7">
+                    <p id="section-toc.1-1.6.2.1.2.7.1"><a href="#section-6.1.7" class="auto internal xref">6.1.7</a>.  <a href="#name-post_op_attr" class="internal xref">post_op_attr</a></p>
 </li>
                 </ul>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-error-values" class="internal xref">Error Values</a></p>
+</li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-error-values" class="internal xref">Error Values</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
-                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-server-procedures-2" class="internal xref">Server Procedures</a></p>
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-server-procedures-2" class="internal xref">Server Procedures</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4.2.1">
-                    <p id="section-toc.1-1.6.2.4.2.1.1"><a href="#section-6.4.1" class="auto internal xref">6.4.1</a>.  <a href="#name-procedure-0-null-no-operatio" class="internal xref">Procedure 0: NULL - No Operation</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3.2.1">
+                    <p id="section-toc.1-1.6.2.3.2.1.1"><a href="#section-6.3.1" class="auto internal xref">6.3.1</a>.  <a href="#name-procedure-0-null-no-operatio" class="internal xref">Procedure 0: NULL - No Operation</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4.2.2">
-                    <p id="section-toc.1-1.6.2.4.2.2.1"><a href="#section-6.4.2" class="auto internal xref">6.4.2</a>.  <a href="#name-procedure-1-getacl-retrieve-" class="internal xref">Procedure 1: GETACL - Retrieve an Access Control List</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3.2.2">
+                    <p id="section-toc.1-1.6.2.3.2.2.1"><a href="#section-6.3.2" class="auto internal xref">6.3.2</a>.  <a href="#name-procedure-1-getacl-retrieve-" class="internal xref">Procedure 1: GETACL - Retrieve an Access Control List</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4.2.3">
-                    <p id="section-toc.1-1.6.2.4.2.3.1"><a href="#section-6.4.3" class="auto internal xref">6.4.3</a>.  <a href="#name-setacl-procedure" class="internal xref">SETACL Procedure</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3.2.3">
+                    <p id="section-toc.1-1.6.2.3.2.3.1"><a href="#section-6.3.3" class="auto internal xref">6.3.3</a>.  <a href="#name-setacl-procedure" class="internal xref">SETACL Procedure</a></p>
 </li>
                 </ul>
 </li>
@@ -1380,7 +1374,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
             <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-source-material" class="internal xref">Source Material</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
-                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-redaction-of-nfsacl-version" class="internal xref">Redaction of NFSACL Version 4</a></p>
+                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-redaction-of-nfs_acl-versio" class="internal xref">Redaction of NFS_ACL Version 4</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
                 <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-redaction-of-getxattrdir-pr" class="internal xref">Redaction of GETXATTRDIR Procedures</a></p>
@@ -1423,12 +1417,14 @@ file owners to grant specific users fine-grained access
 rights to file content <span>[<a href="#IEEE" class="cite xref">IEEE</a>]</span>.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">Version 2 of NFS is described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>, and version 3
 in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>. Neither of these protocols include a
-method for accessing or managing ACLs associated
+method for viewing or managing ACLs associated
 with files shared via the NFS protocol, even though the
 local file systems shared via NFS often implemented ACLs and
 gave local users mechanisms to read and update them.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">Sun created the NFSACL protocol to provide that
-mechanism for files accessed remotely via NFS.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-5">Sun created the NFS_ACL protocol to provide that mechanism
+for files accessed remotely via NFS. Later, other operating
+systems, including Linux, implemented NFS_ACL for similar
+reasons.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">This document describes the protocol based on the nfs_acl.x
 file that is publicly available in the OpenSolaris
 code base <span>[<a href="#OpenSolaris" class="cite xref">OpenSolaris</a>]</span>. The editor has attempted to
@@ -1523,7 +1519,7 @@ service is one such program. The combination of host address,
 program number, version number, and procedure number specify one
 remote service procedure.  Servers can support multiple versions
 of a program by using different protocol version numbers.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">The NFS and NFSACL protocols are both based on SunRPC. The
+<p id="section-3.2-2">The NFS and NFS_ACL protocols are both based on SunRPC. The
 remainder of this document assumes an NFS environment that is
 implemented on top of SunRPC, as it is specified in <span>[<a href="#RFC5531" class="cite xref">RFC5531</a>]</span>.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 </section>
@@ -1540,7 +1536,7 @@ peers with different byte orders, structure alignment, and data
 type representation.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">This document utilizes the RPC Data Description Language to
 specify the XDR format arguments and results to each of the RPC
-service procedures that an NFSACL server provides.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+service procedures that an NFS_ACL server provides.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.3-3">Readers can find a full guide to XDR and the RPC Data Description
 Language in <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 </section>
@@ -1561,7 +1557,7 @@ for two purposes:<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-3.1">
             <p id="section-3.4-3.1.1">When setting an ACL via the SETACL procedure or retrieving
-an ACL via the GETACL procedure, the NFSACL service verifies
+an ACL via the GETACL procedure, the NFS_ACL service verifies
 that the calling user has been granted permission to perform
 the procedure.<a href="#section-3.4-3.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -1582,7 +1578,7 @@ ID number space. In practice, such mapping is typically
 performed on the server, following a static mapping scheme
 or a mapping established by the user from a client at
 mount time.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.4-5">The AUTH_GSS style of authentication provides stronger
+<p id="section-3.4-5">RPCSEC_GSS authentication provides stronger
 security through the use of cryptographic authentication.
 The server and client must agree on the mapping of the
 user's GSS principal to a local UID on the server, but
@@ -1690,66 +1686,62 @@ one for the file's owner group, and one for everyone else.<a href="#section-3.5.
             <h5 id="name-interpreting-access-control">
 <a href="#section-3.5.4.1" class="section-number selfRef">3.5.4.1. </a><a href="#name-interpreting-access-control" class="section-name selfRef">Interpreting Access Control Lists</a>
             </h5>
-<p id="section-3.5.4.1-1">An NFS Access Control List is a list of three or more
+<p id="section-3.5.4.1-1">NFS clients do not perform access checks based on their
+interpretation of an ACL read from the server. NFS servers
+are solely responsible for enforcing access control.<a href="#section-3.5.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.1-2">An NFS Access Control List is a list of three or more
 Access Control Entries (ACEs) associated with one file
 system object. Each Access Control Entry in this list
 specifies a user and a set of access types granted to
-that user.<a href="#section-3.5.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.1-2">Only ACEs that match the requester are considered. Each
+that user.<a href="#section-3.5.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.1-3">Only ACEs that match the requester are considered. Each
 ACE is processed until all of the bits of the requester's
 access have been ALLOWED. Once a bit has been ALLOWED,
 that bit is no longer considered in the processing
-of subsequent ACEs in the list.<a href="#section-3.5.4.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.1-3">When the ACL has been fully processed, if there are bits
+of subsequent ACEs in the list.<a href="#section-3.5.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.1-4">When the ACL has been fully processed, if there are bits
 in the requester's mask that have not been ALLOWED,
-access of that type is denied.<a href="#section-3.5.4.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.1-4">Note that an ACL might not be the sole determiner of access. For example:<a href="#section-3.5.4.1-4" class="pilcrow">¶</a></p>
+access of that type is denied.<a href="#section-3.5.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.1-5">Note that an ACL might not be the sole determiner of access. For example:<a href="#section-3.5.4.1-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.5.4.1-5.1">
-                <p id="section-3.5.4.1-5.1.1">In the case of a file system exported as read-only,
+<li class="normal" id="section-3.5.4.1-6.1">
+                <p id="section-3.5.4.1-6.1.1">In the case of a file system exported as read-only,
 the server may deny write access even though an object's
-ACL grants it.<a href="#section-3.5.4.1-5.1.1" class="pilcrow">¶</a></p>
+ACL grants it.<a href="#section-3.5.4.1-6.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.5.4.1-5.2">
-                <p id="section-3.5.4.1-5.2.1">Server implementations can grant some limited permission
+              <li class="normal" id="section-3.5.4.1-6.2">
+                <p id="section-3.5.4.1-6.2.1">Server implementations can grant some limited permission
 to update an ACL in order to prevent a situation from
-rising in which there is no valid way to ever modify the ACL.<a href="#section-3.5.4.1-5.2.1" class="pilcrow">¶</a></p>
+rising in which there is no valid way to ever modify the ACL.<a href="#section-3.5.4.1-6.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.5.4.1-5.3">
-                <p id="section-3.5.4.1-5.3.1">All servers will allow a user the ability to read the
+              <li class="normal" id="section-3.5.4.1-6.3">
+                <p id="section-3.5.4.1-6.3.1">All servers will allow a user the ability to read the
 data of the file when only the execute permission is granted
 (i.e., if the ACL denies the user the NA_READ access and
 allows the user NA_EXEC, the server will allow the user to
-read the data of the file).<a href="#section-3.5.4.1-5.3.1" class="pilcrow">¶</a></p>
+read the data of the file).<a href="#section-3.5.4.1-6.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.5.4.1-5.4">
-                <p id="section-3.5.4.1-5.4.1">Some server implementations have the notion of
+              <li class="normal" id="section-3.5.4.1-6.4">
+                <p id="section-3.5.4.1-6.4.1">Some server implementations have the notion of
 owner-override, in which the owner of the object is allowed
 to override accesses that are denied by the ACL. This can be
 helpful, for example, to allow users continued access to
-open files on which the permissions have changed.<a href="#section-3.5.4.1-5.4.1" class="pilcrow">¶</a></p>
+open files on which the permissions have changed.<a href="#section-3.5.4.1-6.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.5.4.1-5.5">
-                <p id="section-3.5.4.1-5.5.1">Some server implementations have the notion of a
+              <li class="normal" id="section-3.5.4.1-6.5">
+                <p id="section-3.5.4.1-6.5.1">Some server implementations have the notion of a
 "superuser" that has privileges beyond an ordinary user.
 The superuser may be able to read or write data or metadata
 in ways that would otherwise not be permitted by the object's
-ACL.<a href="#section-3.5.4.1-5.5.1" class="pilcrow">¶</a></p>
+ACL.<a href="#section-3.5.4.1-6.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-3.5.4.1-6">Clients do not perform their own access checks based
-on their interpretation of an ACL, but rather use either
-the NFSACL version 2 ACCESS procedure or the NFS version 3
-ACCESS procedure to perform access checks. This enables a
-client to act on the results of having the server determine
-whether or not access should be granted based on its
-interpretation of the ACL.<a href="#section-3.5.4.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.1-7">In particular, clients must be aware of situations in which
-an object's ACL grants a certain access even though the
-server will not enforce it. A client sends an appropriate
-ACCESS operation prior to servicing an application request
-to determine whether the user or application should be
-granted the access requested.<a href="#section-3.5.4.1-7" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.1-7">NFS clients can use either the NFS_ACL version 2 ACCESS
+procedure or the NFS version 3 ACCESS procedure to ask the
+server to perform an access check based on the requesting
+user and the ACL present on a file system object. Clients are
+also free to simply try an operation to see what works, then
+recover it the server denies access.<a href="#section-3.5.4.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="acls-in-operation">
@@ -1776,37 +1768,54 @@ access to the object on which it is set.<a href="#section-3.5.4.2-2.4.1" class="
 </dd>
             <dd class="break"></dd>
 </dl>
-<aside id="section-3.5.4.2-3">
-              <p id="section-3.5.4.2-3.1">What error, if any, is returned if a client attempts to set
-a default ACL on a non-directory object?
-What error is returned if an invalid mask bit is set or
-the ACL argument has too many ACEs?<a href="#section-3.5.4.2-3.1" class="pilcrow">¶</a></p>
-</aside>
-<p id="section-3.5.4.2-4">Each NFS ACL must have one ACE for each of
-NA_USER_OBJ, NA_GROUP_OBJ and NA_OTHER_OBJ.
+<p id="section-3.5.4.2-3">Each NFS ACL must have one ACE for each of
+NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ.
 An NFS ACL that consists only of these
-three ACEs is referred to as a minimal NFS ACL.
-A server responds with ACL2ERR_IO or ACL3ERR_INVAL,
-depending on the version of NFSACL that is in use,
-if a client attempts to set an NFS ACL that does not
-contain these ACEs.<a href="#section-3.5.4.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.2-5">An NFS ACL may zero or more NA_USER and/or NA_GROUP
-ACEs.<a href="#section-3.5.4.2-5" class="pilcrow">¶</a></p>
-<aside id="section-3.5.4.2-6">
-              <p id="section-3.5.4.2-6.1">What happens when more than one bit is set in the
-"type" field? What does the NA_ACL_DEFAULT bit do?<a href="#section-3.5.4.2-6.1" class="pilcrow">¶</a></p>
-</aside>
-<p id="section-3.5.4.2-7">The "id" field in an Access Control Entry is interpreted as follows:<a href="#section-3.5.4.2-7" class="pilcrow">¶</a></p>
+three ACEs is referred to as a minimal NFS ACL.<a href="#section-3.5.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.2-4">An NFS ACL may zero or more NA_USER and/or NA_GROUP
+ACEs.<a href="#section-3.5.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.2-5">When a client presents a SETACL operation that a server
+finds is invalid or it cannot process, the server responds
+with ACL2ERR_IO or ACL3ERR_INVAL, depending on the version
+of NFS_ACL that is in use. ACLs that are not valid include:<a href="#section-3.5.4.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.5.4.2-8.1">
-                <p id="section-3.5.4.2-8.1.1">For an ACE that specifies an NA_USER_OBJ, NA_USER,
+<li class="normal" id="section-3.5.4.2-6.1">
+                <p id="section-3.5.4.2-6.1.1">The presented ACL does not contain one ACE for each of
+NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ<a href="#section-3.5.4.2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.5.4.2-6.2">
+                <p id="section-3.5.4.2-6.2.1">The presented ACL is a default ACL but the target object
+is not a directory<a href="#section-3.5.4.2-6.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.5.4.2-6.3">
+                <p id="section-3.5.4.2-6.3.1">The presented ACL contains too many ACEs<a href="#section-3.5.4.2-6.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.5.4.2-6.4">
+                <p id="section-3.5.4.2-6.4.1">The presented ACL's type field contains more than one
+set bit<a href="#section-3.5.4.2-6.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<aside id="section-3.5.4.2-7">
+              <p id="section-3.5.4.2-7.1">cel: What does the NA_ACL_DEFAULT bit do?<a href="#section-3.5.4.2-7.1" class="pilcrow">¶</a></p>
+</aside>
+<aside id="section-3.5.4.2-8">
+              <p id="section-3.5.4.2-8.1">rthurlow: In the Solaris acl(2)/facl(2) system calls, the
+equivalently-defined ACL_DEFAULT is used after aclent
+sorting to note where regular entries end and where default
+entries start in a single list.  So perhaps it would be
+normal for the dfaclent entries to all be so marked.<a href="#section-3.5.4.2-8.1" class="pilcrow">¶</a></p>
+</aside>
+<p id="section-3.5.4.2-9">The "id" field in an Access Control Entry is interpreted as follows:<a href="#section-3.5.4.2-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.5.4.2-10.1">
+                <p id="section-3.5.4.2-10.1.1">For an ACE that specifies an NA_USER_OBJ, NA_USER,
 NA_GROUP, and NA_GROUP_OBJ, the "id" field contains
 a UID or GID value that identifies the user on the
-server whose access permission is being set.<a href="#section-3.5.4.2-8.1.1" class="pilcrow">¶</a></p>
+server whose access permission is being set.<a href="#section-3.5.4.2-10.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.5.4.2-8.2">
-                <p id="section-3.5.4.2-8.2.1">For an ACE that specifies other types of permission,
-the "id" field is ignored.<a href="#section-3.5.4.2-8.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.5.4.2-10.2">
+                <p id="section-3.5.4.2-10.2.1">For an ACE that specifies other types of permission,
+the "id" field is ignored.<a href="#section-3.5.4.2-10.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -1816,25 +1825,18 @@ the "id" field is ignored.<a href="#section-3.5.4.2-8.2.1" class="pilcrow">¶</a
             <h5 id="name-relationship-between-acls-a">
 <a href="#section-3.5.4.3" class="section-number selfRef">3.5.4.3. </a><a href="#name-relationship-between-acls-a" class="section-name selfRef">Relationship Between ACLs and Other File Attributes</a>
             </h5>
-<p id="section-3.5.4.3-1">How file ownership relates to @OWNER, @GROUP, and @EVERYONE<a href="#section-3.5.4.3-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.5.4.3-2.1">
-                <p id="section-3.5.4.3-2.1.1">chown changes the meaning of @OWNER<a href="#section-3.5.4.3-2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.5.4.3-2.2">
-                <p id="section-3.5.4.3-2.2.1">Does chmod change the content of the file's ACL as well, and if so, how?<a href="#section-3.5.4.3-2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.5.4.3-2.3">
-                <p id="section-3.5.4.3-2.3.1">Are changes to the file's ACL reflected in the file's mode bits, and if so, how?<a href="#section-3.5.4.3-2.3.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-<aside id="section-3.5.4.3-3">
-              <p id="section-3.5.4.3-3.1">From rmacklem's draft. Is the following true of legacy NFS ACLs?<a href="#section-3.5.4.3-3.1" class="pilcrow">¶</a></p>
-</aside>
-<p id="section-3.5.4.3-4">Setting a file object's mode bits via the NFS SETATTR procedure
-can change the ACL and setting the NFS access ACL can change
-the file object's mode mode bits. As such, the order of setting
-the attributes related to mode and NFS ACLs is important.<a href="#section-3.5.4.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-1">When an ACL is present on a file, the ACL controls the
+requesting user's access to the file. The server ignores the
+file's mode bits. Changing the file's ACL via the SETACL
+procedure does not alter the file's mode bits, and changing
+the mode bits via the SETATTR procedure does not alter the
+content of the ACL in any way.<a href="#section-3.5.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-2">When an ACL is present on a file, changing the file's owner
+(say, via the SETATTR operation) alters the server's
+interpretation of any ACE that targets @OWNER.<a href="#section-3.5.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-3">When an ACL is present on a file, changing the file's group
+(say, via the SETATTR operation) alters the server's
+interpretation of any ACE that targets @GROUP.<a href="#section-3.5.4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="acl-inheritance">
@@ -1878,7 +1880,7 @@ with regard to file access control.<a href="#section-3.5.4.5-1" class="pilcrow">
         <h3 id="name-rpc-authentication">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-rpc-authentication" class="section-name selfRef">RPC Authentication</a>
         </h3>
-<p id="section-4.1-1">The NFSACL service uses AUTH_NONE in the NULL procedure.
+<p id="section-4.1-1">The NFS_ACL service uses AUTH_NONE in the NULL procedure.
 All RPC authentication flavors can be used for other procedures.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1892,7 +1894,7 @@ service.  They are given in decimal.<a href="#section-4.2-1" class="pilcrow">¶<
 <span class="break"></span><dl class="dlParallel" id="section-4.2-2">
           <dt id="section-4.2-2.1">100227</dt>
           <dd style="margin-left: 1.5em" id="section-4.2-2.2">
-            <p id="section-4.2-2.2.1">The RPC program number for the NFSACL protocol<a href="#section-4.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-2.2.1">The RPC program number for the NFS_ACL protocol<a href="#section-4.2-2.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1904,7 +1906,7 @@ service.  They are given in decimal.<a href="#section-4.2-1" class="pilcrow">¶<
         <h3 id="name-transport-address">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-transport-address" class="section-name selfRef">Transport address</a>
         </h3>
-<p id="section-4.3-1">The NFSACL protocol can operate over the TCP, UDP, and RDMA
+<p id="section-4.3-1">The NFS_ACL protocol can operate over the TCP, UDP, and RDMA
 transport protocols.
 For TCP and UDP, it uses port 2049, and for RDMA, it uses 20049.
 In both cases, this is the same as the base NFS protocol.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
@@ -1915,13 +1917,12 @@ In both cases, this is the same as the base NFS protocol.<a href="#section-4.3-1
         <h3 id="name-sizes">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-sizes" class="section-name selfRef">Sizes</a>
         </h3>
-<span class="break"></span><dl class="dlParallel" id="section-4.4-1">
-          <dt id="section-4.4-1.1">NFS_ACL_MAX_ENTRIES 1024</dt>
-          <dd style="margin-left: 1.5em" id="section-4.4-1.2">
-            <p id="section-4.4-1.2.1">The maximum number of Access Control Entries allowed in one Access Control List array.<a href="#section-4.4-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-</dl>
+<div class="lang-xdr sourcecode" id="section-4.4-1">
+<pre>
+NFS_ACL_MAX_ENTRIES 1024
+</pre><a href="#section-4.4-1" class="pilcrow">¶</a>
+</div>
+<p id="section-4.4-2">The maximum number of Access Control Entries allowed in one Access Control List array.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="basic-data-types">
@@ -1930,19 +1931,16 @@ In both cases, this is the same as the base NFS protocol.<a href="#section-4.3-1
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-basic-data-types" class="section-name selfRef">Basic Data Types</a>
         </h3>
 <p id="section-4.5-1">The following XDR definitions are basic scalar types that are used in other structures.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-4.5-2">
-          <dt id="section-4.5-2.1">uid:</dt>
-          <dd style="margin-left: 1.5em" id="section-4.5-2.2">
-            <p id="section-4.5-2.2.1">typedef int uid;
-o_mode:<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-4.5-2.3"></dt>
-          <dd style="margin-left: 1.5em" id="section-4.5-2.4">
-            <p id="section-4.5-2.4.1">typedef unsigned short o_mode;<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-</dl>
+<div class="lang-xdr sourcecode" id="section-4.5-2">
+<pre>
+typedef int uid;
+</pre><a href="#section-4.5-2" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-4.5-3">
+<pre>
+typedef unsigned short o_mode;
+</pre><a href="#section-4.5-3" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="structured-data-types">
@@ -1951,7 +1949,7 @@ o_mode:<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
 <a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-structured-data-types" class="section-name selfRef">Structured Data types</a>
         </h3>
 <p id="section-4.6-1">The following XDR definitions are common structured data types
-that are used in all versions of the NFSACL protocol.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+that are used in all versions of the NFS_ACL protocol.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 <div id="aclent">
 <section id="section-4.6.1">
           <h4 id="name-aclent">
@@ -2032,30 +2030,30 @@ GETACL2args and GETACL3args structures.<a href="#section-4.6.2-5" class="pilcrow
 <a href="#section-4.6.3" class="section-number selfRef">4.6.3. </a><a href="#name-interoperability-considerat" class="section-name selfRef">Interoperability Considerations</a>
           </h4>
 <p id="section-4.6.3-1">Interoperability between NFS peers that do not implement
-the NFSACL protocol is what we already have today.
-Interoperability between peers that both implement the NFSACL
+the NFS_ACL protocol is what we already have today.
+Interoperability between peers that both implement the NFS_ACL
 protocol is described in the rest of this document.<a href="#section-4.6.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.6.3-2">The following subsections briefly discuss three new
 interoperability scenarios.<a href="#section-4.6.3-2" class="pilcrow">¶</a></p>
 <div id="client-implements-nfsacl-server-does-not">
 <section id="section-4.6.3.1">
-            <h5 id="name-client-implements-nfsacl-se">
-<a href="#section-4.6.3.1" class="section-number selfRef">4.6.3.1. </a><a href="#name-client-implements-nfsacl-se" class="section-name selfRef">Client Implements NFSACL, Server Does Not</a>
+            <h5 id="name-client-implements-nfs_acl-s">
+<a href="#section-4.6.3.1" class="section-number selfRef">4.6.3.1. </a><a href="#name-client-implements-nfs_acl-s" class="section-name selfRef">Client Implements NFS_ACL, Server Does Not</a>
             </h5>
-<p id="section-4.6.3.1-1">Typically an NFS server that implements the NFSACL program will
-advertise the presence of NFSACL via an rpcbind registration.
-An NFS client that implements NFSACL should perform an rpcbind
-query before attempting any NFSACL procedure <span>[<a href="#RFC1833" class="cite xref">RFC1833</a>]</span>.<a href="#section-4.6.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.6.3.1-2">If the client sends any NFSACL procedure without sending an
+<p id="section-4.6.3.1-1">Typically an NFS server that implements the NFS_ACL program will
+advertise the presence of NFS_ACL via an rpcbind registration.
+An NFS client that implements NFS_ACL should perform an rpcbind
+query before attempting any NFS_ACL procedure <span>[<a href="#RFC1833" class="cite xref">RFC1833</a>]</span>.<a href="#section-4.6.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.6.3.1-2">If the client sends any NFS_ACL procedure without sending an
 rpcbind query first, and the server does not implement the
-NFSACL program, the server responds with an RPC access_stat
+NFS_ACL program, the server responds with an RPC access_stat
 of PROG_UNAVAIL.<a href="#section-4.6.3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="server-implements-nfsacl-client-does-not">
 <section id="section-4.6.3.2">
-            <h5 id="name-server-implements-nfsacl-cl">
-<a href="#section-4.6.3.2" class="section-number selfRef">4.6.3.2. </a><a href="#name-server-implements-nfsacl-cl" class="section-name selfRef">Server Implements NFSACL, Client Does Not</a>
+            <h5 id="name-server-implements-nfs_acl-c">
+<a href="#section-4.6.3.2" class="section-number selfRef">4.6.3.2. </a><a href="#name-server-implements-nfs_acl-c" class="section-name selfRef">Server Implements NFS_ACL, Client Does Not</a>
             </h5>
 <p id="section-4.6.3.2-1">An NFS server that implements advanced access control can
 deny requests made by a client by responding with
@@ -2071,10 +2069,10 @@ the access control on file objects.<a href="#section-4.6.3.2-1" class="pilcrow">
             <h5 id="name-client-implements-exported-">
 <a href="#section-4.6.3.3" class="section-number selfRef">4.6.3.3. </a><a href="#name-client-implements-exported-" class="section-name selfRef">Client Implements, Exported File System Does Not</a>
             </h5>
-<p id="section-4.6.3.3-1">An NFS server that implements the NFSACL protocol might
+<p id="section-4.6.3.3-1">An NFS server that implements the NFS_ACL protocol might
 share both file systems that implement ACLs and
 file systems that do not. In this case, NFS clients
-detect the presence of an NFSACL service on the NFS
+detect the presence of an NFS_ACL service on the NFS
 server.<a href="#section-4.6.3.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.6.3.3-2">For file objects that do not implement ACL support:<a href="#section-4.6.3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2089,7 +2087,7 @@ returning ACL3ERR_NOTSUPP.<a href="#section-4.6.3.3-3.2.1" class="pilcrow">¶</a
 </li>
             </ul>
 <aside id="section-4.6.3.3-4">
-              <p id="section-4.6.3.3-4.1">Linux returns NFS3ERR_NOTSUPP even for NFSACLv2. Check Solaris.<a href="#section-4.6.3.3-4.1" class="pilcrow">¶</a></p>
+              <p id="section-4.6.3.3-4.1">Linux returns NFS3ERR_NOTSUPP even for NFS_ACLv2. Check Solaris.<a href="#section-4.6.3.3-4.1" class="pilcrow">¶</a></p>
 </aside>
 </section>
 </div>
@@ -2101,50 +2099,24 @@ returning ACL3ERR_NOTSUPP.<a href="#section-4.6.3.3-3.2.1" class="pilcrow">¶</a
 </div>
 <div id="nfsacl-version-2">
 <section id="section-5">
-      <h2 id="name-nfsacl-version-2">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-nfsacl-version-2" class="section-name selfRef">NFSACL Version 2</a>
+      <h2 id="name-nfs_acl-version-2">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-nfs_acl-version-2" class="section-name selfRef">NFS_ACL Version 2</a>
       </h2>
-<p id="section-5-1">Version 2 of the NFSACL protocol is used in conjunction only with
+<p id="section-5-1">Version 2 of the NFS_ACL protocol is used in conjunction only with
 version 2 of the NFS protocol.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<div id="nfs-version-2-behavior-changes">
-<section id="section-5.1">
-        <h3 id="name-nfs-version-2-behavior-chan">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-nfs-version-2-behavior-chan" class="section-name selfRef">NFS Version 2 Behavior Changes</a>
-        </h3>
-<p id="section-5.1-1">When an NFS version 2 server receives an NFS request on a file
-object where an ACL denies permission, the server responds by
-terminating the procedure before it is executed and returning
-a status value of NFSERR_ACCESS.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">If an Access Control List does not contain an ACE that grants a
-requesting user "read" or execute access to the object represented
-by the procedure's file handle argument, the following NFS
-procedures fail with a status of NFSERR_ACCESS:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">READ, READDIR<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">If an Access Control List does not contain an ACE that grants a
-requesting user "write" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFSERR_ACCESS:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.1-5">WRITE, CREATE, MKNOD, MKDIR, SYMLINK<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<p id="section-5.1-6">If an Access Control List does not contain an ACE that grants a
-requesting user "execute" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFSERR_ACCESS:<a href="#section-5.1-6" class="pilcrow">¶</a></p>
-<p id="section-5.1-7">LOOKUP<a href="#section-5.1-7" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="data-types-inherited-from-nfs-version-2">
-<section id="section-5.2">
+<section id="section-5.1">
         <h3 id="name-data-types-inherited-from-n">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-data-types-inherited-from-n" class="section-name selfRef">Data types inherited from NFS version 2</a>
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-data-types-inherited-from-n" class="section-name selfRef">Data types inherited from NFS version 2</a>
         </h3>
 <div id="ftype">
-<section id="section-5.2.1">
+<section id="section-5.1.1">
           <h4 id="name-ftype">
-<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-ftype" class="section-name selfRef">ftype</a>
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-ftype" class="section-name selfRef">ftype</a>
           </h4>
-<p id="section-5.2.1-1">The enumeration "ftype" gives the type of an NFS version 3 file.
-This definition comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.2" class="relref">Section 2.3.2</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.2.1-2">
+<p id="section-5.1.1-1">The enumeration "ftype" gives the type of an NFS version 3 file.
+This definition comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.2" class="relref">Section 2.3.2</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.1-2">
 <pre>
 enum ftype {
     NFNON = 0,
@@ -2154,51 +2126,51 @@ enum ftype {
     NFCHR = 4,
     NFLNK = 5,
 };
-</pre><a href="#section-5.2.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.1-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="fhandlet">
-<section id="section-5.2.2">
+<section id="section-5.1.2">
           <h4 id="name-fhandle_t">
-<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-fhandle_t" class="section-name selfRef">fhandle_t</a>
+<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-fhandle_t" class="section-name selfRef">fhandle_t</a>
           </h4>
-<p id="section-5.2.2-1">NFS version 2 uses a fixed-size file handle. The following definition
-comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.2.2-2">
+<p id="section-5.1.2-1">NFS version 2 uses a fixed-size file handle. The following definition
+comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.2-2">
 <pre>
 typedef opaque fhandle[FHSIZE];
-</pre><a href="#section-5.2.2-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.2-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="timeval">
-<section id="section-5.2.3">
+<section id="section-5.1.3">
           <h4 id="name-timeval">
-<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-timeval" class="section-name selfRef">timeval</a>
+<a href="#section-5.1.3" class="section-number selfRef">5.1.3. </a><a href="#name-timeval" class="section-name selfRef">timeval</a>
           </h4>
-<p id="section-5.2.3-1">NFS version 2's "timeval" structure represents the number of seconds
+<p id="section-5.1.3-1">NFS version 2's "timeval" structure represents the number of seconds
 and microseconds since midnight January 1, 1970, Greenwich Mean Time.
-This definition comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.4" class="relref">Section 2.3.4</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.2.3-2">
+This definition comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.4" class="relref">Section 2.3.4</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.1.3-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.3-2">
 <pre>
 struct timeval {
     unsigned int seconds;
     unsigned int useconds;
 };
-</pre><a href="#section-5.2.3-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="nfsfattr">
-<section id="section-5.2.4">
+<section id="section-5.1.4">
           <h4 id="name-nfsfattr">
-<a href="#section-5.2.4" class="section-number selfRef">5.2.4. </a><a href="#name-nfsfattr" class="section-name selfRef">nfsfattr</a>
+<a href="#section-5.1.4" class="section-number selfRef">5.1.4. </a><a href="#name-nfsfattr" class="section-name selfRef">nfsfattr</a>
           </h4>
-<p id="section-5.2.4-1">This document refers to NFS version 2's file attribute structure
+<p id="section-5.1.4-1">This document refers to NFS version 2's file attribute structure
 as "nfsfattr". This is the same as the fattr structure described
-in <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.5" class="relref">Section 2.3.5</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.2.4-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.2.4-2">
+in <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.5" class="relref">Section 2.3.5</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.1.4-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.4-2">
 <pre>
 struct fattr {
     ftype        type;
@@ -2216,23 +2188,23 @@ struct fattr {
     timeval      mtime;
     timeval      ctime;
 };
-</pre><a href="#section-5.2.4-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.4-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="defined-error-numbers">
-<section id="section-5.2.5">
+<section id="section-5.1.5">
           <h4 id="name-defined-error-numbers">
-<a href="#section-5.2.5" class="section-number selfRef">5.2.5. </a><a href="#name-defined-error-numbers" class="section-name selfRef">Defined Error Numbers</a>
+<a href="#section-5.1.5" class="section-number selfRef">5.1.5. </a><a href="#name-defined-error-numbers" class="section-name selfRef">Defined Error Numbers</a>
           </h4>
-<p id="section-5.2.5-1"><span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span> describes an enumerated type called
+<p id="section-5.1.5-1"><span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span> describes an enumerated type called
 "stat" which provides a status code for NFS version 2 results.
 A matching type called "aclstat2" is defined in this document
-for the similar purpose of returning NFSACL version 2 procedure
+for the similar purpose of returning NFS_ACL version 2 procedure
 status codes. The numeric values of these two types match up,
 though aclstat2 omits some codes that are not relevant to the
-NFSACL protocol.<a href="#section-5.2.5-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.2.5-2">
+NFS_ACL protocol.<a href="#section-5.1.5-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.5-2">
 <pre>
 enum aclstat2 {
     ACL2_OK = 0,
@@ -2244,43 +2216,43 @@ enum aclstat2 {
     ACL2ERR_DQUOT = 69,
     ACL2ERR_STALE = 70,
 };
-</pre><a href="#section-5.2.5-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.5-3">These status codes carry the following meanings:<a href="#section-5.2.5-3" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.2.5-4">
-            <dt id="section-5.2.5-4.1">ACL2ERR_PERM</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.2">
-              <p id="section-5.2.5-4.2.1">Not owner. The caller does not have correct ownership to perform the requested operation.<a href="#section-5.2.5-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.5-3">These status codes carry the following meanings:<a href="#section-5.1.5-3" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.1.5-4">
+            <dt id="section-5.1.5-4.1">ACL2ERR_PERM</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.2">
+              <p id="section-5.1.5-4.2.1">Not owner. The caller does not have correct ownership to perform the requested operation.<a href="#section-5.1.5-4.2.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.2.5-4.3">ACL2ERR_IO</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.4">
-              <p id="section-5.2.5-4.4.1">Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.<a href="#section-5.2.5-4.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-4.3">ACL2ERR_IO</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.4">
+              <p id="section-5.1.5-4.4.1">Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.<a href="#section-5.1.5-4.4.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.2.5-4.5">ACL2ERR_ACCES</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.6">
-              <p id="section-5.2.5-4.6.1">Permission denied.  The caller does not have the correct permission to perform the requested operation.<a href="#section-5.2.5-4.6.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-4.5">ACL2ERR_ACCES</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.6">
+              <p id="section-5.1.5-4.6.1">Permission denied.  The caller does not have the correct permission to perform the requested operation.<a href="#section-5.1.5-4.6.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.2.5-4.7">ACL2ERR_NOSPC</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.8">
-              <p id="section-5.2.5-4.8.1">No space left on device.  The operation caused the server's file system to reach its limit.<a href="#section-5.2.5-4.8.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-4.7">ACL2ERR_NOSPC</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.8">
+              <p id="section-5.1.5-4.8.1">No space left on device.  The operation caused the server's file system to reach its limit.<a href="#section-5.1.5-4.8.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.2.5-4.9">ACL2ERR_ROFS</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.10">
-              <p id="section-5.2.5-4.10.1">Read-only file system.  Write attempted on a read-only file system.<a href="#section-5.2.5-4.10.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-4.9">ACL2ERR_ROFS</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.10">
+              <p id="section-5.1.5-4.10.1">Read-only file system.  Write attempted on a read-only file system.<a href="#section-5.1.5-4.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.2.5-4.11">ACL2ERR_DQUOT</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.12">
-              <p id="section-5.2.5-4.12.1">Disk quota exceeded.  The client's disk quota on the server has been exceeded.<a href="#section-5.2.5-4.12.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-4.11">ACL2ERR_DQUOT</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.12">
+              <p id="section-5.1.5-4.12.1">Disk quota exceeded.  The client's disk quota on the server has been exceeded.<a href="#section-5.1.5-4.12.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.2.5-4.13">ACL2ERR_STALE</dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.5-4.14">
-              <p id="section-5.2.5-4.14.1">The "fhandle" given in the arguments was invalid.  That is, the file referred to by that file handle no longer exists, or access to it has been revoked.<a href="#section-5.2.5-4.14.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-4.13">ACL2ERR_STALE</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-4.14">
+              <p id="section-5.1.5-4.14.1">The "fhandle" given in the arguments was invalid.  That is, the file referred to by that file handle no longer exists, or access to it has been revoked.<a href="#section-5.1.5-4.14.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2289,100 +2261,100 @@ enum aclstat2 {
 </section>
 </div>
 <div id="server-procedures">
-<section id="section-5.3">
+<section id="section-5.2">
         <h3 id="name-server-procedures">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-server-procedures" class="section-name selfRef">Server Procedures</a>
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-server-procedures" class="section-name selfRef">Server Procedures</a>
         </h3>
 <div id="procedure-0-null-no-operation">
-<section id="section-5.3.1">
+<section id="section-5.2.1">
           <h4 id="name-procedure-0-null-no-operati">
-<a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-procedure-0-null-no-operati" class="section-name selfRef">Procedure 0: NULL - No Operation</a>
+<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-procedure-0-null-no-operati" class="section-name selfRef">Procedure 0: NULL - No Operation</a>
           </h4>
 <div id="arguments">
-<section id="section-5.3.1.1">
+<section id="section-5.2.1.1">
             <h5 id="name-arguments">
-<a href="#section-5.3.1.1" class="section-number selfRef">5.3.1.1. </a><a href="#name-arguments" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-5.2.1.1" class="section-number selfRef">5.2.1.1. </a><a href="#name-arguments" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.1.1-1">
+<div class="lang-xdr sourcecode" id="section-5.2.1.1-1">
 <pre>
 void;
-</pre><a href="#section-5.3.1.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.1.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results">
-<section id="section-5.3.1.2">
+<section id="section-5.2.1.2">
             <h5 id="name-results">
-<a href="#section-5.3.1.2" class="section-number selfRef">5.3.1.2. </a><a href="#name-results" class="section-name selfRef">RESULTS</a>
+<a href="#section-5.2.1.2" class="section-number selfRef">5.2.1.2. </a><a href="#name-results" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.1.2-1">
+<div class="lang-xdr sourcecode" id="section-5.2.1.2-1">
 <pre>
 void;
-</pre><a href="#section-5.3.1.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.1.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description">
-<section id="section-5.3.1.3">
+<section id="section-5.2.1.3">
             <h5 id="name-description">
-<a href="#section-5.3.1.3" class="section-number selfRef">5.3.1.3. </a><a href="#name-description" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-5.2.1.3" class="section-number selfRef">5.2.1.3. </a><a href="#name-description" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-5.3.1.3-1">This is the usual NULL procedure with a void argument and void result.<a href="#section-5.3.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.1.3-1">This is the usual NULL procedure with a void argument and void result.<a href="#section-5.2.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation">
-<section id="section-5.3.1.4">
+<section id="section-5.2.1.4">
             <h5 id="name-implementation">
-<a href="#section-5.3.1.4" class="section-number selfRef">5.3.1.4. </a><a href="#name-implementation" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-5.2.1.4" class="section-number selfRef">5.2.1.4. </a><a href="#name-implementation" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-5.3.1.4-1">It is important that this procedure do no work at all so that clients
+<p id="section-5.2.1.4-1">It is important that this procedure do no work at all so that clients
 can use it to measure the overhead of processing a service request.
 By convention, the NULL procedure should never require any
 authentication.
 A server implementation may choose to ignore this convention, if
 responding to the NULL procedure call acknowledges the existence
-of a resource to an unauthenticated client.<a href="#section-5.3.1.4-1" class="pilcrow">¶</a></p>
+of a resource to an unauthenticated client.<a href="#section-5.2.1.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors">
-<section id="section-5.3.1.5">
+<section id="section-5.2.1.5">
             <h5 id="name-errors">
-<a href="#section-5.3.1.5" class="section-number selfRef">5.3.1.5. </a><a href="#name-errors" class="section-name selfRef">ERRORS</a>
+<a href="#section-5.2.1.5" class="section-number selfRef">5.2.1.5. </a><a href="#name-errors" class="section-name selfRef">ERRORS</a>
             </h5>
-<p id="section-5.3.1.5-1">Since the NULL procedure returns no result, it can not return an
-NFSACL error status code. However, some server implementations may
+<p id="section-5.2.1.5-1">Since the NULL procedure returns no result, it can not return an
+NFS_ACL error status code. However, some server implementations may
 return RPC-level errors based on security or authentication policy
-settings.<a href="#section-5.3.1.5-1" class="pilcrow">¶</a></p>
+settings.<a href="#section-5.2.1.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="procedure-1-getacl-retrieve-an-access-control-list">
-<section id="section-5.3.2">
+<section id="section-5.2.2">
           <h4 id="name-procedure-1-getacl-retrieve">
-<a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-procedure-1-getacl-retrieve" class="section-name selfRef">Procedure 1: GETACL - Retrieve an Access Control List</a>
+<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-procedure-1-getacl-retrieve" class="section-name selfRef">Procedure 1: GETACL - Retrieve an Access Control List</a>
           </h4>
 <div id="arguments-1">
-<section id="section-5.3.2.1">
+<section id="section-5.2.2.1">
             <h5 id="name-arguments-2">
-<a href="#section-5.3.2.1" class="section-number selfRef">5.3.2.1. </a><a href="#name-arguments-2" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-5.2.2.1" class="section-number selfRef">5.2.2.1. </a><a href="#name-arguments-2" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.2.1-1">
+<div class="lang-xdr sourcecode" id="section-5.2.2.1-1">
 <pre>
 struct GETACL2args {
     fhandle_t fh;
     u_int mask;
 };
-</pre><a href="#section-5.3.2.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.2.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-1">
-<section id="section-5.3.2.2">
+<section id="section-5.2.2.2">
             <h5 id="name-results-2">
-<a href="#section-5.3.2.2" class="section-number selfRef">5.3.2.2. </a><a href="#name-results-2" class="section-name selfRef">RESULTS</a>
+<a href="#section-5.2.2.2" class="section-number selfRef">5.2.2.2. </a><a href="#name-results-2" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.2.2-1">
+<div class="lang-xdr sourcecode" id="section-5.2.2.2-1">
 <pre>
 struct GETACL2resok {
     struct nfsfattr attr;
@@ -2395,74 +2367,74 @@ case ACL2_OK:
 default:
     void;
 };
-</pre><a href="#section-5.3.2.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.2.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-1">
-<section id="section-5.3.2.3">
+<section id="section-5.2.2.3">
             <h5 id="name-description-2">
-<a href="#section-5.3.2.3" class="section-number selfRef">5.3.2.3. </a><a href="#name-description-2" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-5.2.2.3" class="section-number selfRef">5.2.2.3. </a><a href="#name-description-2" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-5.3.2.3-1">The GETACL procedure retrieves Access Control List
+<p id="section-5.2.2.3-1">The GETACL procedure retrieves Access Control List
 information associated with the file system object
 specified by the GETACL2args.fh field. The client
 obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, or SYMLINK procedures,
-or the MOUNT service, as described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.3.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.2.3-2">The GETACL2args.mask field specifies which information
-is to be returned in the response:<a href="#section-5.3.2.3-2" class="pilcrow">¶</a></p>
+or the MOUNT service, as described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.2.3-2">The GETACL2args.mask field specifies which information
+is to be returned in the response:<a href="#section-5.2.2.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.3.2.3-3.1">
-                <p id="section-5.3.2.3-3.1.1">If the NA_ACL bit is set, the server fills in the
-object's access ACL.<a href="#section-5.3.2.3-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.2.2.3-3.1">
+                <p id="section-5.2.2.3-3.1.1">If the NA_ACL bit is set, the server fills in the
+object's access ACL.<a href="#section-5.2.2.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.2.3-3.2">
-                <p id="section-5.3.2.3-3.2.1">If the NA_ACLCNT bit is set, the server fills in
-the number of ACEs that are in the object's access ACL.<a href="#section-5.3.2.3-3.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.2.3-3.2">
+                <p id="section-5.2.2.3-3.2.1">If the NA_ACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's access ACL.<a href="#section-5.2.2.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.2.3-3.3">
-                <p id="section-5.3.2.3-3.3.1">If the NA_DFACL bit is set, the server fills in
-the object's default ACL.<a href="#section-5.3.2.3-3.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.2.3-3.3">
+                <p id="section-5.2.2.3-3.3.1">If the NA_DFACL bit is set, the server fills in
+the object's default ACL.<a href="#section-5.2.2.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.2.3-3.4">
-                <p id="section-5.3.2.3-3.4.1">if the NA_DFACLCNT bit is set, the server fills in
-the number of ACEs that are in the object's default ACL.<a href="#section-5.3.2.3-3.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.2.3-3.4">
+                <p id="section-5.2.2.3-3.4.1">if the NA_DFACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's default ACL.<a href="#section-5.2.2.3-3.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-5.3.2.3-4">If the GETACL procedure is successful, the server sets the
+<p id="section-5.2.2.3-4">If the GETACL procedure is successful, the server sets the
 GETACL2res.status field to ACL2_OK. It fills in the
 GETACL2resok.attr field with the file object's current
 file attributes, as detailed in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>. Lastly,
 it fills in the GETACL2res.acl field with two counted
-arrays of Access Control Entries (ACEs).<a href="#section-5.3.2.3-4" class="pilcrow">¶</a></p>
-<p id="section-5.3.2.3-5">Otherwise, GETACL2res.status contains an error status
-on failure and no other results are returned.<a href="#section-5.3.2.3-5" class="pilcrow">¶</a></p>
+arrays of Access Control Entries (ACEs).<a href="#section-5.2.2.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.2.3-5">Otherwise, GETACL2res.status contains an error status
+on failure and no other results are returned.<a href="#section-5.2.2.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-1">
-<section id="section-5.3.2.4">
+<section id="section-5.2.2.4">
             <h5 id="name-implementation-2">
-<a href="#section-5.3.2.4" class="section-number selfRef">5.3.2.4. </a><a href="#name-implementation-2" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-5.2.2.4" class="section-number selfRef">5.2.2.4. </a><a href="#name-implementation-2" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-5.3.2.4-1">When GETACL2args.fh represents a file object that does not currently
+<p id="section-5.2.2.4-1">When GETACL2args.fh represents a file object that does not currently
 have an ACL associated with it or does not implement support
 for ACLs, the server responds by returning a manufactured
 minimal NFS ACL that reflects the current owner, group, and
-mode bits of the object (see <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>).<a href="#section-5.3.2.4-1" class="pilcrow">¶</a></p>
+mode bits of the object (see <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>).<a href="#section-5.2.2.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-1">
-<section id="section-5.3.2.5">
+<section id="section-5.2.2.5">
             <h5 id="name-errors-2">
-<a href="#section-5.3.2.5" class="section-number selfRef">5.3.2.5. </a><a href="#name-errors-2" class="section-name selfRef">ERRORS</a>
+<a href="#section-5.2.2.5" class="section-number selfRef">5.2.2.5. </a><a href="#name-errors-2" class="section-name selfRef">ERRORS</a>
             </h5>
 <ul class="normal">
-<li class="normal" id="section-5.3.2.5-1.1">
-                <p id="section-5.3.2.5-1.1.1">ACL2ERR_IO<a href="#section-5.3.2.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.2.2.5-1.1">
+                <p id="section-5.2.2.5-1.1.1">ACL2ERR_IO<a href="#section-5.2.2.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.2.5-1.2">
-                <p id="section-5.3.2.5-1.2.1">ACL2ERR_STALE<a href="#section-5.3.2.5-1.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.2.5-1.2">
+                <p id="section-5.2.2.5-1.2.1">ACL2ERR_STALE<a href="#section-5.2.2.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -2470,31 +2442,31 @@ mode bits of the object (see <a href="#acls-in-operation" class="auto internal x
 </section>
 </div>
 <div id="procedure-2-setacl-set-or-replace-an-access-control-list">
-<section id="section-5.3.3">
+<section id="section-5.2.3">
           <h4 id="name-procedure-2-setacl-set-or-r">
-<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-procedure-2-setacl-set-or-r" class="section-name selfRef">Procedure 2: SETACL - Set or replace an Access Control List</a>
+<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-procedure-2-setacl-set-or-r" class="section-name selfRef">Procedure 2: SETACL - Set or replace an Access Control List</a>
           </h4>
 <div id="arguments-2">
-<section id="section-5.3.3.1">
+<section id="section-5.2.3.1">
             <h5 id="name-arguments-3">
-<a href="#section-5.3.3.1" class="section-number selfRef">5.3.3.1. </a><a href="#name-arguments-3" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-5.2.3.1" class="section-number selfRef">5.2.3.1. </a><a href="#name-arguments-3" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.3.1-1">
+<div class="lang-xdr sourcecode" id="section-5.2.3.1-1">
 <pre>
 struct SETACL2args {
     fhandle_t fh;
     secattr acl;
 };
-</pre><a href="#section-5.3.3.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.3.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-2">
-<section id="section-5.3.3.2">
+<section id="section-5.2.3.2">
             <h5 id="name-results-3">
-<a href="#section-5.3.3.2" class="section-number selfRef">5.3.3.2. </a><a href="#name-results-3" class="section-name selfRef">RESULTS</a>
+<a href="#section-5.2.3.2" class="section-number selfRef">5.2.3.2. </a><a href="#name-results-3" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.3.2-1">
+<div class="lang-xdr sourcecode" id="section-5.2.3.2-1">
 <pre>
 struct SETACL2resok {
     struct nfsfattr attr;
@@ -2506,81 +2478,81 @@ case ACL2_OK:
 default:
     void;
 };
-</pre><a href="#section-5.3.3.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.3.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-2">
-<section id="section-5.3.3.3">
+<section id="section-5.2.3.3">
             <h5 id="name-description-3">
-<a href="#section-5.3.3.3" class="section-number selfRef">5.3.3.3. </a><a href="#name-description-3" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-5.2.3.3" class="section-number selfRef">5.2.3.3. </a><a href="#name-description-3" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-5.3.3.3-1">The SETACL procedure replaces the Access Control Lists
+<p id="section-5.2.3.3-1">The SETACL procedure replaces the Access Control Lists
 associated with the file system object specified by the
 SETACL2args.fh field with the ACLs specified by the
 SETACL2args.acl field.  The client obtains the file
 handle using one of the NFS version 2 LOOKUP, CREATE,
 MKDIR, SYMLINK procedures, or the MOUNT service, as
-described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.3.3.3-1" class="pilcrow">¶</a></p>
-<aside id="section-5.3.3.3-2">
-              <p id="section-5.3.3.3-2.1">How are ACLs removed?<a href="#section-5.3.3.3-2.1" class="pilcrow">¶</a></p>
+described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.3.3-1" class="pilcrow">¶</a></p>
+<aside id="section-5.2.3.3-2">
+              <p id="section-5.2.3.3-2.1">How are ACLs removed?<a href="#section-5.2.3.3-2.1" class="pilcrow">¶</a></p>
 </aside>
-<p id="section-5.3.3.3-3">If the SETACL procedure is successful, the server sets the
+<p id="section-5.2.3.3-3">If the SETACL procedure is successful, the server sets the
 SETACL2res.status field to ACL2_OK and fills in the
 SETACL2resok.attr field with the file object's new
-file attributes, as detailed in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.3.3.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.3.3.3-4">Otherwise, SETACL2res.status contains an error status
-on failure and no other results are returned.<a href="#section-5.3.3.3-4" class="pilcrow">¶</a></p>
+file attributes, as detailed in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.3.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.3-4">Otherwise, SETACL2res.status contains an error status
+on failure and no other results are returned.<a href="#section-5.2.3.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-2">
-<section id="section-5.3.3.4">
+<section id="section-5.2.3.4">
             <h5 id="name-implementation-3">
-<a href="#section-5.3.3.4" class="section-number selfRef">5.3.3.4. </a><a href="#name-implementation-3" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-5.2.3.4" class="section-number selfRef">5.2.3.4. </a><a href="#name-implementation-3" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-5.3.3.4-1">On success, the server does not send the reply until
-the ACL change is durable locally.<a href="#section-5.3.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.3.4-2">Changing a file object's ACL changes the object's mtime.
+<p id="section-5.2.3.4-1">On success, the server does not send the reply until
+the ACL change is durable locally.<a href="#section-5.2.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.4-2">Changing a file object's ACL changes the object's mtime.
 The mtime change is reflected in the attributes returned
-in the SETACL response.<a href="#section-5.3.3.4-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.3.4-3">A high-quality server implementation ensures that a
+in the SETACL response.<a href="#section-5.2.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.4-3">A high-quality server implementation ensures that a
 GETACL procedure running concurrently with a SETACL
 procedure does not return partially updated (torn)
 ACL contents. However, a failed SETACL may partially
-change a file's ACLs.<a href="#section-5.3.3.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.3.3.4-4">When SETACL2args.fh represents a file object that does
+change a file's ACLs.<a href="#section-5.2.3.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.4-4">When SETACL2args.fh represents a file object that does
 not implement support for ACLs, or the new ACL does not
 contain at least the minimal set of ACEs (as described
 in <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>), the server responds by
-setting SETACL2res.status to ????.<a href="#section-5.3.3.4-4" class="pilcrow">¶</a></p>
+setting SETACL2res.status to ????.<a href="#section-5.2.3.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-2">
-<section id="section-5.3.3.5">
+<section id="section-5.2.3.5">
             <h5 id="name-errors-3">
-<a href="#section-5.3.3.5" class="section-number selfRef">5.3.3.5. </a><a href="#name-errors-3" class="section-name selfRef">ERRORS</a>
+<a href="#section-5.2.3.5" class="section-number selfRef">5.2.3.5. </a><a href="#name-errors-3" class="section-name selfRef">ERRORS</a>
             </h5>
 <ul class="normal">
-<li class="normal" id="section-5.3.3.5-1.1">
-                <p id="section-5.3.3.5-1.1.1">ACL2ERR_ROFS<a href="#section-5.3.3.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.2.3.5-1.1">
+                <p id="section-5.2.3.5-1.1.1">ACL2ERR_ROFS<a href="#section-5.2.3.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.3.5-1.2">
-                <p id="section-5.3.3.5-1.2.1">ACL2ERR_PERM<a href="#section-5.3.3.5-1.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.3.5-1.2">
+                <p id="section-5.2.3.5-1.2.1">ACL2ERR_PERM<a href="#section-5.2.3.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.3.5-1.3">
-                <p id="section-5.3.3.5-1.3.1">ACL2ERR_IO<a href="#section-5.3.3.5-1.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.3.5-1.3">
+                <p id="section-5.2.3.5-1.3.1">ACL2ERR_IO<a href="#section-5.2.3.5-1.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.3.5-1.4">
-                <p id="section-5.3.3.5-1.4.1">ACL2ERR_ACCES<a href="#section-5.3.3.5-1.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.3.5-1.4">
+                <p id="section-5.2.3.5-1.4.1">ACL2ERR_ACCES<a href="#section-5.2.3.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.3.5-1.5">
-                <p id="section-5.3.3.5-1.5.1">ACL2ERR_NOSPC<a href="#section-5.3.3.5-1.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.3.5-1.5">
+                <p id="section-5.2.3.5-1.5.1">ACL2ERR_NOSPC<a href="#section-5.2.3.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.3.5-1.6">
-                <p id="section-5.3.3.5-1.6.1">ACL2ERR_DQUOT<a href="#section-5.3.3.5-1.6.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.3.5-1.6">
+                <p id="section-5.2.3.5-1.6.1">ACL2ERR_DQUOT<a href="#section-5.2.3.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.3.5-1.7">
-                <p id="section-5.3.3.5-1.7.1">ACL2ERR_STALE<a href="#section-5.3.3.5-1.7.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.3.5-1.7">
+                <p id="section-5.2.3.5-1.7.1">ACL2ERR_STALE<a href="#section-5.2.3.5-1.7.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -2588,30 +2560,30 @@ setting SETACL2res.status to ????.<a href="#section-5.3.3.4-4" class="pilcrow">�
 </section>
 </div>
 <div id="procedure-3-getattr-get-file-attributes">
-<section id="section-5.3.4">
+<section id="section-5.2.4">
           <h4 id="name-procedure-3-getattr-get-fil">
-<a href="#section-5.3.4" class="section-number selfRef">5.3.4. </a><a href="#name-procedure-3-getattr-get-fil" class="section-name selfRef">Procedure 3: GETATTR - Get file attributes</a>
+<a href="#section-5.2.4" class="section-number selfRef">5.2.4. </a><a href="#name-procedure-3-getattr-get-fil" class="section-name selfRef">Procedure 3: GETATTR - Get file attributes</a>
           </h4>
 <div id="arguments-3">
-<section id="section-5.3.4.1">
+<section id="section-5.2.4.1">
             <h5 id="name-arguments-4">
-<a href="#section-5.3.4.1" class="section-number selfRef">5.3.4.1. </a><a href="#name-arguments-4" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-5.2.4.1" class="section-number selfRef">5.2.4.1. </a><a href="#name-arguments-4" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.4.1-1">
+<div class="lang-xdr sourcecode" id="section-5.2.4.1-1">
 <pre>
 struct GETATTR2args {
     fhandle_t fh;
 };
-</pre><a href="#section-5.3.4.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.4.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-3">
-<section id="section-5.3.4.2">
+<section id="section-5.2.4.2">
             <h5 id="name-results-4">
-<a href="#section-5.3.4.2" class="section-number selfRef">5.3.4.2. </a><a href="#name-results-4" class="section-name selfRef">RESULTS</a>
+<a href="#section-5.2.4.2" class="section-number selfRef">5.2.4.2. </a><a href="#name-results-4" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.4.2-1">
+<div class="lang-xdr sourcecode" id="section-5.2.4.2-1">
 <pre>
 struct GETATTR2resok {
     struct nfsfattr attr;
@@ -2623,50 +2595,50 @@ case ACL2_OK:
 default:
     void;
 };
-</pre><a href="#section-5.3.4.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.4.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-3">
-<section id="section-5.3.4.3">
+<section id="section-5.2.4.3">
             <h5 id="name-description-4">
-<a href="#section-5.3.4.3" class="section-number selfRef">5.3.4.3. </a><a href="#name-description-4" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-5.2.4.3" class="section-number selfRef">5.2.4.3. </a><a href="#name-description-4" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-5.3.4.3-1">The GETATTR procedure retrieves the current file
+<p id="section-5.2.4.3-1">The GETATTR procedure retrieves the current file
 attributes associated with the file system object
 specified by the GETATTR2args.fh field. The client
 obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
-or the MOUNT service, as described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.3.4.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.4.3-2">If the GETATTR procedure is successful, the server
+or the MOUNT service, as described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.4.3-2">If the GETATTR procedure is successful, the server
 sets the GETATTR2res.status field to ACL2_OK, and
 fills in the GETATTR2resok.attr field with the file
 object's current file attributes, as detailed in
-<span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.3.4.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.4.3-3">Otherwise, GETATTR2res.status contains an error
-status on failure and no other results are returned.<a href="#section-5.3.4.3-3" class="pilcrow">¶</a></p>
+<span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.4.3-3">Otherwise, GETATTR2res.status contains an error
+status on failure and no other results are returned.<a href="#section-5.2.4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-3">
-<section id="section-5.3.4.4">
+<section id="section-5.2.4.4">
             <h5 id="name-implementation-4">
-<a href="#section-5.3.4.4" class="section-number selfRef">5.3.4.4. </a><a href="#name-implementation-4" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-5.2.4.4" class="section-number selfRef">5.2.4.4. </a><a href="#name-implementation-4" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-5.3.4.4-1">Refer to <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.5" class="relref">Section 2.3.5</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span> for details
-about the content of the returned file attributes.<a href="#section-5.3.4.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.4.4-1">Refer to <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.5" class="relref">Section 2.3.5</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span> for details
+about the content of the returned file attributes.<a href="#section-5.2.4.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-3">
-<section id="section-5.3.4.5">
+<section id="section-5.2.4.5">
             <h5 id="name-errors-4">
-<a href="#section-5.3.4.5" class="section-number selfRef">5.3.4.5. </a><a href="#name-errors-4" class="section-name selfRef">ERRORS</a>
+<a href="#section-5.2.4.5" class="section-number selfRef">5.2.4.5. </a><a href="#name-errors-4" class="section-name selfRef">ERRORS</a>
             </h5>
 <ul class="normal">
-<li class="normal" id="section-5.3.4.5-1.1">
-                <p id="section-5.3.4.5-1.1.1">ACL2ERR_IO<a href="#section-5.3.4.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.2.4.5-1.1">
+                <p id="section-5.2.4.5-1.1.1">ACL2ERR_IO<a href="#section-5.2.4.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.4.5-1.2">
-                <p id="section-5.3.4.5-1.2.1">ACL2ERR_STALE<a href="#section-5.3.4.5-1.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.4.5-1.2">
+                <p id="section-5.2.4.5-1.2.1">ACL2ERR_STALE<a href="#section-5.2.4.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -2674,31 +2646,31 @@ about the content of the returned file attributes.<a href="#section-5.3.4.4-1" c
 </section>
 </div>
 <div id="procedure-4-access-check-access-permission">
-<section id="section-5.3.5">
+<section id="section-5.2.5">
           <h4 id="name-procedure-4-access-check-ac">
-<a href="#section-5.3.5" class="section-number selfRef">5.3.5. </a><a href="#name-procedure-4-access-check-ac" class="section-name selfRef">Procedure 4: ACCESS - Check access permission</a>
+<a href="#section-5.2.5" class="section-number selfRef">5.2.5. </a><a href="#name-procedure-4-access-check-ac" class="section-name selfRef">Procedure 4: ACCESS - Check access permission</a>
           </h4>
 <div id="arguments-4">
-<section id="section-5.3.5.1">
+<section id="section-5.2.5.1">
             <h5 id="name-arguments-5">
-<a href="#section-5.3.5.1" class="section-number selfRef">5.3.5.1. </a><a href="#name-arguments-5" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-5.2.5.1" class="section-number selfRef">5.2.5.1. </a><a href="#name-arguments-5" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.5.1-1">
+<div class="lang-xdr sourcecode" id="section-5.2.5.1-1">
 <pre>
 struct ACCESS2args {
     fhandle_t fh;
     uint32 access;
 };
-</pre><a href="#section-5.3.5.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.5.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-4">
-<section id="section-5.3.5.2">
+<section id="section-5.2.5.2">
             <h5 id="name-results-5">
-<a href="#section-5.3.5.2" class="section-number selfRef">5.3.5.2. </a><a href="#name-results-5" class="section-name selfRef">RESULTS</a>
+<a href="#section-5.2.5.2" class="section-number selfRef">5.2.5.2. </a><a href="#name-results-5" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-5.3.5.2-1">
+<div class="lang-xdr sourcecode" id="section-5.2.5.2-1">
 <pre>
 const ACCESS2_READ = 0x1;       /* read data or readdir a directory */
 const ACCESS2_LOOKUP = 0x2;     /* lookup a name in a directory */
@@ -2719,16 +2691,16 @@ case ACL2_OK:
 default:
     void;
 };
-</pre><a href="#section-5.3.5.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.5.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-4">
-<section id="section-5.3.5.3">
+<section id="section-5.2.5.3">
             <h5 id="name-description-5">
-<a href="#section-5.3.5.3" class="section-number selfRef">5.3.5.3. </a><a href="#name-description-5" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-5.2.5.3" class="section-number selfRef">5.2.5.3. </a><a href="#name-description-5" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-5.3.5.3-1">The ACCESS procedure determines the access rights
+<p id="section-5.2.5.3-1">The ACCESS procedure determines the access rights
 that a user, as identified by the RPC credentials
 in the request, has with respect to the file system
 specified by the ACCESS2args.fh field. The client
@@ -2736,66 +2708,66 @@ obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
 or the MOUNT service, as described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.
 The client encodes the set of permissions that are
-to be checked in the ACCESS2args.access field.<a href="#section-5.3.5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.5.3-2">The following access permissions may be requested:<a href="#section-5.3.5.3-2" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.3.5.3-3">
-              <dt id="section-5.3.5.3-3.1">ACCESS2_READ</dt>
-              <dd style="margin-left: 1.5em" id="section-5.3.5.3-3.2">
-                <p id="section-5.3.5.3-3.2.1">Read data from file or read a directory.
-ACCESS2_LOOKUP<a href="#section-5.3.5.3-3.2.1" class="pilcrow">¶</a></p>
+to be checked in the ACCESS2args.access field.<a href="#section-5.2.5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.5.3-2">The following access permissions may be requested:<a href="#section-5.2.5.3-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.2.5.3-3">
+              <dt id="section-5.2.5.3-3.1">ACCESS2_READ</dt>
+              <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.2">
+                <p id="section-5.2.5.3-3.2.1">Read data from file or read a directory.
+ACCESS2_LOOKUP<a href="#section-5.2.5.3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.3.5.3-3.3"></dt>
-              <dd style="margin-left: 1.5em" id="section-5.3.5.3-3.4">
-                <p id="section-5.3.5.3-3.4.1">Look up a name in a directory (no meaning for non-directory objects).
-ACCESS2_MODIFY<a href="#section-5.3.5.3-3.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2.5.3-3.3"></dt>
+              <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.4">
+                <p id="section-5.2.5.3-3.4.1">Look up a name in a directory (no meaning for non-directory objects).
+ACCESS2_MODIFY<a href="#section-5.2.5.3-3.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.3.5.3-3.5"></dt>
-              <dd style="margin-left: 1.5em" id="section-5.3.5.3-3.6">
-                <p id="section-5.3.5.3-3.6.1">Rewrite existing file data or modify existing directory entries.
-ACCESS2_EXTEND<a href="#section-5.3.5.3-3.6.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2.5.3-3.5"></dt>
+              <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.6">
+                <p id="section-5.2.5.3-3.6.1">Rewrite existing file data or modify existing directory entries.
+ACCESS2_EXTEND<a href="#section-5.2.5.3-3.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.3.5.3-3.7"></dt>
-              <dd style="margin-left: 1.5em" id="section-5.3.5.3-3.8">
-                <p id="section-5.3.5.3-3.8.1">Write new data or add directory entries.
-ACCESS2_DELETE<a href="#section-5.3.5.3-3.8.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2.5.3-3.7"></dt>
+              <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.8">
+                <p id="section-5.2.5.3-3.8.1">Write new data or add directory entries.
+ACCESS2_DELETE<a href="#section-5.2.5.3-3.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.3.5.3-3.9"></dt>
-              <dd style="margin-left: 1.5em" id="section-5.3.5.3-3.10">
-                <p id="section-5.3.5.3-3.10.1">Delete an existing directory entry.
-ACCESS2_EXECUTE<a href="#section-5.3.5.3-3.10.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2.5.3-3.9"></dt>
+              <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.10">
+                <p id="section-5.2.5.3-3.10.1">Delete an existing directory entry.
+ACCESS2_EXECUTE<a href="#section-5.2.5.3-3.10.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.3.5.3-3.11"></dt>
-              <dd style="margin-left: 1.5em" id="section-5.3.5.3-3.12">
-                <p id="section-5.3.5.3-3.12.1">Execute file (no meaning for a directory).<a href="#section-5.3.5.3-3.12.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2.5.3-3.11"></dt>
+              <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.12">
+                <p id="section-5.2.5.3-3.12.1">Execute file (no meaning for a directory).<a href="#section-5.2.5.3-3.12.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
-<p id="section-5.3.5.3-4">If the ACCESS procedure is successful, the server
+<p id="section-5.2.5.3-4">If the ACCESS procedure is successful, the server
 sets the ACCESS2res.status field to ACL2_OK. It
 fills in the ACCESS2resok.attr field with the file
 object's current file attributes, as detailed in
 <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>. Lastly, it encodes the set of
 permissions that the requesting user is granted
-in the ACCESS2resok.access field.<a href="#section-5.3.5.3-4" class="pilcrow">¶</a></p>
+in the ACCESS2resok.access field.<a href="#section-5.2.5.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-4">
-<section id="section-5.3.5.4">
+<section id="section-5.2.5.4">
             <h5 id="name-implementation-5">
-<a href="#section-5.3.5.4" class="section-number selfRef">5.3.5.4. </a><a href="#name-implementation-5" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-5.2.5.4" class="section-number selfRef">5.2.5.4. </a><a href="#name-implementation-5" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-5.3.5.4-1">In the NFS version 2 protocol, the only reliable way to
+<p id="section-5.2.5.4-1">In the NFS version 2 protocol, the only reliable way to
 determine whether an operation is allowed is to try it
 and see if it succeeded or failed. Using the ACCESS
-procedure in the NFSACL version 2 protocol, a client can
+procedure in the NFS_ACL version 2 protocol, a client can
 ask the server to indicate whether or not one or more
-classes of operations are permitted.<a href="#section-5.3.5.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.5.4-2">In general, it is not sufficient for a client to attempt
+classes of operations are permitted.<a href="#section-5.2.5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.5.4-2">In general, it is not sufficient for a client to attempt
 to deduce access permissions by inspecting the uid, gid,
 and mode fields in the file attributes, since the server
 may perform uid or gid mapping or enforce additional
@@ -2803,19 +2775,19 @@ access control restrictions. It is also possible that the
 NFS version 2 protocol server may not be in the same ID
 space as the NFS version 2 protocol client. In these cases,
 the NFS version 2 protocol client can not reliably perform
-an access check with only current file attributes.<a href="#section-5.3.5.4-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.5.4-3">The information returned by the server in response to an
+an access check with only current file attributes.<a href="#section-5.2.5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.5.4-3">The information returned by the server in response to an
 ACCESS call is advisory only. It was correct at the exact
 time that the server performed the checks, but not
 necessarily afterwards. The server can revoke access
-permission to a file object at any time.<a href="#section-5.3.5.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.3.5.4-4">The NFSACL version 2 protocol client should use the
+permission to a file object at any time.<a href="#section-5.2.5.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.5.4-4">The NFS_ACL version 2 protocol client should use the
 effective credentials of the user to build the
 authentication information in the ACCESS request used
 to determine access rights. It is the effective user
 and group credentials that are used in subsequent read
-and write operations.<a href="#section-5.3.5.4-4" class="pilcrow">¶</a></p>
-<p id="section-5.3.5.4-5">Many implementations do not directly support the
+and write operations.<a href="#section-5.2.5.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.5.4-5">Many implementations do not directly support the
 ACCESS2_DELETE permission. Operating systems like UNIX
 may ignore the ACCESS2_DELETE bit if set on an access
 request on a non-directory object. In these systems,
@@ -2824,23 +2796,23 @@ permissions on the directory in which the file resides,
 instead of being determined by the permissions of the file
 itself.  Thus, the bit mask returned for such a request
 will have the ACCESS3_DELETE bit set to 0, indicating that
-the client does not have this permission.<a href="#section-5.3.5.4-5" class="pilcrow">¶</a></p>
-<p id="section-5.3.5.4-6">The server should return a status of ACL2_OK if no
+the client does not have this permission.<a href="#section-5.2.5.4-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.5.4-6">The server should return a status of ACL2_OK if no
 errors occurred that prevented the server from making
-the required access checks.<a href="#section-5.3.5.4-6" class="pilcrow">¶</a></p>
+the required access checks.<a href="#section-5.2.5.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-4">
-<section id="section-5.3.5.5">
+<section id="section-5.2.5.5">
             <h5 id="name-errors-5">
-<a href="#section-5.3.5.5" class="section-number selfRef">5.3.5.5. </a><a href="#name-errors-5" class="section-name selfRef">ERRORS</a>
+<a href="#section-5.2.5.5" class="section-number selfRef">5.2.5.5. </a><a href="#name-errors-5" class="section-name selfRef">ERRORS</a>
             </h5>
 <ul class="normal">
-<li class="normal" id="section-5.3.5.5-1.1">
-                <p id="section-5.3.5.5-1.1.1">ACL2ERR_IO<a href="#section-5.3.5.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.2.5.5-1.1">
+                <p id="section-5.2.5.5-1.1.1">ACL2ERR_IO<a href="#section-5.2.5.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.3.5.5-1.2">
-                <p id="section-5.3.5.5-1.2.1">ACL2ERR_STALE<a href="#section-5.3.5.5-1.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-5.2.5.5-1.2">
+                <p id="section-5.2.5.5-1.2.1">ACL2ERR_STALE<a href="#section-5.2.5.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -2853,101 +2825,67 @@ the required access checks.<a href="#section-5.3.5.4-6" class="pilcrow">¶</a></
 </div>
 <div id="nfsacl-version-3">
 <section id="section-6">
-      <h2 id="name-nfsacl-version-3">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-nfsacl-version-3" class="section-name selfRef">NFSACL Version 3</a>
+      <h2 id="name-nfs_acl-version-3">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-nfs_acl-version-3" class="section-name selfRef">NFS_ACL Version 3</a>
       </h2>
-<p id="section-6-1">Version 3 of the NFSACL protocol is used in conjunction only with
+<p id="section-6-1">Version 3 of the NFS_ACL protocol is used in conjunction only with
 version 3 of the NFS protocol.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<div id="nfs-version-3-behavior-changes">
-<section id="section-6.1">
-        <h3 id="name-nfs-version-3-behavior-chan">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-nfs-version-3-behavior-chan" class="section-name selfRef">NFS Version 3 Behavior Changes</a>
-        </h3>
-<p id="section-6.1-1">When an NFS version 3 server receives an NFS request on a file
-object where an ACL denies permission, the server responds by
-terminating the procedure before it is executed and returning
-a status value of NFS3ERR_ACCESS.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">If an Access Control List does not contain an ACE that grants a
-requesting user "read" or execute access to the object represented
-by the procedure's file handle argument, the following NFS
-procedures fail with a status of NFS3ERR_ACCESS:<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">READ, READDIR, READDIRPLUS<a href="#section-6.1-3" class="pilcrow">¶</a></p>
-<p id="section-6.1-4">If an Access Control List does not contain an ACE that grants a
-requesting user "write" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFS3ERR_ACCESS:<a href="#section-6.1-4" class="pilcrow">¶</a></p>
-<p id="section-6.1-5">WRITE, CREATE, MKNOD, MKDIR, SYMLINK<a href="#section-6.1-5" class="pilcrow">¶</a></p>
-<p id="section-6.1-6">If an Access Control List does not contain an ACE that grants a
-requesting user "execute" access to the object represented by the
-procedure's file handle argument, the following NFS procedures
-fail with a status of NFS3ERR_ACCESS:<a href="#section-6.1-6" class="pilcrow">¶</a></p>
-<p id="section-6.1-7">LOOKUP<a href="#section-6.1-7" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="data-types-inherited-from-nfs-version-3">
-<section id="section-6.2">
+<section id="section-6.1">
         <h3 id="name-data-types-inherited-from-nf">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-data-types-inherited-from-nf" class="section-name selfRef">Data types inherited from NFS version 3</a>
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-data-types-inherited-from-nf" class="section-name selfRef">Data types inherited from NFS version 3</a>
         </h3>
 <div id="scalar-data-types">
-<section id="section-6.2.1">
+<section id="section-6.1.1">
           <h4 id="name-scalar-data-types">
-<a href="#section-6.2.1" class="section-number selfRef">6.2.1. </a><a href="#name-scalar-data-types" class="section-name selfRef">Scalar Data types</a>
+<a href="#section-6.1.1" class="section-number selfRef">6.1.1. </a><a href="#name-scalar-data-types" class="section-name selfRef">Scalar Data types</a>
           </h4>
-<p id="section-6.2.1-1">These are defined in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.2.1-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-6.2.1-2">
-            <dt id="section-6.2.1-2.1">uint64</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.2">
-              <p id="section-6.2.1-2.2.1">typedef unsigned hyper uint64;
-uint32<a href="#section-6.2.1-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-2.3"></dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.4">
-              <p id="section-6.2.1-2.4.1">typedef unsigned long uint32;
-fileid3<a href="#section-6.2.1-2.4.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-2.5"></dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.6">
-              <p id="section-6.2.1-2.6.1">typedef uint64 fileid3;
-uid3<a href="#section-6.2.1-2.6.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-2.7"></dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.8">
-              <p id="section-6.2.1-2.8.1">typedef uint32 uid3;
-gid3<a href="#section-6.2.1-2.8.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-2.9"></dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.10">
-              <p id="section-6.2.1-2.10.1">typedef uint32 gid3;
-size3<a href="#section-6.2.1-2.10.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-2.11"></dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.12">
-              <p id="section-6.2.1-2.12.1">typedef uint64 size3;
-mode3<a href="#section-6.2.1-2.12.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-2.13"></dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-2.14">
-              <p id="section-6.2.1-2.14.1">typedef uint32 mode3;<a href="#section-6.2.1-2.14.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-</dl>
+<p id="section-6.1.1-1">These are defined in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.1-2">
+<pre>
+typedef unsigned hyper uint64;
+</pre><a href="#section-6.1.1-2" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-6.1.1-3">
+<pre>
+typedef unsigned long uint32;
+</pre><a href="#section-6.1.1-3" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-6.1.1-4">
+<pre>
+typedef uint64 fileid3;
+</pre><a href="#section-6.1.1-4" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-6.1.1-5">
+<pre>
+typedef uint32 uid3;
+</pre><a href="#section-6.1.1-5" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-6.1.1-6">
+<pre>
+typedef uint32 gid3;
+</pre><a href="#section-6.1.1-6" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-6.1.1-7">
+<pre>
+typedef uint64 size3;
+</pre><a href="#section-6.1.1-7" class="pilcrow">¶</a>
+</div>
+<div class="lang-xdr sourcecode" id="section-6.1.1-8">
+<pre>
+typedef uint32 mode3;
+</pre><a href="#section-6.1.1-8" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="ftype3">
-<section id="section-6.2.2">
+<section id="section-6.1.2">
           <h4 id="name-ftype3">
-<a href="#section-6.2.2" class="section-number selfRef">6.2.2. </a><a href="#name-ftype3" class="section-name selfRef">ftype3</a>
+<a href="#section-6.1.2" class="section-number selfRef">6.1.2. </a><a href="#name-ftype3" class="section-name selfRef">ftype3</a>
           </h4>
-<p id="section-6.2.2-1">The enumeration "ftype3" represents the type of a file object.
-This definition is further explained in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.2.2-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-6.2.2-2">
+<p id="section-6.1.2-1">The enumeration "ftype3" represents the type of a file object.
+This definition is further explained in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.1.2-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.2-2">
 <pre>
 enum ftype3 {
     NF3REG    = 1,
@@ -2958,100 +2896,99 @@ enum ftype3 {
     NF3SOCK   = 6,
     NF3FIFO   = 7
 };
-</pre><a href="#section-6.2.2-2" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.2-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="specdata3">
-<section id="section-6.2.3">
+<section id="section-6.1.3">
           <h4 id="name-specdata3">
-<a href="#section-6.2.3" class="section-number selfRef">6.2.3. </a><a href="#name-specdata3" class="section-name selfRef">specdata3</a>
+<a href="#section-6.1.3" class="section-number selfRef">6.1.3. </a><a href="#name-specdata3" class="section-name selfRef">specdata3</a>
           </h4>
-<div class="lang-xdr sourcecode" id="section-6.2.3-1">
+<div class="lang-xdr sourcecode" id="section-6.1.3-1">
 <pre>
 struct specdata3 {
     uint32     specdata1;
     uint32     specdata2;
 };
-</pre><a href="#section-6.2.3-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2.3-2">The interpretation of the two words depends on the type of file
+<p id="section-6.1.3-2">The interpretation of the two words depends on the type of file
 system object. For a block special (NF3BLK) or character special
 (NF3CHR) file, specdata1 and specdata2 are the major and minor
 device numbers, respectively. For all other file types, these
 two elements should either be set to 0 or the values should be
-agreed upon by the client and server.<a href="#section-6.2.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.2.3-3">Further detail is available in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.2.3-3" class="pilcrow">¶</a></p>
+agreed upon by the client and server.<a href="#section-6.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.1.3-3">Further detail is available in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="nfsfh3">
-<section id="section-6.2.4">
+<section id="section-6.1.4">
           <h4 id="name-nfs_fh3">
-<a href="#section-6.2.4" class="section-number selfRef">6.2.4. </a><a href="#name-nfs_fh3" class="section-name selfRef">nfs_fh3</a>
+<a href="#section-6.1.4" class="section-number selfRef">6.1.4. </a><a href="#name-nfs_fh3" class="section-name selfRef">nfs_fh3</a>
           </h4>
-<p id="section-6.2.4-1">The nfs_fh3 data type is a variable-length opaque object returned
+<p id="section-6.1.4-1">The nfs_fh3 data type is a variable-length opaque object returned
 by the NFS version 3 LOOKUP, CREATE, SYMLINK, MKNOD, LINK,
 or READDIRPLUS procedures.
 A client uses this handle during subsequent NFS operations
 to reference the file. This definition comes from
-<span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.2.4-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-6.2.4-2">
-            <dt id="section-6.2.4-2.1">NFS3_FHSIZE 64</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.4-2.2">
-              <p id="section-6.2.4-2.2.1">The maximum size in bytes of the opaque file handle.<a href="#section-6.2.4-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-</dl>
-<div class="lang-xdr sourcecode" id="section-6.2.4-3">
+<span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.1.4-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.4-2">
+<pre>
+NFS3_FHSIZE 64
+</pre><a href="#section-6.1.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1.4-3">The maximum size in bytes of the opaque file handle.<a href="#section-6.1.4-3" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.4-4">
 <pre>
 struct nfs_fh3 {
     opaque       data&lt;NFS3_FHSIZE&gt;;
 };
-</pre><a href="#section-6.2.4-3" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.4-4" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2.4-4">To the client, a file handle is opaque. The client stores file
+<p id="section-6.1.4-5">To the client, a file handle is opaque. The client stores file
 handles for use in a later request and can compare two file
 handles from the same server for equality by doing a
 byte-by-byte comparison, but cannot otherwise interpret the
 contents of file handles. Further, if two file handles from the
 same server are equal, they must refer to the same file, but if
-they are not equal, no conclusions can be drawn.<a href="#section-6.2.4-4" class="pilcrow">¶</a></p>
-<p id="section-6.2.4-5">Servers may revoke access provided by a file handle at any
+they are not equal, no conclusions can be drawn.<a href="#section-6.1.4-5" class="pilcrow">¶</a></p>
+<p id="section-6.1.4-6">Servers may revoke access provided by a file handle at any
 time. If the file handle passed in a call refers to a file
 system object that no longer exists on the server or access for
 that file handle has been revoked, the error, ACL3ERR_STALE,
-is returned.<a href="#section-6.2.4-5" class="pilcrow">¶</a></p>
+is returned.<a href="#section-6.1.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="nfstime3">
-<section id="section-6.2.5">
+<section id="section-6.1.5">
           <h4 id="name-nfstime3">
-<a href="#section-6.2.5" class="section-number selfRef">6.2.5. </a><a href="#name-nfstime3" class="section-name selfRef">nfstime3</a>
+<a href="#section-6.1.5" class="section-number selfRef">6.1.5. </a><a href="#name-nfstime3" class="section-name selfRef">nfstime3</a>
           </h4>
-<p id="section-6.2.5-1">NFS version 3's "nfstime3" structure represents the number of
+<p id="section-6.1.5-1">NFS version 3's "nfstime3" structure represents the number of
 seconds and nanoseconds since midnight January 1, 1970 Greenwich
-Mean Time. Further details are in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.2.5-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-6.2.5-2">
+Mean Time. Further details are in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.1.5-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.5-2">
 <pre>
 struct nfstime3 {
     uint32   seconds;
     uint32   nseconds;
 };
-</pre><a href="#section-6.2.5-2" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.5-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="nfsfattr3">
-<section id="section-6.2.6">
+<section id="section-6.1.6">
           <h4 id="name-nfsfattr3">
-<a href="#section-6.2.6" class="section-number selfRef">6.2.6. </a><a href="#name-nfsfattr3" class="section-name selfRef">nfsfattr3</a>
+<a href="#section-6.1.6" class="section-number selfRef">6.1.6. </a><a href="#name-nfsfattr3" class="section-name selfRef">nfsfattr3</a>
           </h4>
-<p id="section-6.2.6-1">This document refers to NFS version 3's file attribute structure
+<p id="section-6.1.6-1">This document refers to NFS version 3's file attribute structure
 as "nfsfattr3". This is the same as the fattr3 structure described
 in <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>. A definition of the bit fields in
 the "mode" element, which relate to traditional file system access
-permissions, can also be found there.<a href="#section-6.2.6-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-6.2.6-2">
+permissions, can also be found there.<a href="#section-6.1.6-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.6-2">
 <pre>
 struct fattr3 {
     ftype3     type;
@@ -3068,20 +3005,20 @@ struct fattr3 {
     nfstime3   mtime;
     nfstime3   ctime;
 };
-</pre><a href="#section-6.2.6-2" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.6-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="postopattr">
-<section id="section-6.2.7">
+<section id="section-6.1.7">
           <h4 id="name-post_op_attr">
-<a href="#section-6.2.7" class="section-number selfRef">6.2.7. </a><a href="#name-post_op_attr" class="section-name selfRef">post_op_attr</a>
+<a href="#section-6.1.7" class="section-number selfRef">6.1.7. </a><a href="#name-post_op_attr" class="section-name selfRef">post_op_attr</a>
           </h4>
-<p id="section-6.2.7-1">The NFS version 3 "post_op_attr" data type returns file
+<p id="section-6.1.7-1">The NFS version 3 "post_op_attr" data type returns file
 attributes that are not directly involved in the requested
 procedure. See <span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.6" class="relref">Section 2.6</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span> for more
-information.<a href="#section-6.2.7-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-6.2.7-2">
+information.<a href="#section-6.1.7-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.1.7-2">
 <pre>
 union post_op_attr switch (bool attributes_follow) {
 case TRUE:
@@ -3089,30 +3026,30 @@ case TRUE:
 case FALSE:
     void;
 };
-</pre><a href="#section-6.2.7-2" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.7-2" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2.7-3">The format of this data type appears to make returning file
+<p id="section-6.1.7-3">The format of this data type appears to make returning file
 attributes optional. However, server implementers are strongly
 encouraged to make a best effort to return attributes whenever
-possible, even when returning an error.<a href="#section-6.2.7-3" class="pilcrow">¶</a></p>
+possible, even when returning an error.<a href="#section-6.1.7-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="error-values">
-<section id="section-6.3">
+<section id="section-6.2">
         <h3 id="name-error-values">
-<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-error-values" class="section-name selfRef">Error Values</a>
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-error-values" class="section-name selfRef">Error Values</a>
         </h3>
-<p id="section-6.3-1"><span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span> describes an enumerated type called
+<p id="section-6.2-1"><span><a href="https://rfc-editor.org/rfc/rfc1813#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC1813" class="cite xref">RFC1813</a>]</span> describes an enumerated type called
 "nfsstat3" which provides a status code for NFS version 3 procedure
 results.
 A matching type called "aclstat3" is defined in this document
-for the similar purpose of returning NFSACL version 3 procedure
+for the similar purpose of returning NFS_ACL version 3 procedure
 status codes. The numeric values of these two types match up,
 although aclstat3 omits some codes that are not relevant to the
-NFSACL protocol.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-6.3-2">
+NFS_ACL protocol.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-6.2-2">
 <pre>
 enum aclstat3 {
     ACL3_OK             = 0,
@@ -3129,173 +3066,173 @@ enum aclstat3 {
     ACL3ERR_SERVERFAULT = 10006,
     ACL3ERR_JUKEBOX     = 10008
 };
-</pre><a href="#section-6.3-2" class="pilcrow">¶</a>
+</pre><a href="#section-6.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-6.3-3">These status codes carry the following meanings:<a href="#section-6.3-3" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-6.3-4">
-          <dt id="section-6.3-4.1">ACL3_OK</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.2">
-            <p id="section-6.3-4.2.1">Indicates the call completed successfully.<a href="#section-6.3-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.2-3">These status codes carry the following meanings:<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-6.2-4">
+          <dt id="section-6.2-4.1">ACL3_OK</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.2">
+            <p id="section-6.2-4.2.1">Indicates the call completed successfully.<a href="#section-6.2-4.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.3">ACL3ERR_PERM</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.4">
-            <p id="section-6.3-4.4.1">Not owner. The operation was not allowed because the caller is either not a privileged user (root) or not the owner of the target of the operation.<a href="#section-6.3-4.4.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.3">ACL3ERR_PERM</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.4">
+            <p id="section-6.2-4.4.1">Not owner. The operation was not allowed because the caller is either not a privileged user (root) or not the owner of the target of the operation.<a href="#section-6.2-4.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.5">ACL3ERR_IO</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.6">
-            <p id="section-6.3-4.6.1">I/O error. A hard error (for example, a disk error) occurred while processing the requested operation.<a href="#section-6.3-4.6.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.5">ACL3ERR_IO</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.6">
+            <p id="section-6.2-4.6.1">I/O error. A hard error (for example, a disk error) occurred while processing the requested operation.<a href="#section-6.2-4.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.7">ACL3ERR_ACCES</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.8">
-            <p id="section-6.3-4.8.1">Permission denied. The caller does not have the correct permission to perform the requested operation. Contrast this with NFS3ERR_PERM, which restricts itself to owner or privileged user permission failures.<a href="#section-6.3-4.8.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.7">ACL3ERR_ACCES</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.8">
+            <p id="section-6.2-4.8.1">Permission denied. The caller does not have the correct permission to perform the requested operation. Contrast this with NFS3ERR_PERM, which restricts itself to owner or privileged user permission failures.<a href="#section-6.2-4.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.9">ACL3ERR_INVAL</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.10">
-            <p id="section-6.3-4.10.1">An invalid or unsupported argument was specified for procedure.<a href="#section-6.3-4.10.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.9">ACL3ERR_INVAL</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.10">
+            <p id="section-6.2-4.10.1">An invalid or unsupported argument was specified for procedure.<a href="#section-6.2-4.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.11">ACL3ERR_NOSPC</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.12">
-            <p id="section-6.3-4.12.1">No space left on device. The operation would have caused the server's file system to exceed its limit.<a href="#section-6.3-4.12.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.11">ACL3ERR_NOSPC</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.12">
+            <p id="section-6.2-4.12.1">No space left on device. The operation would have caused the server's file system to exceed its limit.<a href="#section-6.2-4.12.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.13">ACL3ERR_ROFS</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.14">
-            <p id="section-6.3-4.14.1">Read-only file system. A modifying operation was attempted on a read-only file system.<a href="#section-6.3-4.14.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.13">ACL3ERR_ROFS</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.14">
+            <p id="section-6.2-4.14.1">Read-only file system. A modifying operation was attempted on a read-only file system.<a href="#section-6.2-4.14.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.15">ACL3ERR_DQUOT</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.16">
-            <p id="section-6.3-4.16.1">Resource (quota) hard limit exceeded. The user's resource limit on the server has been exceeded.<a href="#section-6.3-4.16.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.15">ACL3ERR_DQUOT</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.16">
+            <p id="section-6.2-4.16.1">Resource (quota) hard limit exceeded. The user's resource limit on the server has been exceeded.<a href="#section-6.2-4.16.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.17">ACL3ERR_STALE</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.18">
-            <p id="section-6.3-4.18.1">Invalid file handle. The file handle given in the arguments was invalid. The file referred to by that file handle no longer exists or access to it has been revoked.<a href="#section-6.3-4.18.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.17">ACL3ERR_STALE</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.18">
+            <p id="section-6.2-4.18.1">Invalid file handle. The file handle given in the arguments was invalid. The file referred to by that file handle no longer exists or access to it has been revoked.<a href="#section-6.2-4.18.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.19">ACL3ERR_BADHANDLE</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.20">
-            <p id="section-6.3-4.20.1">Illegal NFS file handle. The file handle failed internal consistency checks.<a href="#section-6.3-4.20.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.19">ACL3ERR_BADHANDLE</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.20">
+            <p id="section-6.2-4.20.1">Illegal NFS file handle. The file handle failed internal consistency checks.<a href="#section-6.2-4.20.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.21">ACL3ERR_NOTSUPP</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.22">
-            <p id="section-6.3-4.22.1">Operation is not supported.<a href="#section-6.3-4.22.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.21">ACL3ERR_NOTSUPP</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.22">
+            <p id="section-6.2-4.22.1">Operation is not supported.<a href="#section-6.2-4.22.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.23">ACL3ERR_SERVERFAULT</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.24">
-            <p id="section-6.3-4.24.1">An error occurred on the server which does not map to any of the legal NFS version 3 protocol error values.  The client should translate this into an appropriate error. UNIX clients may choose to translate this to EIO.<a href="#section-6.3-4.24.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.23">ACL3ERR_SERVERFAULT</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.24">
+            <p id="section-6.2-4.24.1">An error occurred on the server which does not map to any of the legal NFS version 3 protocol error values.  The client should translate this into an appropriate error. UNIX clients may choose to translate this to EIO.<a href="#section-6.2-4.24.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.3-4.25">ACL3ERR_JUKEBOX</dt>
-          <dd style="margin-left: 1.5em" id="section-6.3-4.26">
-            <p id="section-6.3-4.26.1">The server initiated the request, but was not able to complete it in a timely fashion. The client should wait and then try the request with a new RPC transaction ID. For example, this error should be returned from a server that supports hierarchical storage and receives a request to process a file that has been migrated. In this case, the server should start the immigration process and respond to client with this error.<a href="#section-6.3-4.26.1" class="pilcrow">¶</a></p>
+<dt id="section-6.2-4.25">ACL3ERR_JUKEBOX</dt>
+          <dd style="margin-left: 1.5em" id="section-6.2-4.26">
+            <p id="section-6.2-4.26.1">The server initiated the request, but was not able to complete it in a timely fashion. The client should wait and then try the request with a new RPC transaction ID. For example, this error should be returned from a server that supports hierarchical storage and receives a request to process a file that has been migrated. In this case, the server should start the immigration process and respond to client with this error.<a href="#section-6.2-4.26.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="server-procedures-1">
-<section id="section-6.4">
+<section id="section-6.3">
         <h3 id="name-server-procedures-2">
-<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-server-procedures-2" class="section-name selfRef">Server Procedures</a>
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-server-procedures-2" class="section-name selfRef">Server Procedures</a>
         </h3>
 <div id="procedure-0-null-no-operation-1">
-<section id="section-6.4.1">
+<section id="section-6.3.1">
           <h4 id="name-procedure-0-null-no-operatio">
-<a href="#section-6.4.1" class="section-number selfRef">6.4.1. </a><a href="#name-procedure-0-null-no-operatio" class="section-name selfRef">Procedure 0: NULL - No Operation</a>
+<a href="#section-6.3.1" class="section-number selfRef">6.3.1. </a><a href="#name-procedure-0-null-no-operatio" class="section-name selfRef">Procedure 0: NULL - No Operation</a>
           </h4>
 <div id="arguments-5">
-<section id="section-6.4.1.1">
+<section id="section-6.3.1.1">
             <h5 id="name-arguments-6">
-<a href="#section-6.4.1.1" class="section-number selfRef">6.4.1.1. </a><a href="#name-arguments-6" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-6.3.1.1" class="section-number selfRef">6.3.1.1. </a><a href="#name-arguments-6" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-6.4.1.1-1">
+<div class="lang-xdr sourcecode" id="section-6.3.1.1-1">
 <pre>
 void;
-</pre><a href="#section-6.4.1.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.3.1.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-5">
-<section id="section-6.4.1.2">
+<section id="section-6.3.1.2">
             <h5 id="name-results-6">
-<a href="#section-6.4.1.2" class="section-number selfRef">6.4.1.2. </a><a href="#name-results-6" class="section-name selfRef">RESULTS</a>
+<a href="#section-6.3.1.2" class="section-number selfRef">6.3.1.2. </a><a href="#name-results-6" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-6.4.1.2-1">
+<div class="lang-xdr sourcecode" id="section-6.3.1.2-1">
 <pre>
 void;
-</pre><a href="#section-6.4.1.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.3.1.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-5">
-<section id="section-6.4.1.3">
+<section id="section-6.3.1.3">
             <h5 id="name-description-6">
-<a href="#section-6.4.1.3" class="section-number selfRef">6.4.1.3. </a><a href="#name-description-6" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-6.3.1.3" class="section-number selfRef">6.3.1.3. </a><a href="#name-description-6" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-6.4.1.3-1">This is the usual NULL procedure with a void argument and void result.<a href="#section-6.4.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3.1.3-1">This is the usual NULL procedure with a void argument and void result.<a href="#section-6.3.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-5">
-<section id="section-6.4.1.4">
+<section id="section-6.3.1.4">
             <h5 id="name-implementation-6">
-<a href="#section-6.4.1.4" class="section-number selfRef">6.4.1.4. </a><a href="#name-implementation-6" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-6.3.1.4" class="section-number selfRef">6.3.1.4. </a><a href="#name-implementation-6" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-6.4.1.4-1">It is important that this procedure do no work at all so that clients
+<p id="section-6.3.1.4-1">It is important that this procedure do no work at all so that clients
 can use it to measure the overhead of processing a service request.
 By convention, the NULL procedure should never require any
 authentication.
 A server implmentation may choose to ignore this convention, if
 responding to the NULL procedure call acknowledges the existence
-of a resource to an unauthenticated client.<a href="#section-6.4.1.4-1" class="pilcrow">¶</a></p>
+of a resource to an unauthenticated client.<a href="#section-6.3.1.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-5">
-<section id="section-6.4.1.5">
+<section id="section-6.3.1.5">
             <h5 id="name-errors-6">
-<a href="#section-6.4.1.5" class="section-number selfRef">6.4.1.5. </a><a href="#name-errors-6" class="section-name selfRef">ERRORS</a>
+<a href="#section-6.3.1.5" class="section-number selfRef">6.3.1.5. </a><a href="#name-errors-6" class="section-name selfRef">ERRORS</a>
             </h5>
-<p id="section-6.4.1.5-1">Since the NULL procedure takes no argument and returns no
-result, it can not return an NFS or NFSACL error status code.
+<p id="section-6.3.1.5-1">Since the NULL procedure takes no argument and returns no
+result, it can not return an NFS or NFS_ACL error status code.
 However, some server implementations may return RPC errors
-based on security or authentication policy settings.<a href="#section-6.4.1.5-1" class="pilcrow">¶</a></p>
+based on security or authentication policy settings.<a href="#section-6.3.1.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="procedure-1-getacl-retrieve-an-access-control-list-1">
-<section id="section-6.4.2">
+<section id="section-6.3.2">
           <h4 id="name-procedure-1-getacl-retrieve-">
-<a href="#section-6.4.2" class="section-number selfRef">6.4.2. </a><a href="#name-procedure-1-getacl-retrieve-" class="section-name selfRef">Procedure 1: GETACL - Retrieve an Access Control List</a>
+<a href="#section-6.3.2" class="section-number selfRef">6.3.2. </a><a href="#name-procedure-1-getacl-retrieve-" class="section-name selfRef">Procedure 1: GETACL - Retrieve an Access Control List</a>
           </h4>
 <div id="arguments-6">
-<section id="section-6.4.2.1">
+<section id="section-6.3.2.1">
             <h5 id="name-arguments-7">
-<a href="#section-6.4.2.1" class="section-number selfRef">6.4.2.1. </a><a href="#name-arguments-7" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-6.3.2.1" class="section-number selfRef">6.3.2.1. </a><a href="#name-arguments-7" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-6.4.2.1-1">
+<div class="lang-xdr sourcecode" id="section-6.3.2.1-1">
 <pre>
 struct GETACL3args {
     nfs_fh3 fh;
     u_int mask;
 };
-</pre><a href="#section-6.4.2.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.3.2.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-6">
-<section id="section-6.4.2.2">
+<section id="section-6.3.2.2">
             <h5 id="name-results-7">
-<a href="#section-6.4.2.2" class="section-number selfRef">6.4.2.2. </a><a href="#name-results-7" class="section-name selfRef">RESULTS</a>
+<a href="#section-6.3.2.2" class="section-number selfRef">6.3.2.2. </a><a href="#name-results-7" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xde sourcecode" id="section-6.4.2.2-1">
+<div class="lang-xde sourcecode" id="section-6.3.2.2-1">
 <pre>
 struct GETACL3resok {
     post_op_attr attr;
@@ -3312,85 +3249,85 @@ case ACL3_OK:
 default:
     GETACL3resfail resfail;
 };
-</pre><a href="#section-6.4.2.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.3.2.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-6">
-<section id="section-6.4.2.3">
+<section id="section-6.3.2.3">
             <h5 id="name-description-7">
-<a href="#section-6.4.2.3" class="section-number selfRef">6.4.2.3. </a><a href="#name-description-7" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-6.3.2.3" class="section-number selfRef">6.3.2.3. </a><a href="#name-description-7" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-6.4.2.3-1">The GETACL procedure retrieves Access Control List
+<p id="section-6.3.2.3-1">The GETACL procedure retrieves Access Control List
 information associated with the file system object
 specified by the GETACL3args.fh field. The client
 obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, SYMLINK, MKNOD,
 or READDIRPLUS procedures, or the MOUNT service,
-as described in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.4.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.4.2.3-2">The GETACL3args.mask field specifies which information
-is to be returned in the response:<a href="#section-6.4.2.3-2" class="pilcrow">¶</a></p>
+as described in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.3.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3.2.3-2">The GETACL3args.mask field specifies which information
+is to be returned in the response:<a href="#section-6.3.2.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.4.2.3-3.1">
-                <p id="section-6.4.2.3-3.1.1">If the NA_ACL bit is set, the server fills in the
-object's access ACL.<a href="#section-6.4.2.3-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.3.2.3-3.1">
+                <p id="section-6.3.2.3-3.1.1">If the NA_ACL bit is set, the server fills in the
+object's access ACL.<a href="#section-6.3.2.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.3-3.2">
-                <p id="section-6.4.2.3-3.2.1">If the NA_ACLCNT bit is set, the server fills in
-the number of ACEs that are in the object's access ACL.<a href="#section-6.4.2.3-3.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.3-3.2">
+                <p id="section-6.3.2.3-3.2.1">If the NA_ACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's access ACL.<a href="#section-6.3.2.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.3-3.3">
-                <p id="section-6.4.2.3-3.3.1">If the NA_DFACL bit is set, the server fills in
-the object's default ACL.<a href="#section-6.4.2.3-3.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.3-3.3">
+                <p id="section-6.3.2.3-3.3.1">If the NA_DFACL bit is set, the server fills in
+the object's default ACL.<a href="#section-6.3.2.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.3-3.4">
-                <p id="section-6.4.2.3-3.4.1">if the NA_DFACLCNT bit is set, the server fills in
-the number of ACEs that are in the object's default ACL.<a href="#section-6.4.2.3-3.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.3-3.4">
+                <p id="section-6.3.2.3-3.4.1">if the NA_DFACLCNT bit is set, the server fills in
+the number of ACEs that are in the object's default ACL.<a href="#section-6.3.2.3-3.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-6.4.2.3-4">If the GETACL procedure is successful, the server sets the
+<p id="section-6.3.2.3-4">If the GETACL procedure is successful, the server sets the
 GETACL3res.status field to ACL3_OK. It fills in the
 GETACL3resok.attr field with the file object's post
 operation file attributes, as detailed in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.
 Lastly, it fills in the GETACL3res.acl field with two
-counted arrays of Access Control Entries (ACEs).<a href="#section-6.4.2.3-4" class="pilcrow">¶</a></p>
-<p id="section-6.4.2.3-5">Otherwise, GETACL3res.status contains an error status
-on failure and no other results are returned.<a href="#section-6.4.2.3-5" class="pilcrow">¶</a></p>
+counted arrays of Access Control Entries (ACEs).<a href="#section-6.3.2.3-4" class="pilcrow">¶</a></p>
+<p id="section-6.3.2.3-5">Otherwise, GETACL3res.status contains an error status
+on failure and no other results are returned.<a href="#section-6.3.2.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-6">
-<section id="section-6.4.2.4">
+<section id="section-6.3.2.4">
             <h5 id="name-implementation-7">
-<a href="#section-6.4.2.4" class="section-number selfRef">6.4.2.4. </a><a href="#name-implementation-7" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-6.3.2.4" class="section-number selfRef">6.3.2.4. </a><a href="#name-implementation-7" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-6.4.2.4-1">When GETACL3args.fh represents a file object that does
+<p id="section-6.3.2.4-1">When GETACL3args.fh represents a file object that does
 not currently have an ACL associated with it or does not
 implement support for ACLs, the server responds by
 returning a manufactured minimal NFS ACL that reflects
 the current owner, group, and mode bits of the object
-(see <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>).<a href="#section-6.4.2.4-1" class="pilcrow">¶</a></p>
+(see <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>).<a href="#section-6.3.2.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-6">
-<section id="section-6.4.2.5">
+<section id="section-6.3.2.5">
             <h5 id="name-errors-7">
-<a href="#section-6.4.2.5" class="section-number selfRef">6.4.2.5. </a><a href="#name-errors-7" class="section-name selfRef">ERRORS</a>
+<a href="#section-6.3.2.5" class="section-number selfRef">6.3.2.5. </a><a href="#name-errors-7" class="section-name selfRef">ERRORS</a>
             </h5>
 <ul class="normal">
-<li class="normal" id="section-6.4.2.5-1.1">
-                <p id="section-6.4.2.5-1.1.1">ACL3ERR_IO<a href="#section-6.4.2.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.3.2.5-1.1">
+                <p id="section-6.3.2.5-1.1.1">ACL3ERR_IO<a href="#section-6.3.2.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.5-1.2">
-                <p id="section-6.4.2.5-1.2.1">ACL3ERR_STALE<a href="#section-6.4.2.5-1.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.5-1.2">
+                <p id="section-6.3.2.5-1.2.1">ACL3ERR_STALE<a href="#section-6.3.2.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.5-1.3">
-                <p id="section-6.4.2.5-1.3.1">ACL3ERR_BADHANDLE<a href="#section-6.4.2.5-1.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.5-1.3">
+                <p id="section-6.3.2.5-1.3.1">ACL3ERR_BADHANDLE<a href="#section-6.3.2.5-1.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.5-1.4">
-                <p id="section-6.4.2.5-1.4.1">ACL3ERR_SERVERFAULT<a href="#section-6.4.2.5-1.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.5-1.4">
+                <p id="section-6.3.2.5-1.4.1">ACL3ERR_SERVERFAULT<a href="#section-6.3.2.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.2.5-1.5">
-                <p id="section-6.4.2.5-1.5.1">ACL3ERR_JUKEBOX<a href="#section-6.4.2.5-1.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.2.5-1.5">
+                <p id="section-6.3.2.5-1.5.1">ACL3ERR_JUKEBOX<a href="#section-6.3.2.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -3398,31 +3335,31 @@ the current owner, group, and mode bits of the object
 </section>
 </div>
 <div id="setacl-procedure">
-<section id="section-6.4.3">
+<section id="section-6.3.3">
           <h4 id="name-setacl-procedure">
-<a href="#section-6.4.3" class="section-number selfRef">6.4.3. </a><a href="#name-setacl-procedure" class="section-name selfRef">SETACL Procedure</a>
+<a href="#section-6.3.3" class="section-number selfRef">6.3.3. </a><a href="#name-setacl-procedure" class="section-name selfRef">SETACL Procedure</a>
           </h4>
 <div id="arguments-7">
-<section id="section-6.4.3.1">
+<section id="section-6.3.3.1">
             <h5 id="name-arguments-8">
-<a href="#section-6.4.3.1" class="section-number selfRef">6.4.3.1. </a><a href="#name-arguments-8" class="section-name selfRef">ARGUMENTS</a>
+<a href="#section-6.3.3.1" class="section-number selfRef">6.3.3.1. </a><a href="#name-arguments-8" class="section-name selfRef">ARGUMENTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-6.4.3.1-1">
+<div class="lang-xdr sourcecode" id="section-6.3.3.1-1">
 <pre>
 struct SETACL3args {
     nfs_fh3 fh;
     secattr acl;
 };
-</pre><a href="#section-6.4.3.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.3.3.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="results-7">
-<section id="section-6.4.3.2">
+<section id="section-6.3.3.2">
             <h5 id="name-results-8">
-<a href="#section-6.4.3.2" class="section-number selfRef">6.4.3.2. </a><a href="#name-results-8" class="section-name selfRef">RESULTS</a>
+<a href="#section-6.3.3.2" class="section-number selfRef">6.3.3.2. </a><a href="#name-results-8" class="section-name selfRef">RESULTS</a>
             </h5>
-<div class="lang-xdr sourcecode" id="section-6.4.3.2-1">
+<div class="lang-xdr sourcecode" id="section-6.3.3.2-1">
 <pre>
 struct SETACL3resok {
     post_op_attr attr;
@@ -3438,95 +3375,95 @@ case ACL3_OK:
 default:
     SETACL3resfail resfail;
 };
-</pre><a href="#section-6.4.3.2-1" class="pilcrow">¶</a>
+</pre><a href="#section-6.3.3.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="description-7">
-<section id="section-6.4.3.3">
+<section id="section-6.3.3.3">
             <h5 id="name-description-8">
-<a href="#section-6.4.3.3" class="section-number selfRef">6.4.3.3. </a><a href="#name-description-8" class="section-name selfRef">DESCRIPTION</a>
+<a href="#section-6.3.3.3" class="section-number selfRef">6.3.3.3. </a><a href="#name-description-8" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-6.4.3.3-1">The SETACL procedure replaces the Access Control Lists
+<p id="section-6.3.3.3-1">The SETACL procedure replaces the Access Control Lists
 associated with the file system object specified by the
 SETACL3args.fh field with the ACLs specified by the
 SETACL3args.acl field.  The client obtains the file
 handle using one of the NFS version 3 LOOKUP, CREATE,
 MKDIR, MKNOD, SYMLINK, or READDIRPLUS procedures, or
-the MOUNT service, as described in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.4.3.3-1" class="pilcrow">¶</a></p>
-<aside id="section-6.4.3.3-2">
-              <p id="section-6.4.3.3-2.1">How are ACLs removed?<a href="#section-6.4.3.3-2.1" class="pilcrow">¶</a></p>
+the MOUNT service, as described in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.3.3.3-1" class="pilcrow">¶</a></p>
+<aside id="section-6.3.3.3-2">
+              <p id="section-6.3.3.3-2.1">How are ACLs removed?<a href="#section-6.3.3.3-2.1" class="pilcrow">¶</a></p>
 </aside>
-<p id="section-6.4.3.3-3">If the SETACL procedure is successful, the server sets
+<p id="section-6.3.3.3-3">If the SETACL procedure is successful, the server sets
 the SETACL3res.status field to ACL3_OK and fills in the
 SETACL3resok.attr field with the file object's post
-operation file attributes, as detailed in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.4.3.3-3" class="pilcrow">¶</a></p>
-<p id="section-6.4.3.3-4">Otherwise, SETACL3res.status contains an error status
-on failure and no other results are returned.<a href="#section-6.4.3.3-4" class="pilcrow">¶</a></p>
+operation file attributes, as detailed in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.3.3.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.3.3.3-4">Otherwise, SETACL3res.status contains an error status
+on failure and no other results are returned.<a href="#section-6.3.3.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-7">
-<section id="section-6.4.3.4">
+<section id="section-6.3.3.4">
             <h5 id="name-implementation-8">
-<a href="#section-6.4.3.4" class="section-number selfRef">6.4.3.4. </a><a href="#name-implementation-8" class="section-name selfRef">IMPLEMENTATION</a>
+<a href="#section-6.3.3.4" class="section-number selfRef">6.3.3.4. </a><a href="#name-implementation-8" class="section-name selfRef">IMPLEMENTATION</a>
             </h5>
-<p id="section-6.4.3.4-1">On success, the server does not send the reply until
-the ACL change is durable locally.<a href="#section-6.4.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.4.3.4-2">Changing a file object's ACL changes the object's mtime.
+<p id="section-6.3.3.4-1">On success, the server does not send the reply until
+the ACL change is durable locally.<a href="#section-6.3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-6.3.3.4-2">Changing a file object's ACL changes the object's mtime.
 The mtime change is reflected in the attributes returned
-in the SETACL response.<a href="#section-6.4.3.4-2" class="pilcrow">¶</a></p>
-<p id="section-6.4.3.4-3">A high-quality server implementation ensures that a
+in the SETACL response.<a href="#section-6.3.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-6.3.3.4-3">A high-quality server implementation ensures that a
 GETACL procedure running concurrently with a SETACL
 procedure does not return partially updated (torn)
 ACL contents. However, a failed SETACL may partially
-change a file's ACLs.<a href="#section-6.4.3.4-3" class="pilcrow">¶</a></p>
-<p id="section-6.4.3.4-4">When SETACL3args.fh represents a file object that does
+change a file's ACLs.<a href="#section-6.3.3.4-3" class="pilcrow">¶</a></p>
+<p id="section-6.3.3.4-4">When SETACL3args.fh represents a file object that does
 not implement support for ACLs, the server responds
-by setting SETACL3res.status to ACL3ERR_NOTSUPP.<a href="#section-6.4.3.4-4" class="pilcrow">¶</a></p>
-<p id="section-6.4.3.4-5">When SETACL3args.acl does not contain at least the
+by setting SETACL3res.status to ACL3ERR_NOTSUPP.<a href="#section-6.3.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-6.3.3.4-5">When SETACL3args.acl does not contain at least the
 minimal set of ACEs (as described in
 <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>), the server responds by setting
-SETACL3res.status to ACL3ERR_INVAL.<a href="#section-6.4.3.4-5" class="pilcrow">¶</a></p>
+SETACL3res.status to ACL3ERR_INVAL.<a href="#section-6.3.3.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-7">
-<section id="section-6.4.3.5">
+<section id="section-6.3.3.5">
             <h5 id="name-errors-8">
-<a href="#section-6.4.3.5" class="section-number selfRef">6.4.3.5. </a><a href="#name-errors-8" class="section-name selfRef">ERRORS</a>
+<a href="#section-6.3.3.5" class="section-number selfRef">6.3.3.5. </a><a href="#name-errors-8" class="section-name selfRef">ERRORS</a>
             </h5>
 <ul class="normal">
-<li class="normal" id="section-6.4.3.5-1.1">
-                <p id="section-6.4.3.5-1.1.1">ACL3ERR_PERM<a href="#section-6.4.3.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.3.3.5-1.1">
+                <p id="section-6.3.3.5-1.1.1">ACL3ERR_PERM<a href="#section-6.3.3.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.2">
-                <p id="section-6.4.3.5-1.2.1">ACL3ERR_IO<a href="#section-6.4.3.5-1.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.2">
+                <p id="section-6.3.3.5-1.2.1">ACL3ERR_IO<a href="#section-6.3.3.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.3">
-                <p id="section-6.4.3.5-1.3.1">ACL3ERR_ACCES<a href="#section-6.4.3.5-1.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.3">
+                <p id="section-6.3.3.5-1.3.1">ACL3ERR_ACCES<a href="#section-6.3.3.5-1.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.4">
-                <p id="section-6.4.3.5-1.4.1">ACL3ERR_INVAL<a href="#section-6.4.3.5-1.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.4">
+                <p id="section-6.3.3.5-1.4.1">ACL3ERR_INVAL<a href="#section-6.3.3.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.5">
-                <p id="section-6.4.3.5-1.5.1">ACL3ERR_NOSPC<a href="#section-6.4.3.5-1.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.5">
+                <p id="section-6.3.3.5-1.5.1">ACL3ERR_NOSPC<a href="#section-6.3.3.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.6">
-                <p id="section-6.4.3.5-1.6.1">ACL3ERR_ROFS<a href="#section-6.4.3.5-1.6.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.6">
+                <p id="section-6.3.3.5-1.6.1">ACL3ERR_ROFS<a href="#section-6.3.3.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.7">
-                <p id="section-6.4.3.5-1.7.1">ACL3ERR_DQUOT<a href="#section-6.4.3.5-1.7.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.7">
+                <p id="section-6.3.3.5-1.7.1">ACL3ERR_DQUOT<a href="#section-6.3.3.5-1.7.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.8">
-                <p id="section-6.4.3.5-1.8.1">ACL3ERR_STALE<a href="#section-6.4.3.5-1.8.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.8">
+                <p id="section-6.3.3.5-1.8.1">ACL3ERR_STALE<a href="#section-6.3.3.5-1.8.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.9">
-                <p id="section-6.4.3.5-1.9.1">ACL3ERR_BADHANDLE<a href="#section-6.4.3.5-1.9.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.9">
+                <p id="section-6.3.3.5-1.9.1">ACL3ERR_BADHANDLE<a href="#section-6.3.3.5-1.9.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.10">
-                <p id="section-6.4.3.5-1.10.1">ACL3ERR_SERVERFAULT<a href="#section-6.4.3.5-1.10.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.10">
+                <p id="section-6.3.3.5-1.10.1">ACL3ERR_SERVERFAULT<a href="#section-6.3.3.5-1.10.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-6.4.3.5-1.11">
-                <p id="section-6.4.3.5-1.11.1">ACL3ERR_JUKEBOX<a href="#section-6.4.3.5-1.11.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-6.3.3.5-1.11">
+                <p id="section-6.3.3.5-1.11.1">ACL3ERR_JUKEBOX<a href="#section-6.3.3.5-1.11.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -3552,7 +3489,7 @@ define the permission checking used by NFS servers. However, it
 is expected that an NFS server will do normal operating system
 permission checking using AUTH_UNIX style authentication as
 the basis of its protection mechanism, or another stronger
-form of authentication such as RPC_AUTH_GSS. With
+form of authentication such as RPCSEC_GSS. With
 AUTH_UNIX authentication, the server gets the client's
 effective uid, effective gid, and groups on each call and
 uses them to check permission. These are the so-called UNIX
@@ -3622,7 +3559,7 @@ returns the original completion status instead of
 processing the duplicate request again.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
 <p id="section-7.2-5">A description of an early implementation of a
 duplicate request cache can be found in <span>[<a href="#Juszczak" class="cite xref">Juszczak</a>]</span>.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.2-6">For all versions of the NFSACL protocol, the SETACL
+<p id="section-7.2-6">For all versions of the NFS_ACL protocol, the SETACL
 procedure is considered to be non-idempotent.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3635,7 +3572,7 @@ procedure is considered to be non-idempotent.<a href="#section-7.2-6" class="pil
 caching on the client or server. In particular, there is no
 support for strict cache consistency between a client and
 server, nor between different clients.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">The NFSACL protocol does not mandate a specific caching
+<p id="section-7.3-2">The NFS_ACL protocol does not mandate a specific caching
 policy for ACLs or information retrieved via the ACCESS
 procedure. However, a high-quality client implementation
 that seeks good performance might choose to revalidate
@@ -3651,12 +3588,12 @@ that it invalidates normal file attributes.<a href="#section-7.3-2" class="pilcr
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-xdr-protocol-definition" class="section-name selfRef">XDR Protocol Definition</a>
       </h2>
 <p id="section-8-1">This section contains a description of the core features of the
-NFSACL protocol, version 2 and 3, expressed in the XDR language
+NFS_ACL protocol, version 2 and 3, expressed in the XDR language
 <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">This description is provided in a way that makes it simple to
 extract into ready-to-compile form.  The reader can apply the
 following shell script to this document to produce a
-machine-readable XDR description of the NFSACL protocol.<a href="#section-8-2" class="pilcrow">¶</a></p>
+machine-readable XDR description of the NFS_ACL protocol.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <div class="lang-sh sourcecode" id="section-8-3">
 <pre>
 #!/bin/sh
@@ -3839,7 +3776,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// };
 ///
 /// /*
-///  * NFSACL version 2 procedure arguments and results
+///  * NFS_ACL version 2 procedure arguments and results
 ///  */
 ///
 /// struct GETACL2args {
@@ -3998,7 +3935,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// };
 ///
 /// /*
-///  * NFSACL version 3 procedure arguments and results
+///  * NFS_ACL version 3 procedure arguments and results
 ///  */
 ///
 /// struct GETACL3args {
@@ -4120,7 +4057,7 @@ exist.<a href="#section-9-3" class="pilcrow">¶</a></p>
 <p id="section-9.2-4">Coverage:  All procedures described in this document are implemented in both versions of the protocol.<a href="#section-9.2-4" class="pilcrow">¶</a></p>
 <p id="section-9.2-5">Licensing: GPLv2<a href="#section-9.2-5" class="pilcrow">¶</a></p>
 <p id="section-9.2-6">Implementation experience:  The initial Linux implementation
-of the NFSACL protocol is described in <span>[<a href="#Gruenbacher" class="cite xref">Gruenbacher</a>]</span>, and
+of the NFS_ACL protocol is described in <span>[<a href="#Gruenbacher" class="cite xref">Gruenbacher</a>]</span>, and
 subsequent modifications can be found in the Linux kernel
 source code repository <span>[<a href="#Linux" class="cite xref">Linux</a>]</span>.<a href="#section-9.2-6" class="pilcrow">¶</a></p>
 <p id="section-9.2-7"><span>[<a href="#Gruenbacher" class="cite xref">Gruenbacher</a>]</span> notes several minor differences between the
@@ -4142,7 +4079,7 @@ Linux and Solaris implementations of ACLs, and remarks that:
 <p id="section-10-1">An attacker can alter the content of an ACL as it transits
 an open network, giving the attacker access to file content
 that the ACL is supposed to protect.<a href="#section-10-1" class="pilcrow">¶</a></p>
-<p id="section-10-2">Therefore, implementations of NFSACL should protect the
+<p id="section-10-2">Therefore, implementations of NFS_ACL should protect the
 integrity of ACL content when it transits a network. The
 use of an integrity-preserving transport layer security
 service, such as the GSS Kerberos integrity service, is
@@ -4251,7 +4188,7 @@ the current document as a Reference.<a href="#section-11-1" class="pilcrow">¶</
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-source-material" class="section-name selfRef">Source Material</a>
       </h2>
 <p id="appendix-A-1">The on-the-wire protocol described here is intended to
-match existing de factor implementations of NFSACL.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+match existing de factor implementations of NFS_ACL.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">The source for the XDR specification provided in this
 document is the nfs_acl.x file as found in published
 versions of the OpenSolaris source code base <span>[<a href="#OpenSolaris" class="cite xref">OpenSolaris</a>]</span>,
@@ -4261,10 +4198,10 @@ was originally described in the OpenSolaris source code
 base.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 <div id="redaction-of-nfsacl-version-4">
 <section id="appendix-A.1">
-        <h3 id="name-redaction-of-nfsacl-version">
-<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-redaction-of-nfsacl-version" class="section-name selfRef">Redaction of NFSACL Version 4</a>
+        <h3 id="name-redaction-of-nfs_acl-versio">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-redaction-of-nfs_acl-versio" class="section-name selfRef">Redaction of NFS_ACL Version 4</a>
         </h3>
-<p id="appendix-A.1-1">Version 4 of NFSACL is described in the original nfs_acl.x source
+<p id="appendix-A.1-1">Version 4 of NFS_ACL is described in the original nfs_acl.x source
 file is described this way:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="appendix-A.1-2.1">
@@ -4275,9 +4212,9 @@ NFSv4 protocol itself.  NFSv4 does handle extended
 attributes in-band.<a href="#appendix-A.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="appendix-A.1-3">Because the two non-NULL procedures in this version of the NFSACL
+<p id="appendix-A.1-3">Because the two non-NULL procedures in this version of the NFS_ACL
 protocol were used only as part of a Solaris a prototype and there
-are no other implementations of NFSACL version 4, it is not included
+are no other implementations of NFS_ACL version 4, it is not included
 in the protocol description appearing in this document.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -4286,17 +4223,23 @@ in the protocol description appearing in this document.<a href="#appendix-A.1-3"
         <h3 id="name-redaction-of-getxattrdir-pr">
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-redaction-of-getxattrdir-pr" class="section-name selfRef">Redaction of GETXATTRDIR Procedures</a>
         </h3>
-<p id="appendix-A.2-1">The original NFSACL protocol contained a GETXATTRDIR procedure
+<p id="appendix-A.2-1">The original NFS_ACL protocol contained a GETXATTRDIR procedure
 that was meant to provide clients access to named attributes
 (auxiliary streams) stored with each shared file. These
 procedures were later introduced in NFS version 4 <span>[<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-2">As far as this editor is aware, named attribute support was
-only ever implemented in Solaris, and the procedures here
-were strictly prototypes. There is little to no public
+<p id="appendix-A.2-2">As far as this editor is aware, support for NFSv4 named
+attributes was only ever implemented in Solaris, which uses
+these procedures make named attributes visible over NFSv2 and
+NFSv3 as they are in NFSv4. There is little to no public
 documentation beyond what can be found in the original
 nfs_acl.x file.<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-3">Therefore, the GETXATTRDIR procedures are not included in
 the protocol description appearing in this document.<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
+<aside id="appendix-A.2-4">
+          <p id="appendix-A.2-4.1">Perhaps this document should provide rules for extending the
+NFS_ACL protocol, in case some other implementation wishes to
+provide named attribute visibility for NFSv3.<a href="#appendix-A.2-4.1" class="pilcrow">¶</a></p>
+</aside>
 </section>
 </div>
 <div id="code-compilation-requirements">
@@ -4313,13 +4256,13 @@ ACL3_OK constants used in definitions of result unions.<a href="#appendix-A.3-2.
 </li>
           <li class="normal" id="appendix-A.3-2.2">
             <p id="appendix-A.3-2.2.1">The file does not include definitions of NFS protocol elements
-that are shared with the NFSACL protocol, such as fhandle_t and
+that are shared with the NFS_ACL protocol, such as fhandle_t and
 post_op_attr.<a href="#appendix-A.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="appendix-A.3-3">The XDR specification provided in this document rectifies those
 omissions to provide a complete and compilable XDR language
-description of the NFSACL protocol.<a href="#appendix-A.3-3" class="pilcrow">¶</a></p>
+description of the NFS_ACL protocol.<a href="#appendix-A.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
