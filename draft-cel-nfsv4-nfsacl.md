@@ -394,27 +394,36 @@ Access Control Entries in an ACL's "dfaclent" comprise
 an object's default ACL. The default ACL does not affect
 access to the object on which it is set.
 
-{:aside}
-> What error, if any, is returned if a client attempts to set
-a default ACL on a non-directory object?
-> What error is returned if an invalid mask bit is set or
-the ACL argument has too many ACEs?
-
 Each NFS ACL must have one ACE for each of
-NA_USER_OBJ, NA_GROUP_OBJ and NA_OTHER_OBJ.
+NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ.
 An NFS ACL that consists only of these
 three ACEs is referred to as a minimal NFS ACL.
-A server responds with ACL2ERR_IO or ACL3ERR_INVAL,
-depending on the version of NFS_ACL that is in use,
-if a client attempts to set an NFS ACL that does not
-contain these ACEs.
 
 An NFS ACL may zero or more NA_USER and/or NA_GROUP
 ACEs.
 
+When a client presents a SETACL operation that a server
+finds is invalid or it cannot process, the server responds
+with ACL2ERR_IO or ACL3ERR_INVAL, depending on the version
+of NFS_ACL that is in use. ACLs that are not valid include:
+
+* The presented ACL does not contain one ACE for each of
+  NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ
+* The presented ACL is a default ACL but the target object
+  is not a directory
+* The presented ACL contains too many ACEs
+* The presented ACL's type field contains more than one
+  set bit
+
 {:aside}
-> What happens when more than one bit is set in the
-"type" field? What does the NA_ACL_DEFAULT bit do?
+> cel: What does the NA_ACL_DEFAULT bit do?
+
+{:aside}
+> rthurlow: In the Solaris acl(2)/facl(2) system calls, the
+> equivalently-defined ACL_DEFAULT is used after aclent
+> sorting to note where regular entries end and where default
+> entries start in a single list.  So perhaps it would be
+> normal for the dfaclent entries to all be so marked.
 
 The "id" field in an Access Control Entry is interpreted as follows:
 
