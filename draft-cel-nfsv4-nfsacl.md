@@ -116,7 +116,7 @@ rights to file content {{IEEE}}.
 
 Version 2 of NFS is described in {{RFC1094}}, and version 3
 in {{RFC1813}}. Neither of these protocols include a
-method for accessing or managing ACLs associated
+method for viewing or managing ACLs associated
 with files shared via the NFS protocol, even though the
 local file systems shared via NFS often implemented ACLs and
 gave local users mechanisms to read and update them.
@@ -370,7 +370,7 @@ ACL.
 NFS clients can use either the NFS_ACL version 2 ACCESS
 procedure or the NFS version 3 ACCESS procedure to ask the
 server to perform an access check based on the requesting
-user and the ACL present on a filesystem object. Clients are
+user and the ACL present on a file system object. Clients are
 also free to simply try an operation to see what works, then
 recover it the server denies access.
 
@@ -1120,20 +1120,33 @@ version 3 of the NFS protocol.
 
 These are defined in {{Section 2.5 of RFC1813}}.
 
-uint64
-: typedef unsigned hyper uint64;
-uint32
-: typedef unsigned long uint32;
-fileid3
-: typedef uint64 fileid3;
-uid3
-: typedef uint32 uid3;
-gid3
-: typedef uint32 gid3;
-size3
-: typedef uint64 size3;
-mode3
-: typedef uint32 mode3;
+~~~ xdr
+typedef unsigned hyper uint64;
+~~~
+
+~~~ xdr
+typedef unsigned long uint32;
+~~~
+
+~~~ xdr
+typedef uint64 fileid3;
+~~~
+
+~~~ xdr
+typedef uint32 uid3;
+~~~
+
+~~~ xdr
+typedef uint32 gid3;
+~~~
+
+~~~ xdr
+typedef uint64 size3;
+~~~
+
+~~~ xdr
+typedef uint32 mode3;
+~~~
 
 ### ftype3
 
@@ -1179,8 +1192,11 @@ A client uses this handle during subsequent NFS operations
 to reference the file. This definition comes from
 {{Section 2.6 of RFC1813}}.
 
+~~~ xdr
 NFS3_FHSIZE 64
-: The maximum size in bytes of the opaque file handle.
+~~~
+
+The maximum size in bytes of the opaque file handle.
 
 ~~~ xdr
 struct nfs_fh3 {
