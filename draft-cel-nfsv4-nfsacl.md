@@ -2237,6 +2237,7 @@ Andreas Gruenbacher,
 Rick Macklem,
 Greg Marsden,
 Martin Thomson,
+Rob Thurlow,
 and
 Jim Wright
 for their input and support.
@@ -2245,9 +2246,9 @@ Special thanks to
 Area Director
 Gorry Fairhurst,
 NFSV4 Working Group Chairs
-Chris Inacio
+Brian Pawlowski
 and
-Brian Pawlowski,
+Christopher Inacio,
 and
 NFSV4 Working Group Secretary
 Thomas Haynes
