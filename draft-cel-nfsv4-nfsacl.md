@@ -2242,10 +2242,8 @@ Jim Wright
 for their input and support.
 
 Special thanks to
-Transport Area Directors
-Martin Duke
-and
-Zaheduzzaman Sarker,
+Area Director
+Gorry Fairhurst,
 NFSV4 Working Group Chairs
 Chris Inacio
 and
