@@ -2226,12 +2226,13 @@ Appendix B.  Open Questions
 Acknowledgments
 
    The editor is grateful to Bill Baker, Wim Coekaerts, Andreas
-   Gruenbacher, Rick Macklem, Greg Marsden, Martin Thomson, and Jim
-   Wright for their input and support.
+   Gruenbacher, Rick Macklem, Greg Marsden, Martin Thomson, Rob Thurlow,
+   and Jim Wright for their input and support.
 
    Special thanks to Area Director Gorry Fairhurst, NFSV4 Working Group
-   Chairs Chris Inacio and Brian Pawlowski, and NFSV4 Working Group
-   Secretary Thomas Haynes for their patience, guidance, and oversight.
+   Chairs Brian Pawlowski and Christopher Inacio, and NFSV4 Working
+   Group Secretary Thomas Haynes for their patience, guidance, and
+   oversight.
 
 Author's Address
 
