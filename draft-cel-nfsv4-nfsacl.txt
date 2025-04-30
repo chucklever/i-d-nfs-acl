@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                                    Oracle
-Intended status: Informational                             29 April 2025
-Expires: 31 October 2025
+Intended status: Informational                             30 April 2025
+Expires: 1 November 2025
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 October 2025.
+   This Internet-Draft will expire on 1 November 2025.
 
 Copyright Notice
 
@@ -2229,10 +2229,9 @@ Acknowledgments
    Gruenbacher, Rick Macklem, Greg Marsden, Martin Thomson, and Jim
    Wright for their input and support.
 
-   Special thanks to Transport Area Directors Martin Duke and
-   Zaheduzzaman Sarker, NFSV4 Working Group Chairs Chris Inacio and
-   Brian Pawlowski, and NFSV4 Working Group Secretary Thomas Haynes for
-   their patience, guidance, and oversight.
+   Special thanks to Area Director Gorry Fairhurst, NFSV4 Working Group
+   Chairs Chris Inacio and Brian Pawlowski, and NFSV4 Working Group
+   Secretary Thomas Haynes for their patience, guidance, and oversight.
 
 Author's Address
 
