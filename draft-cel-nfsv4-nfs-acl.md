@@ -3,7 +3,7 @@ title: "The Network File System Access Control List Protocol"
 abbrev: "NFS ACL Protocol"
 category: info
 
-docname: draft-cel-nfsv4-nfsacl-latest
+docname: draft-cel-nfsv4-nfs-acl-latest
 pi: [sortrefs, symrefs, docmapping]
 submissiontype: IETF
 ipr: trust200902
@@ -20,7 +20,7 @@ venue:
   mail: "nfsv4@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/nfsv4/"
   github: "chucklever/i-d-nfs-acl"
-  latest: "https://chucklever.github.io/i-d-nfs-acl/draft-cel-nfsv4-nfsacl.html"
+  latest: "https://chucklever.github.io/i-d-nfs-acl/draft-cel-nfsv4-nfs-acl.html"
 
 author:
  -
@@ -1675,7 +1675,7 @@ then the reader can do the following to extract an XDR
 description file:
 
 ~~~ sh
-sh extract.sh < spec.txt > nfsacl.x
+sh extract.sh < spec.txt > nfs_acl.x
 ~~~
 
 ##  Code Component License
