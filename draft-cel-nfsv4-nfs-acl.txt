@@ -4,12 +4,12 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                                    Oracle
-Intended status: Informational                             30 April 2025
-Expires: 1 November 2025
+Intended status: Informational                                2 May 2025
+Expires: 3 November 2025
 
 
           The Network File System Access Control List Protocol
-                     draft-cel-nfsv4-nfsacl-latest
+                     draft-cel-nfsv4-nfs-acl-latest
 
 Abstract
 
@@ -23,9 +23,9 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://chucklever.github.io/i-d-nfs-acl/draft-cel-nfsv4-nfsacl.html.
-   Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-cel-nfsv4-nfsacl/.
+   https://chucklever.github.io/i-d-nfs-acl/draft-cel-nfsv4-nfs-
+   acl.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-cel-nfsv4-nfs-acl/.
 
    Discussion of this document takes place on the Network File System
    Version 4 Working Group mailing list (mailto:nfsv4@ietf.org), which
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 November 2025.
+   This Internet-Draft will expire on 3 November 2025.
 
 Copyright Notice
 
@@ -1610,7 +1610,7 @@ Table of Contents
    and this document is in a file called "spec.txt", then the reader can
    do the following to extract an XDR description file:
 
-   sh extract.sh < spec.txt > nfsacl.x
+   sh extract.sh < spec.txt > nfs_acl.x
 
 8.1.  Code Component License
 
