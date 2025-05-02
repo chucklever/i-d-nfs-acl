@@ -4,10 +4,10 @@
 
 This is the working area for the individual Internet-Draft, "The Network File System Access Control List Protocol".
 
-* [Editor's Copy](https://chucklever.github.io/i-d-nfs-acl/#go.draft-cel-nfsv4-nfsacl.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-cel-nfsv4-nfsacl)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-cel-nfsv4-nfsacl)
-* [Compare Editor's Copy to Individual Draft](https://chucklever.github.io/i-d-nfs-acl/#go.draft-cel-nfsv4-nfsacl.diff)
+* [Editor's Copy](https://chucklever.github.io/i-d-nfs-acl/#go.draft-cel-nfsv4-nfs-acl.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-cel-nfsv4-nfs-acl)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-cel-nfsv4-nfs-acl)
+* [Compare Editor's Copy to Individual Draft](https://chucklever.github.io/i-d-nfs-acl/#go.draft-cel-nfsv4-nfs-acl.diff)
 
 
 ## Contributing
