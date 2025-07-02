@@ -9,26 +9,26 @@
 <meta content="
        This Informational document describes the NFS_ACL protocol.
 NFS_ACL is a legacy member of the Network File System family
-of protocols that NFS clients use to access and modify Access
+of protocols that NFS clients use to view and update Access
 Control Lists stored on an NFS version 2 or version 3 server. 
     " name="description">
-<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="xml2rfc 3.29.0" name="generator">
 <meta content="NFS" name="keyword">
 <meta content="ACL" name="keyword">
 <meta content="draft-cel-nfsv4-nfs-acl-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.1
-    Python 3.12.10
+  xml2rfc 3.29.0
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
-    lxml 5.3.0
-    platformdirs 4.3.7
+    lxml 5.3.1
+    platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 70.3.0
+    requests 2.32.4
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
 <link href="draft-cel-nfsv4-nfs-acl.xml" rel="alternate" type="application/rfc+xml">
@@ -1048,11 +1048,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">NFS ACL Protocol</td>
-<td class="right">May 2025</td>
+<td class="right">July 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lever</td>
-<td class="center">Expires 3 November 2025</td>
+<td class="center">Expires 3 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-cel-nfsv4-nfs-acl-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-02" class="published">2 May 2025</time>
+<time datetime="2025-07-02" class="published">2 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-03">3 November 2025</time></dd>
+<dd class="expires"><time datetime="2026-01-03">3 January 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1086,7 +1086,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This Informational document describes the NFS_ACL protocol.
 NFS_ACL is a legacy member of the Network File System family
-of protocols that NFS clients use to access and modify Access
+of protocols that NFS clients use to view and update Access
 Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
@@ -1124,7 +1124,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1416,11 +1416,11 @@ else (without exception) has those rights.<a href="#section-1-2" class="pilcrow"
 file owners to grant specific users fine-grained access
 rights to file content <span>[<a href="#IEEE" class="cite xref">IEEE</a>]</span>.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">Version 2 of NFS is described in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>, and version 3
-in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>. Neither of these protocols include a
-method for viewing or managing ACLs associated
-with files shared via the NFS protocol, even though the
-local file systems shared via NFS often implemented ACLs and
-gave local users mechanisms to read and update them.<a href="#section-1-4" class="pilcrow">¶</a></p>
+in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>. Neither of these protocols include a method
+for managing ACLs associated with files shared via the NFS
+protocol, even though the local file systems shared via NFS
+often implemented ACLs and gave local users mechanisms to
+read and update them.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">Sun created the NFS_ACL protocol to provide that mechanism
 for files accessed remotely via NFS. Later, other operating
 systems, including Linux, implemented NFS_ACL for similar
@@ -1430,12 +1430,19 @@ file that is publicly available in the OpenSolaris
 code base <span>[<a href="#OpenSolaris" class="cite xref">OpenSolaris</a>]</span>. The editor has attempted to
 introduce no changes to the protocol as it is implemented
 in those operating systems and in Linux.<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">This document assumes readers are familiar with the NFS version
-2 or 3 protocols and at least one implementation of them.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-7">The document assumes readers are already familiar with the
+NFS version 2 or 3 protocols and at least one implementation
+of them.<a href="#section-1-7" class="pilcrow">¶</a></p>
 <p id="section-1-8">Issues of compatibility between the protocol described in
 this document and NFSv4 ACLs (as described by <span>[<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>)
 are considered out of scope. More information on this topic
 is available in Section 6 of draft-rmacklem-nfsv4-posix-acls.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9">Local file systems on NFSv2 and NFSv3 servers determine the
+particular semantics of each Access Control List -- in other
+words, how the server uses each Access Control List to
+authorize access to file content. This document serves only
+as a description of the network protocol used to exchange
+ACLs between NFS clients and servers.<a href="#section-1-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1512,13 +1519,14 @@ bytes and a set of metadata attributes.<a href="#section-3.1-2.6.1" class="pilcr
         <h3 id="name-remote-procedure-call">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-remote-procedure-call" class="section-name selfRef">Remote Procedure Call</a>
         </h3>
-<p id="section-3.2-1">The Sun Remote Procedure Call (SunRPC) specification provides
-a procedure-oriented interface to remote services. Each server
+<p id="section-3.2-1">The Sun Remote Procedure Call (SunRPC) protocol provides a
+procedure-oriented interface to remote services. Each server
 supplies a program, which is a set of procedures. The NFS
 service is one such program. The combination of host address,
 program number, version number, and procedure number specify one
 remote service procedure.  Servers can support multiple versions
-of a program by using different protocol version numbers.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+of a program that are accessed using different protocol version
+numbers.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">The NFS and NFS_ACL protocols are both based on SunRPC. The
 remainder of this document assumes an NFS environment that is
 implemented on top of SunRPC, as it is specified in <span>[<a href="#RFC5531" class="cite xref">RFC5531</a>]</span>.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
@@ -1546,7 +1554,7 @@ Language in <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a h
         <h3 id="name-authentication-and-authoriz">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-authentication-and-authoriz" class="section-name selfRef">Authentication and Authorization</a>
         </h3>
-<p id="section-3.4-1">The RPC protocol includes a slot in every procedure call for
+<p id="section-3.4-1">The RPC protocol includes fields in every procedure call for
 user authentication parameters. The specific content of the
 authentication parameters is determined by the type of
 authentication used by the server and client. A discussion
@@ -1591,8 +1599,10 @@ independent than the uid and gid mapping in AUTH_UNIX.<a href="#section-3.4-5" c
         <h3 id="name-file-access-control">
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-file-access-control" class="section-name selfRef">File Access Control</a>
         </h3>
-<p id="section-3.5-1">This section describes the abstractions that a server uses to
-determine whether an access or modification to a file is permitted.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">This section describes the abstractions that an NFS server
+uses to determine whether an access or modification
+to a file is permitted. The exact behavior of a server
+implementation may vary.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <div id="file-ownership">
 <section id="section-3.5.1">
           <h4 id="name-file-ownership">
@@ -1688,7 +1698,8 @@ one for the file's owner group, and one for everyone else.<a href="#section-3.5.
             </h5>
 <p id="section-3.5.4.1-1">NFS clients do not perform access checks based on their
 interpretation of an ACL read from the server. NFS servers
-are solely responsible for enforcing access control.<a href="#section-3.5.4.1-1" class="pilcrow">¶</a></p>
+are solely responsible for authorizing and restricting
+access to file content via the NFS protocol.<a href="#section-3.5.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.5.4.1-2">An NFS Access Control List is a list of three or more
 Access Control Entries (ACEs) associated with one file
 system object. Each Access Control Entry in this list
@@ -1826,17 +1837,24 @@ the "id" field is ignored.<a href="#section-3.5.4.2-10.2.1" class="pilcrow">¶</
 <a href="#section-3.5.4.3" class="section-number selfRef">3.5.4.3. </a><a href="#name-relationship-between-acls-a" class="section-name selfRef">Relationship Between ACLs and Other File Attributes</a>
             </h5>
 <p id="section-3.5.4.3-1">When an ACL is present on a file, the ACL controls the
-requesting user's access to the file. The server ignores the
-file's mode bits. Changing the file's ACL via the SETACL
-procedure does not alter the file's mode bits, and changing
-the mode bits via the SETATTR procedure does not alter the
-content of the ACL in any way.<a href="#section-3.5.4.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.3-2">When an ACL is present on a file, changing the file's owner
-(say, via the SETATTR operation) alters the server's
-interpretation of any ACE that targets @OWNER.<a href="#section-3.5.4.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.5.4.3-3">When an ACL is present on a file, changing the file's group
-(say, via the SETATTR operation) alters the server's
-interpretation of any ACE that targets @GROUP.<a href="#section-3.5.4.3-3" class="pilcrow">¶</a></p>
+requesting user's access to the file. Typically the NFS
+server ignores the file's mode bits.<a href="#section-3.5.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-2">Depending on the behavior of the local file system
+implementation, changing the file's ACL via the SETACL
+procedure may alter the file's mode bits, and changing
+the mode bits via the SETATTR procedure may alter the
+content of the ACL in any way. NFS clients should
+refresh cached ACLs or file modes after one of these
+operations.<a href="#section-3.5.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-3">When an ACL is present on a file, changing the file's owner
+(say, via the SETATTR operation) may alter the server's
+interpretation of any ACE that targets @OWNER.<a href="#section-3.5.4.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-4">When an ACL is present on a file, changing the file's group
+(say, via the SETATTR operation) may alter the server's
+interpretation of any ACE that targets @GROUP.<a href="#section-3.5.4.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.5.4.3-5">If an NFS client observes that a file's ctime attribute
+has changed, it should assume that any ACLs that are
+present might have been modified.<a href="#section-3.5.4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="acl-inheritance">
@@ -1846,7 +1864,7 @@ interpretation of any ACE that targets @GROUP.<a href="#section-3.5.4.3-3" class
             </h5>
 <aside id="section-3.5.4.4-1">
               <p id="section-3.5.4.4-1.1">Section needs to explain how default ACLs work and what
-impact they have on the mode bits of the new file.<a href="#section-3.5.4.4-1.1" class="pilcrow">¶</a></p>
+impact they may have on the mode bits of the new file.<a href="#section-3.5.4.4-1.1" class="pilcrow">¶</a></p>
 </aside>
 <p id="section-3.5.4.4-2">A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures
 to request instantiatiation of a new file object. The server uses
@@ -1861,7 +1879,9 @@ ACL on the new object.<a href="#section-3.5.4.4-2" class="pilcrow">¶</a></p>
             </h5>
 <p id="section-3.5.4.5-1">The section entitled "The POSIX 1003.1e/1003.2c Working Group"
 in <span>[<a href="#Gruenbacher" class="cite xref">Gruenbacher</a>]</span> details the history of POSIX standards efforts
-with regard to file access control.<a href="#section-3.5.4.5-1" class="pilcrow">¶</a></p>
+with regard to file access control. The editor recommends that
+readers familiarize themselves with the extent to which POSIX
+specifies the content and behavior of ACLs.<a href="#section-3.5.4.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1881,7 +1901,7 @@ with regard to file access control.<a href="#section-3.5.4.5-1" class="pilcrow">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-rpc-authentication" class="section-name selfRef">RPC Authentication</a>
         </h3>
 <p id="section-4.1-1">The NFS_ACL service uses AUTH_NONE in the NULL procedure.
-All RPC authentication flavors can be used for other procedures.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+All RPC authentication flavors may be used for other procedures.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="constants">
