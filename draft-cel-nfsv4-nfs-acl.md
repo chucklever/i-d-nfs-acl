@@ -90,7 +90,7 @@ informative:
 
 This Informational document describes the NFS_ACL protocol.
 NFS_ACL is a legacy member of the Network File System family
-of protocols that NFS clients use to access and modify Access
+of protocols that NFS clients use to view and update Access
 Control Lists stored on an NFS version 2 or version 3 server.
 
 
@@ -115,11 +115,11 @@ file owners to grant specific users fine-grained access
 rights to file content {{IEEE}}.
 
 Version 2 of NFS is described in {{RFC1094}}, and version 3
-in {{RFC1813}}. Neither of these protocols include a
-method for viewing or managing ACLs associated
-with files shared via the NFS protocol, even though the
-local file systems shared via NFS often implemented ACLs and
-gave local users mechanisms to read and update them.
+in {{RFC1813}}. Neither of these protocols include a method
+for managing ACLs associated with files shared via the NFS
+protocol, even though the local file systems shared via NFS
+often implemented ACLs and gave local users mechanisms to
+read and update them.
 
 Sun created the NFS_ACL protocol to provide that mechanism
 for files accessed remotely via NFS. Later, other operating
@@ -132,13 +132,21 @@ code base {{OpenSolaris}}. The editor has attempted to
 introduce no changes to the protocol as it is implemented
 in those operating systems and in Linux.
 
-This document assumes readers are familiar with the NFS version
-2 or 3 protocols and at least one implementation of them.
+The document assumes readers are already familiar with the
+NFS version 2 or 3 protocols and at least one implementation
+of them.
 
 Issues of compatibility between the protocol described in
 this document and NFSv4 ACLs (as described by {{RFC8881}})
 are considered out of scope. More information on this topic
 is available in Section 6 of draft-rmacklem-nfsv4-posix-acls.
+
+Local file systems on NFSv2 and NFSv3 servers determine the
+particular semantics of each Access Control List -- in other
+words, how the server uses each Access Control List to
+authorize access to file content. This document serves only
+as a description of the network protocol used to exchange
+ACLs between NFS clients and servers.
 
 # Conventions and Definitions
 
@@ -182,13 +190,14 @@ user:
 
 ## Remote Procedure Call
 
-The Sun Remote Procedure Call (SunRPC) specification provides
-a procedure-oriented interface to remote services. Each server
+The Sun Remote Procedure Call (SunRPC) protocol provides a
+procedure-oriented interface to remote services. Each server
 supplies a program, which is a set of procedures. The NFS
 service is one such program. The combination of host address,
 program number, version number, and procedure number specify one
 remote service procedure.  Servers can support multiple versions
-of a program by using different protocol version numbers.
+of a program that are accessed using different protocol version
+numbers.
 
 The NFS and NFS_ACL protocols are both based on SunRPC. The
 remainder of this document assumes an NFS environment that is
@@ -211,7 +220,7 @@ Language in {{RFC4506}}.
 
 ## Authentication and Authorization
 
-The RPC protocol includes a slot in every procedure call for
+The RPC protocol includes fields in every procedure call for
 user authentication parameters. The specific content of the
 authentication parameters is determined by the type of
 authentication used by the server and client. A discussion
@@ -251,8 +260,10 @@ independent than the uid and gid mapping in AUTH_UNIX.
 
 ## File Access Control
 
-This section describes the abstractions that a server uses to
-determine whether an access or modification to a file is permitted.
+This section describes the abstractions that an NFS server
+uses to determine whether an access or modification
+to a file is permitted. The exact behavior of a server
+implementation may vary.
 
 ### File Ownership
 
@@ -325,7 +336,8 @@ one for the file's owner group, and one for everyone else.
 
 NFS clients do not perform access checks based on their
 interpretation of an ACL read from the server. NFS servers
-are solely responsible for enforcing access control.
+are solely responsible for authorizing and restricting
+access to file content via the NFS protocol.
 
 An NFS Access Control List is a list of three or more
 Access Control Entries (ACEs) associated with one file
@@ -434,25 +446,34 @@ the "id" field is ignored.
 #### Relationship Between ACLs and Other File Attributes
 
 When an ACL is present on a file, the ACL controls the
-requesting user's access to the file. The server ignores the
-file's mode bits. Changing the file's ACL via the SETACL
-procedure does not alter the file's mode bits, and changing
-the mode bits via the SETATTR procedure does not alter the
-content of the ACL in any way.
+requesting user's access to the file. Typically the NFS
+server ignores the file's mode bits.
+
+Depending on the behavior of the local file system
+implementation, changing the file's ACL via the SETACL
+procedure may alter the file's mode bits, and changing
+the mode bits via the SETATTR procedure may alter the
+content of the ACL in any way. NFS clients should
+refresh cached ACLs or file modes after one of these
+operations.
 
 When an ACL is present on a file, changing the file's owner
-(say, via the SETATTR operation) alters the server's
+(say, via the SETATTR operation) may alter the server's
 interpretation of any ACE that targets @OWNER.
 
 When an ACL is present on a file, changing the file's group
-(say, via the SETATTR operation) alters the server's
+(say, via the SETATTR operation) may alter the server's
 interpretation of any ACE that targets @GROUP.
+
+If an NFS client observes that a file's ctime attribute
+has changed, it should assume that any ACLs that are
+present might have been modified.
 
 #### ACL Inheritance
 
 {:aside}
 > Section needs to explain how default ACLs work and what
-impact they have on the mode bits of the new file.
+impact they may have on the mode bits of the new file.
 
 A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures
 to request instantiatiation of a new file object. The server uses
@@ -463,14 +484,16 @@ ACL on the new object.
 
 The section entitled "The POSIX 1003.1e/1003.2c Working Group"
 in {{Gruenbacher}} details the history of POSIX standards efforts
-with regard to file access control.
+with regard to file access control. The editor recommends that
+readers familiarize themselves with the extent to which POSIX
+specifies the content and behavior of ACLs.
 
 # Protocol Elements Common to Both Versions
 
 ## RPC Authentication
 
 The NFS_ACL service uses AUTH_NONE in the NULL procedure.
-All RPC authentication flavors can be used for other procedures.
+All RPC authentication flavors may be used for other procedures.
 
 ## Constants
 
