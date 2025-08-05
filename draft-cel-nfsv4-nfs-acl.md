@@ -1161,12 +1161,62 @@ default:
 
 #### DESCRIPTION
 
+The GETXATTRDIR procedure obtains the file handle of the named attribute
+directory associated with the file handle in the GETXATTRDIR2args.fh
+field.
+
+If the GETXATTRDIR procedure is successful, the server sets the
+GETXATTRDIR2res.status field to ACL2_OK.
+It fills in the GETXATTRDIR2resok.fh field with a file handle that
+the client may use to look up the target file's named attributes.
+It fills in the GETXATTRDIR2resok.attr field with the name attribute
+directory's current file attributes, as detailed in {{RFC1094}}.
+
+Using the file handle returned in GETXATTRDIR2resok.fh, a client
+can utilize the READDIR and LOOKUP procedures to obtain file handles
+for the named attributes associated with the target file system object.
+
+If the target file object does not currently have a named attribute
+directory associated with it and the GETXATTRDIR2args.create boolean
+field is set to false, the server returns ACL2ERR_NOENT.
+If the target file object does not currently have a named attribute
+directory associated with it and the GETXATTRDIR2args.create boolean
+field is set to true, the server attempts to create the named attribute
+directory before returning a result.
+If the target file currently has a named attribute directory
+associated with it and the GETXATTRDIR2args.create boolean is set
+to true, the server returns the file handle of that named attribute
+directory.
+
+If the RPC user does not have read access to the target file, or
+if the GETXATTRDIR operation is to create a named attribute directory
+and the RPC user does not have permission to do so, the server returns
+ACL2_ACCES in the GETXATTRDIR2.status field.
+
+If the target file handle designates an object not of type NFREG or
+NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
+field. Neither named attributes nor named attribute directories have
+their own named attributes.
+
 #### IMPLEMENTATION
 
 Server implementers are free to choose not to implement this procedure.
 In this case, the server returns the RPC-level error PROC_UNAVAIL.
 
+If the server implementation does implement the GETXATTRDIR procedure
+but the shared file system containing the target file object does not
+support named attributes, the server returns ACL2ERR_IO in the
+GETXATTRDIR2.status field.
+
 #### ERRORS
+
+- ACL2ERR_PERM
+- ACL2ERR_NOENT
+- ACL2ERR_IO
+- ACL2ERR_ACCES
+- ACL2ERR_NOSPC
+- ACL2ERR_ROFS
+- ACL2ERR_STALE
 
 # NFS_ACL Version 3
 
@@ -1642,12 +1692,66 @@ default:
 
 #### DESCRIPTION
 
+The GETXATTRDIR procedure obtains the file handle of the named attribute
+directory associated with the file handle in the GETXATTRDIR3args.fh
+field.
+
+If the GETXATTRDIR procedure is successful, the server sets the
+GETXATTRDIR3res.status field to ACL3_OK.
+It fills in the GETXATTRDIR3resok.fh field with a file handle that
+the client may use to look up the target file's named attributes.
+It fills in the GETXATTRDIR3resok.attr field with the name attribute
+directory's current file attributes, as detailed in {{RFC1813}}.
+
+Using the file handle returned in GETXATTRDIR3resok.fh, a client
+can utilize the READDIR and LOOKUP procedures to obtain file handles
+for the named attributes associated with the target file system object.
+
+If the target file object does not currently have a named attribute
+directory associated with it and the GETXATTRDIR3args.create boolean
+field is set to false, the server returns ACL3ERR_NOENT.
+If the target file object does not currently have a named attribute
+directory associated with it and the GETXATTRDIR3args.create boolean
+field is set to true, the server attempts to create the named attribute
+directory before returning a result.
+If the target file currently has a named attribute directory
+associated with it and the GETXATTRDIR3args.create boolean is set
+to true, the server returns the file handle of that named attribute
+directory.
+
+If the RPC user does not have read access to the target file, or
+if the GETXATTRDIR operation is to create a named attribute directory
+and the RPC user does not have permission to do so, the server returns
+ACL3_ACCES in the GETXATTRDIR3.status field.
+
+If the target file handle designates an object not of type NF3REG or
+NF3DIR, the server returns the value ACL3ERR_INVAL in the
+GETXATTRDIR3.status field. Neither named attributes nor named attribute
+directories have their own named attributes.
+
 #### IMPLEMENTATION
 
 Server implementers are free to choose not to implement this procedure.
 In this case, the server returns the RPC-level error PROC_UNAVAIL.
 
+If the server implementation does implement the GETXATTRDIR procedure
+but the shared file system containing the target file object does not
+support named attributes, the server returns ACL3ERR_NOTSUPP in the
+GETXATTRDIR3.status field.
+
 #### ERRORS
+
+- ACL3ERR_PERM
+- ACL3ERR_NOENT
+- ACL3ERR_IO
+- ACL3ERR_ACCES
+- ACL3ERR_INVAL
+- ACL3ERR_NOSPC
+- ACL3ERR_ROFS
+- ACL3ERR_STALE
+- ACL3ERR_NOTSUPP
+- ACL3ERR_SERVERFAULT
+- ACL3ERR_JUKEBOX
 
 # Implementation Issues
 
@@ -1928,6 +2032,7 @@ text need be preserved.
 /// enum aclstat2 {
 ///     ACL2_OK = 0,
 ///     ACL2ERR_PERM = 1,
+///     ACL2ERR_NOENT = 2,
 ///     ACL2ERR_IO = 5,
 ///     ACL2ERR_ACCES = 13,
 ///     ACL2ERR_NOSPC = 28,
