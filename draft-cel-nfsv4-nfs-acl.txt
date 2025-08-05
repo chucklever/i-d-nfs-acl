@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                                    Oracle
-Intended status: Informational                               2 July 2025
-Expires: 3 January 2026
+Intended status: Informational                             5 August 2025
+Expires: 6 February 2026
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2026.
+   This Internet-Draft will expire on 6 February 2026.
 
 Copyright Notice
 
@@ -104,6 +104,7 @@ Table of Contents
                List
        5.2.4.  Procedure 3: GETATTR - Get file attributes
        5.2.5.  Procedure 4: ACCESS - Check access permission
+       5.2.6.  Procedure 5: GETXATTRDIR - Get named attributes
    6.  NFS_ACL Version 3
      6.1.  Data types inherited from NFS version 3
        6.1.1.  Scalar Data types
@@ -118,6 +119,7 @@ Table of Contents
        6.3.1.  Procedure 0: NULL - No Operation
        6.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
        6.3.3.  SETACL Procedure
+       6.3.4.  Procedure 3: GETXATTRDIR - Get named attributes
    7.  Implementation Issues
      7.1.  Permission issues
      7.2.  Duplicate Request Cache
@@ -134,7 +136,7 @@ Table of Contents
      12.2.  Informative References
    Appendix A.  Source Material
      A.1.  Redaction of NFS_ACL Version 4
-     A.2.  Redaction of GETXATTRDIR Procedures
+     A.2.  Extension of NFS_ACL
      A.3.  Code Compilation Requirements
    Appendix B.  Open Questions
    Acknowledgments
@@ -1102,6 +1104,94 @@ Table of Contents
 
    *  ACL2ERR_STALE
 
+5.2.6.  Procedure 5: GETXATTRDIR - Get named attributes
+
+5.2.6.1.  ARGUMENTS
+
+   struct GETXATTRDIR2args {
+       fhandle_t fh;
+       bool create;
+   };
+
+5.2.6.2.  RESULTS
+
+   struct GETXATTRDIR2resok {
+       fhandle_t fh;
+       struct nfsfattr attr;
+   };
+
+   union GETXATTRDIR2res switch (enum nfsstat status) {
+   case ACL2_OK:
+       GETXATTRDIR2resok resok;
+   default:
+       void;
+   };
+
+5.2.6.3.  DESCRIPTION
+
+   The GETXATTRDIR procedure obtains the file handle of the named
+   attribute directory associated with the file handle in the
+   GETXATTRDIR2args.fh field.
+
+   If the GETXATTRDIR procedure is successful, the server sets the
+   GETXATTRDIR2res.status field to ACL2_OK.  It fills in the
+   GETXATTRDIR2resok.fh field with a file handle that the client may use
+   to look up the target file's named attributes.  It fills in the
+   GETXATTRDIR2resok.attr field with the name attribute directory's
+   current file attributes, as detailed in [RFC1094].
+
+   Using the file handle returned in GETXATTRDIR2resok.fh, a client can
+   utilize the READDIR and LOOKUP procedures to obtain file handles for
+   the named attributes associated with the target file system object.
+
+   If the target file object does not currently have a named attribute
+   directory associated with it and the GETXATTRDIR2args.create boolean
+   field is set to false, the server returns ACL2ERR_NOENT.  If the
+   target file object does not currently have a named attribute
+   directory associated with it and the GETXATTRDIR2args.create boolean
+   field is set to true, the server attempts to create the named
+   attribute directory before returning a result.  If the target file
+   currently has a named attribute directory associated with it and the
+   GETXATTRDIR2args.create boolean is set to true, the server returns
+   the file handle of that named attribute directory.
+
+   If the RPC user does not have read access to the target file, or if
+   the GETXATTRDIR operation is to create a named attribute directory
+   and the RPC user does not have permission to do so, the server
+   returns ACL2_ACCES in the GETXATTRDIR2.status field.
+
+   If the target file handle designates an object not of type NFREG or
+   NFDIR, the server returns the value ACL2ERR_IO in the
+   GETXATTRDIR2.status field.  Neither named attributes nor named
+   attribute directories have their own named attributes.
+
+5.2.6.4.  IMPLEMENTATION
+
+   Server implementers are free to choose not to implement this
+   procedure.  In this case, the server returns the RPC-level error
+   PROC_UNAVAIL.
+
+   If the server implementation does implement the GETXATTRDIR procedure
+   but the shared file system containing the target file object does not
+   support named attributes, the server returns ACL2ERR_IO in the
+   GETXATTRDIR2.status field.
+
+5.2.6.5.  ERRORS
+
+   *  ACL2ERR_PERM
+
+   *  ACL2ERR_NOENT
+
+   *  ACL2ERR_IO
+
+   *  ACL2ERR_ACCES
+
+   *  ACL2ERR_NOSPC
+
+   *  ACL2ERR_ROFS
+
+   *  ACL2ERR_STALE
+
 6.  NFS_ACL Version 3
 
    Version 3 of the NFS_ACL protocol is used in conjunction only with
@@ -1521,6 +1611,102 @@ Table of Contents
 
    *  ACL3ERR_JUKEBOX
 
+6.3.4.  Procedure 3: GETXATTRDIR - Get named attributes
+
+6.3.4.1.  ARGUMENTS
+
+   struct GETXATTRDIR3args {
+       nfs_fh3 fh;
+       bool create;
+   };
+
+6.3.4.2.  RESULTS
+
+   struct GETXATTRDIR3resok {
+       nfs_fh3 fh;
+       post_op_attr attr;
+   };
+
+   union GETXATTRDIR3res switch (nfsstat3 status) {
+   case ACL3_OK:
+       GETXATTRDIR3resok resok;
+   default:
+       void;
+   };
+
+6.3.4.3.  DESCRIPTION
+
+   The GETXATTRDIR procedure obtains the file handle of the named
+   attribute directory associated with the file handle in the
+   GETXATTRDIR3args.fh field.
+
+   If the GETXATTRDIR procedure is successful, the server sets the
+   GETXATTRDIR3res.status field to ACL3_OK.  It fills in the
+   GETXATTRDIR3resok.fh field with a file handle that the client may use
+   to look up the target file's named attributes.  It fills in the
+   GETXATTRDIR3resok.attr field with the name attribute directory's
+   current file attributes, as detailed in [RFC1813].
+
+   Using the file handle returned in GETXATTRDIR3resok.fh, a client can
+   utilize the READDIR and LOOKUP procedures to obtain file handles for
+   the named attributes associated with the target file system object.
+
+   If the target file object does not currently have a named attribute
+   directory associated with it and the GETXATTRDIR3args.create boolean
+   field is set to false, the server returns ACL3ERR_NOENT.  If the
+   target file object does not currently have a named attribute
+   directory associated with it and the GETXATTRDIR3args.create boolean
+   field is set to true, the server attempts to create the named
+   attribute directory before returning a result.  If the target file
+   currently has a named attribute directory associated with it and the
+   GETXATTRDIR3args.create boolean is set to true, the server returns
+   the file handle of that named attribute directory.
+
+   If the RPC user does not have read access to the target file, or if
+   the GETXATTRDIR operation is to create a named attribute directory
+   and the RPC user does not have permission to do so, the server
+   returns ACL3_ACCES in the GETXATTRDIR3.status field.
+
+   If the target file handle designates an object not of type NF3REG or
+   NF3DIR, the server returns the value ACL3ERR_INVAL in the
+   GETXATTRDIR3.status field.  Neither named attributes nor named
+   attribute directories have their own named attributes.
+
+6.3.4.4.  IMPLEMENTATION
+
+   Server implementers are free to choose not to implement this
+   procedure.  In this case, the server returns the RPC-level error
+   PROC_UNAVAIL.
+
+   If the server implementation does implement the GETXATTRDIR procedure
+   but the shared file system containing the target file object does not
+   support named attributes, the server returns ACL3ERR_NOTSUPP in the
+   GETXATTRDIR3.status field.
+
+6.3.4.5.  ERRORS
+
+   *  ACL3ERR_PERM
+
+   *  ACL3ERR_NOENT
+
+   *  ACL3ERR_IO
+
+   *  ACL3ERR_ACCES
+
+   *  ACL3ERR_INVAL
+
+   *  ACL3ERR_NOSPC
+
+   *  ACL3ERR_ROFS
+
+   *  ACL3ERR_STALE
+
+   *  ACL3ERR_NOTSUPP
+
+   *  ACL3ERR_SERVERFAULT
+
+   *  ACL3ERR_JUKEBOX
+
 7.  Implementation Issues
 
 7.1.  Permission issues
@@ -1784,6 +1970,7 @@ Table of Contents
    /// enum aclstat2 {
    ///     ACL2_OK = 0,
    ///     ACL2ERR_PERM = 1,
+   ///     ACL2ERR_NOENT = 2,
    ///     ACL2ERR_IO = 5,
    ///     ACL2ERR_ACCES = 13,
    ///     ACL2ERR_NOSPC = 28,
@@ -1865,6 +2052,27 @@ Table of Contents
    /// union ACCESS2res switch (enum nfsstat status) {
    /// case ACL2_OK:
    ///     ACCESS2resok resok;
+   /// default:
+   ///     void;
+   /// };
+   ///
+   /// /*
+   ///  * This is the definition for the GETXATTRDIR procedure which applies
+   ///  * to NFS Version 2 files.
+   ///  */
+   /// struct GETXATTRDIR2args {
+   ///     fhandle_t fh;
+   ///     bool create;
+   /// };
+   ///
+   /// struct GETXATTRDIR2resok {
+   ///     fhandle_t fh;
+   ///     struct nfsfattr attr;
+   /// };
+   ///
+   /// union GETXATTRDIR2res switch (enum nfsstat status) {
+   /// case ACL2_OK:
+   ///     GETXATTRDIR2resok resok;
    /// default:
    ///     void;
    /// };
@@ -1997,6 +2205,27 @@ Table of Contents
    /// };
    ///
    /// /*
+   ///  * This is the definition for the GETXATTRDIR procedure which
+   ///  * applies to NFS Version 3 files.
+   ///  */
+   /// struct GETXATTRDIR3args {
+   ///     nfs_fh3 fh;
+   ///     bool create;
+   /// };
+   ///
+   /// struct GETXATTRDIR3resok {
+   ///     nfs_fh3 fh;
+   ///     post_op_attr attr;
+   /// };
+   ///
+   /// union GETXATTRDIR3res switch (nfsstat3 status) {
+   /// case ACL3_OK:
+   ///     GETXATTRDIR3resok resok;
+   /// default:
+   ///     void;
+   /// };
+   ///
+   /// /*
    ///  * Share the port with the NFS service.
    ///  */
    /// const NFS_ACL_PORT = 2049;
@@ -2013,6 +2242,8 @@ Table of Contents
    ///             ACLPROC2_GETATTR(GETATTR2args) = 3;
    ///         ACCESS2res
    ///             ACLPROC2_ACCESS(ACCESS2args) = 4;
+   ///         GETXATTRDIR2res
+   ///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
    ///     } = 2;
    ///     version NFS_ACL_V3 {
    ///         void
@@ -2021,6 +2252,8 @@ Table of Contents
    ///             ACLPROC3_GETACL(GETACL3args) = 1;
    ///         SETACL3res
    ///             ACLPROC3_SETACL(SETACL3args) = 2;
+   ///         GETXATTRDIR3res
+   ///             ACLPROC3_GETXATTRDIR(GETXATTRDIR3args) = 3;
    ///     } = 3;
    /// } = 100227;
 
@@ -2066,8 +2299,8 @@ Table of Contents
 
    Maturity: Complete.
 
-   Coverage: All procedures described in this document are implemented
-   in both versions of the protocol.
+   Coverage: All procedures except GETXATTRDIR are implemented in both
+   versions of the protocol.
 
    Licensing: GPLv2
 
@@ -2201,25 +2434,11 @@ A.1.  Redaction of NFS_ACL Version 4
    are no other implementations of NFS_ACL version 4, it is not included
    in the protocol description appearing in this document.
 
-A.2.  Redaction of GETXATTRDIR Procedures
-
-   The original NFS_ACL protocol contained a GETXATTRDIR procedure that
-   was meant to provide clients access to named attributes (auxiliary
-   streams) stored with each shared file.  These procedures were later
-   introduced in NFS version 4 [RFC8881].
-
-   As far as this editor is aware, support for NFSv4 named attributes
-   was only ever implemented in Solaris, which uses these procedures
-   make named attributes visible over NFSv2 and NFSv3 as they are in
-   NFSv4.  There is little to no public documentation beyond what can be
-   found in the original nfs_acl.x file.
-
-   Therefore, the GETXATTRDIR procedures are not included in the
-   protocol description appearing in this document.
+A.2.  Extension of NFS_ACL
 
       |  Perhaps this document should provide rules for extending the
       |  NFS_ACL protocol, in case some other implementation wishes to
-      |  provide named attribute visibility for NFSv3.
+      |  provide additional operations.
 
 A.3.  Code Compilation Requirements
 
