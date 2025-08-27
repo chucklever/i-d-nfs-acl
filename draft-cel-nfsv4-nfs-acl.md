@@ -946,7 +946,7 @@ When SETACL2args.fh represents a file object that does
 not implement support for ACLs, or the new ACL does not
 contain at least the minimal set of ACEs (as described
 in {{acls-in-operation}}), the server responds by
-setting SETACL2res.status to ????.
+setting SETACL2res.status to ACL2ERR_IO.
 
 #### ERRORS
 
@@ -2460,11 +2460,6 @@ post_op_attr.
 The XDR specification provided in this document rectifies those
 omissions to provide a complete and compilable XDR language
 description of the NFS_ACL protocol.
-
-# Open Questions
-
-Should the CDDL .x file be explicitly cited, or otherwise
-referenced, in this document?
 
 # Acknowledgments
 {:numbered="false"}
