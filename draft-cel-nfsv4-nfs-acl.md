@@ -38,6 +38,7 @@ normative:
 informative:
   RFC1094:
   RFC1813:
+  RFC7530:
   RFC8881:
   Gruenbacher:
     title: POSIX Access Control Lists on Linux
@@ -1132,7 +1133,7 @@ the required access checks.
 - ACL2ERR_IO
 - ACL2ERR_STALE
 
-### Procedure 5: GETXATTRDIR - Get named attributes
+### Procedure 5: GETXATTRDIR - Get named attribute directory
 
 #### ARGUMENTS
 
@@ -1197,6 +1198,9 @@ If the target file handle designates an object not of type NFREG or
 NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
 field. Neither named attributes nor named attribute directories have
 their own named attributes.
+
+Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+specified in {{Section 16.17 of RFC7530}} and {{Section 18.17 of RFC8881}}.
 
 #### IMPLEMENTATION
 
@@ -1663,7 +1667,7 @@ SETACL3res.status to ACL3ERR_INVAL.
 - ACL3ERR_SERVERFAULT
 - ACL3ERR_JUKEBOX
 
-### Procedure 3: GETXATTRDIR - Get named attributes
+### Procedure 3: GETXATTRDIR - Get named attribute directory
 
 #### ARGUMENTS
 
@@ -1728,6 +1732,9 @@ If the target file handle designates an object not of type NF3REG or
 NF3DIR, the server returns the value ACL3ERR_INVAL in the
 GETXATTRDIR3.status field. Neither named attributes nor named attribute
 directories have their own named attributes.
+
+Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+specified in {{Section 16.17 of RFC7530}} and {{Section 18.17 of RFC8881}}.
 
 #### IMPLEMENTATION
 
