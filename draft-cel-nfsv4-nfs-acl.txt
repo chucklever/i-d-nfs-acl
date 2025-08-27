@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                                    Oracle
-Intended status: Informational                             5 August 2025
-Expires: 6 February 2026
+Intended status: Informational                            27 August 2025
+Expires: 28 February 2026
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 February 2026.
+   This Internet-Draft will expire on 28 February 2026.
 
 Copyright Notice
 
@@ -104,7 +104,8 @@ Table of Contents
                List
        5.2.4.  Procedure 3: GETATTR - Get file attributes
        5.2.5.  Procedure 4: ACCESS - Check access permission
-       5.2.6.  Procedure 5: GETXATTRDIR - Get named attributes
+       5.2.6.  Procedure 5: GETXATTRDIR - Get named attribute
+               directory
    6.  NFS_ACL Version 3
      6.1.  Data types inherited from NFS version 3
        6.1.1.  Scalar Data types
@@ -119,7 +120,8 @@ Table of Contents
        6.3.1.  Procedure 0: NULL - No Operation
        6.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
        6.3.3.  SETACL Procedure
-       6.3.4.  Procedure 3: GETXATTRDIR - Get named attributes
+       6.3.4.  Procedure 3: GETXATTRDIR - Get named attribute
+               directory
    7.  Implementation Issues
      7.1.  Permission issues
      7.2.  Duplicate Request Cache
@@ -138,7 +140,6 @@ Table of Contents
      A.1.  Redaction of NFS_ACL Version 4
      A.2.  Extension of NFS_ACL
      A.3.  Code Compilation Requirements
-   Appendix B.  Open Questions
    Acknowledgments
    Author's Address
 
@@ -926,7 +927,7 @@ Table of Contents
    When SETACL2args.fh represents a file object that does not implement
    support for ACLs, or the new ACL does not contain at least the
    minimal set of ACEs (as described in Section 3.5.4.2), the server
-   responds by setting SETACL2res.status to ????.
+   responds by setting SETACL2res.status to ACL2ERR_IO.
 
 5.2.3.5.  ERRORS
 
@@ -1104,7 +1105,7 @@ Table of Contents
 
    *  ACL2ERR_STALE
 
-5.2.6.  Procedure 5: GETXATTRDIR - Get named attributes
+5.2.6.  Procedure 5: GETXATTRDIR - Get named attribute directory
 
 5.2.6.1.  ARGUMENTS
 
@@ -1164,6 +1165,10 @@ Table of Contents
    NFDIR, the server returns the value ACL2ERR_IO in the
    GETXATTRDIR2.status field.  Neither named attributes nor named
    attribute directories have their own named attributes.
+
+   Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+   specified in Section 16.17 of [RFC7530] and Section 18.17 of
+   [RFC8881].
 
 5.2.6.4.  IMPLEMENTATION
 
@@ -1611,7 +1616,7 @@ Table of Contents
 
    *  ACL3ERR_JUKEBOX
 
-6.3.4.  Procedure 3: GETXATTRDIR - Get named attributes
+6.3.4.  Procedure 3: GETXATTRDIR - Get named attribute directory
 
 6.3.4.1.  ARGUMENTS
 
@@ -1671,6 +1676,10 @@ Table of Contents
    NF3DIR, the server returns the value ACL3ERR_INVAL in the
    GETXATTRDIR3.status field.  Neither named attributes nor named
    attribute directories have their own named attributes.
+
+   Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+   specified in Section 16.17 of [RFC7530] and Section 18.17 of
+   [RFC8881].
 
 6.3.4.4.  IMPLEMENTATION
 
@@ -2402,6 +2411,10 @@ Table of Contents
               RFC 1833, DOI 10.17487/RFC1833, August 1995,
               <https://www.rfc-editor.org/rfc/rfc1833>.
 
+   [RFC7530]  Haynes, T., Ed. and D. Noveck, Ed., "Network File System
+              (NFS) Version 4 Protocol", RFC 7530, DOI 10.17487/RFC7530,
+              March 2015, <https://www.rfc-editor.org/rfc/rfc7530>.
+
    [RFC8881]  Noveck, D., Ed. and C. Lever, "Network File System (NFS)
               Version 4 Minor Version 1 Protocol", RFC 8881,
               DOI 10.17487/RFC8881, August 2020,
@@ -2455,11 +2468,6 @@ A.3.  Code Compilation Requirements
    The XDR specification provided in this document rectifies those
    omissions to provide a complete and compilable XDR language
    description of the NFS_ACL protocol.
-
-Appendix B.  Open Questions
-
-   Should the CDDL .x file be explicitly cited, or otherwise referenced,
-   in this document?
 
 Acknowledgments
 

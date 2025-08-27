@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lever</td>
-<td class="center">Expires 6 February 2026</td>
+<td class="center">Expires 28 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-cel-nfsv4-nfs-acl-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-05" class="published">5 August 2025</time>
+<time datetime="2025-08-27" class="published">27 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-02-06">6 February 2026</time></dd>
+<dd class="expires"><time datetime="2026-02-28">28 February 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1124,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1269,7 +1269,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
                     <p id="section-toc.1-1.5.2.2.2.5.1"><a href="#section-5.2.5" class="auto internal xref">5.2.5</a>.  <a href="#name-procedure-4-access-check-ac" class="internal xref">Procedure 4: ACCESS - Check access permission</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.6">
-                    <p id="section-toc.1-1.5.2.2.2.6.1"><a href="#section-5.2.6" class="auto internal xref">5.2.6</a>.  <a href="#name-procedure-5-getxattrdir-get" class="internal xref">Procedure 5: GETXATTRDIR - Get named attributes</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.6.1"><a href="#section-5.2.6" class="auto internal xref">5.2.6</a>.  <a href="#name-procedure-5-getxattrdir-get" class="internal xref">Procedure 5: GETXATTRDIR - Get named attribute directory</a></p>
 </li>
                 </ul>
 </li>
@@ -1320,7 +1320,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
                     <p id="section-toc.1-1.6.2.3.2.3.1"><a href="#section-6.3.3" class="auto internal xref">6.3.3</a>.  <a href="#name-setacl-procedure" class="internal xref">SETACL Procedure</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3.2.4">
-                    <p id="section-toc.1-1.6.2.3.2.4.1"><a href="#section-6.3.4" class="auto internal xref">6.3.4</a>.  <a href="#name-procedure-3-getxattrdir-get" class="internal xref">Procedure 3: GETXATTRDIR - Get named attributes</a></p>
+                    <p id="section-toc.1-1.6.2.3.2.4.1"><a href="#section-6.3.4" class="auto internal xref">6.3.4</a>.  <a href="#name-procedure-3-getxattrdir-get" class="internal xref">Procedure 3: GETXATTRDIR - Get named attribute directory</a></p>
 </li>
                 </ul>
 </li>
@@ -1391,13 +1391,10 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-open-questions" class="internal xref">Open Questions</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -2550,7 +2547,7 @@ change a file's ACLs.<a href="#section-5.2.3.4-3" class="pilcrow">¶</a></p>
 not implement support for ACLs, or the new ACL does not
 contain at least the minimal set of ACEs (as described
 in <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>), the server responds by
-setting SETACL2res.status to ????.<a href="#section-5.2.3.4-4" class="pilcrow">¶</a></p>
+setting SETACL2res.status to ACL2ERR_IO.<a href="#section-5.2.3.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-2">
@@ -2845,10 +2842,10 @@ the required access checks.<a href="#section-5.2.5.4-6" class="pilcrow">¶</a></
 </div>
 </section>
 </div>
-<div id="procedure-5-getxattrdir-get-named-attributes">
+<div id="procedure-5-getxattrdir-get-named-attribute-directory">
 <section id="section-5.2.6">
           <h4 id="name-procedure-5-getxattrdir-get">
-<a href="#section-5.2.6" class="section-number selfRef">5.2.6. </a><a href="#name-procedure-5-getxattrdir-get" class="section-name selfRef">Procedure 5: GETXATTRDIR - Get named attributes</a>
+<a href="#section-5.2.6" class="section-number selfRef">5.2.6. </a><a href="#name-procedure-5-getxattrdir-get" class="section-name selfRef">Procedure 5: GETXATTRDIR - Get named attribute directory</a>
           </h4>
 <div id="arguments-5">
 <section id="section-5.2.6.1">
@@ -2923,6 +2920,8 @@ ACL2_ACCES in the GETXATTRDIR2.status field.<a href="#section-5.2.6.3-5" class="
 NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
 field. Neither named attributes nor named attribute directories have
 their own named attributes.<a href="#section-5.2.6.3-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-7">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" class="relref">Section 16.17</a> of [<a href="#RFC7530" class="cite xref">RFC7530</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8881#section-18.17" class="relref">Section 18.17</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#section-5.2.6.3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-5">
@@ -3621,10 +3620,10 @@ SETACL3res.status to ACL3ERR_INVAL.<a href="#section-6.3.3.4-5" class="pilcrow">
 </div>
 </section>
 </div>
-<div id="procedure-3-getxattrdir-get-named-attributes">
+<div id="procedure-3-getxattrdir-get-named-attribute-directory">
 <section id="section-6.3.4">
           <h4 id="name-procedure-3-getxattrdir-get">
-<a href="#section-6.3.4" class="section-number selfRef">6.3.4. </a><a href="#name-procedure-3-getxattrdir-get" class="section-name selfRef">Procedure 3: GETXATTRDIR - Get named attributes</a>
+<a href="#section-6.3.4" class="section-number selfRef">6.3.4. </a><a href="#name-procedure-3-getxattrdir-get" class="section-name selfRef">Procedure 3: GETXATTRDIR - Get named attribute directory</a>
           </h4>
 <div id="arguments-9">
 <section id="section-6.3.4.1">
@@ -3699,6 +3698,8 @@ ACL3_ACCES in the GETXATTRDIR3.status field.<a href="#section-6.3.4.3-5" class="
 NF3DIR, the server returns the value ACL3ERR_INVAL in the
 GETXATTRDIR3.status field. Neither named attributes nor named attribute
 directories have their own named attributes.<a href="#section-6.3.4.3-6" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-7">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" class="relref">Section 16.17</a> of [<a href="#RFC7530" class="cite xref">RFC7530</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8881#section-18.17" class="relref">Section 18.17</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#section-6.3.4.3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-9">
@@ -4509,6 +4510,10 @@ the current document as a Reference.<a href="#section-11-1" class="pilcrow">¶</
         <dd>
 <span class="refAuthor">Srinivasan, R.</span>, <span class="refTitle">"Binding Protocols for ONC RPC Version 2"</span>, <span class="seriesInfo">RFC 1833</span>, <span class="seriesInfo">DOI 10.17487/RFC1833</span>, <time datetime="1995-08" class="refDate">August 1995</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1833">https://www.rfc-editor.org/rfc/rfc1833</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7530">[RFC7530]</dt>
+        <dd>
+<span class="refAuthor">Haynes, T., Ed.</span> and <span class="refAuthor">D. Noveck, Ed.</span>, <span class="refTitle">"Network File System (NFS) Version 4 Protocol"</span>, <span class="seriesInfo">RFC 7530</span>, <span class="seriesInfo">DOI 10.17487/RFC7530</span>, <time datetime="2015-03" class="refDate">March 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7530">https://www.rfc-editor.org/rfc/rfc7530</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8881">[RFC8881]</dt>
       <dd>
 <span class="refAuthor">Noveck, D., Ed.</span> and <span class="refAuthor">C. Lever</span>, <span class="refTitle">"Network File System (NFS) Version 4 Minor Version 1 Protocol"</span>, <span class="seriesInfo">RFC 8881</span>, <span class="seriesInfo">DOI 10.17487/RFC8881</span>, <time datetime="2020-08" class="refDate">August 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8881">https://www.rfc-editor.org/rfc/rfc8881</a>&gt;</span>. </dd>
@@ -4591,21 +4596,12 @@ description of the NFS_ACL protocol.<a href="#appendix-A.3-3" class="pilcrow">¶
 </div>
 </section>
 </div>
-<div id="open-questions">
-<section id="appendix-B">
-      <h2 id="name-open-questions">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-open-questions" class="section-name selfRef">Open Questions</a>
-      </h2>
-<p id="appendix-B-1">Should the CDDL .x file be explicitly cited, or otherwise
-referenced, in this document?<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="acknowledgments">
-<section id="appendix-C">
+<section id="appendix-B">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-C-1">The editor is grateful to
+<p id="appendix-B-1">The editor is grateful to
 Bill Baker,
 Wim Coekaerts,
 Andreas Gruenbacher,
@@ -4615,8 +4611,8 @@ Martin Thomson,
 Rob Thurlow,
 and
 Jim Wright
-for their input and support.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
-<p id="appendix-C-2">Special thanks to
+for their input and support.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">Special thanks to
 Area Director
 Gorry Fairhurst,
 NFSV4 Working Group Chairs
@@ -4626,11 +4622,11 @@ Christopher Inacio,
 and
 NFSV4 Working Group Secretary
 Thomas Haynes
-for their patience, guidance, and oversight.<a href="#appendix-C-2" class="pilcrow">¶</a></p>
+for their patience, guidance, and oversight.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-D">
+<section id="appendix-C">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
