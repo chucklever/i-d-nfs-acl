@@ -1050,7 +1050,7 @@ default:
 
 The ACCESS procedure determines the access rights
 that a user, as identified by the RPC credentials
-in the request, has with respect to the file system
+in the request, has with respect to the file handle
 specified by the ACCESS2args.fh field. The client
 obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
@@ -1062,14 +1062,19 @@ The following access permissions may be requested:
 
 ACCESS2_READ
 : Read data from file or read a directory.
+
 ACCESS2_LOOKUP
 : Look up a name in a directory (no meaning for non-directory objects).
+
 ACCESS2_MODIFY
 : Rewrite existing file data or modify existing directory entries.
+
 ACCESS2_EXTEND
 : Write new data or add directory entries.
+
 ACCESS2_DELETE
-: Delete an existing directory entry.
+: Delete an existing directory entry (no meaning for non-directory objects).
+
 ACCESS2_EXECUTE
 : Execute file (no meaning for a directory).
 
