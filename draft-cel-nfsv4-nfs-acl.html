@@ -12,22 +12,22 @@ NFS_ACL is a legacy member of the Network File System family
 of protocols that NFS clients use to view and update Access
 Control Lists stored on an NFS version 2 or version 3 server. 
     " name="description">
-<meta content="xml2rfc 3.30.0" name="generator">
+<meta content="xml2rfc 3.30.1" name="generator">
 <meta content="NFS" name="keyword">
 <meta content="ACL" name="keyword">
 <meta content="draft-cel-nfsv4-nfs-acl-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.0
+  xml2rfc 3.30.1
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.3.8
+    platformdirs 4.4.0
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.4
+    requests 2.32.5
     setuptools 80.9.0
     wcwidth 0.2.13
 -->
@@ -1048,11 +1048,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">NFS ACL Protocol</td>
-<td class="right">August 2025</td>
+<td class="right">September 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lever</td>
-<td class="center">Expires 28 February 2026</td>
+<td class="center">Expires 15 March 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-cel-nfsv4-nfs-acl-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-27" class="published">27 August 2025</time>
+<time datetime="2025-09-11" class="published">11 September 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-02-28">28 February 2026</time></dd>
+<dd class="expires"><time datetime="2026-03-15">15 March 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1124,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1851,10 +1851,10 @@ refresh cached ACLs or file modes after one of these
 operations.<a href="#section-3.5.4.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.5.4.3-3">When an ACL is present on a file, changing the file's owner
 (say, via the SETATTR operation) may alter the server's
-interpretation of any ACE that targets @OWNER.<a href="#section-3.5.4.3-3" class="pilcrow">¶</a></p>
+interpretation of any ACE that targets NA_USER_OBJ.<a href="#section-3.5.4.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.5.4.3-4">When an ACL is present on a file, changing the file's group
 (say, via the SETATTR operation) may alter the server's
-interpretation of any ACE that targets @GROUP.<a href="#section-3.5.4.3-4" class="pilcrow">¶</a></p>
+interpretation of any ACE that targets NA_GROUP_OBJ.<a href="#section-3.5.4.3-4" class="pilcrow">¶</a></p>
 <p id="section-3.5.4.3-5">If an NFS client observes that a file's ctime attribute
 has changed, it should assume that any ACLs that are
 present might have been modified.<a href="#section-3.5.4.3-5" class="pilcrow">¶</a></p>
@@ -1956,7 +1956,7 @@ NFS_ACL_MAX_ENTRIES 1024
 <p id="section-4.5-1">The following XDR definitions are basic scalar types that are used in other structures.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <div class="lang-xdr sourcecode" id="section-4.5-2">
 <pre>
-typedef int uid;
+typedef unsigned int uid;
 </pre><a href="#section-4.5-2" class="pilcrow">¶</a>
 </div>
 <div class="lang-xdr sourcecode" id="section-4.5-3">
@@ -2725,7 +2725,7 @@ default:
             </h5>
 <p id="section-5.2.5.3-1">The ACCESS procedure determines the access rights
 that a user, as identified by the RPC credentials
-in the request, has with respect to the file system
+in the request, has with respect to the file handle
 specified by the ACCESS2args.fh field. The client
 obtains this file handle using one of the NFS
 version 2 LOOKUP, CREATE, MKDIR, SYMLINK procedures,
@@ -2736,35 +2736,30 @@ to be checked in the ACCESS2args.access field.<a href="#section-5.2.5.3-1" class
 <span class="break"></span><dl class="dlParallel" id="section-5.2.5.3-3">
               <dt id="section-5.2.5.3-3.1">ACCESS2_READ</dt>
               <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.2">
-                <p id="section-5.2.5.3-3.2.1">Read data from file or read a directory.
-ACCESS2_LOOKUP<a href="#section-5.2.5.3-3.2.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.5.3-3.2.1">Read data from file or read a directory.<a href="#section-5.2.5.3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.2.5.3-3.3"></dt>
+<dt id="section-5.2.5.3-3.3">ACCESS2_LOOKUP</dt>
               <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.4">
-                <p id="section-5.2.5.3-3.4.1">Look up a name in a directory (no meaning for non-directory objects).
-ACCESS2_MODIFY<a href="#section-5.2.5.3-3.4.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.5.3-3.4.1">Look up a name in a directory (no meaning for non-directory objects).<a href="#section-5.2.5.3-3.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.2.5.3-3.5"></dt>
+<dt id="section-5.2.5.3-3.5">ACCESS2_MODIFY</dt>
               <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.6">
-                <p id="section-5.2.5.3-3.6.1">Rewrite existing file data or modify existing directory entries.
-ACCESS2_EXTEND<a href="#section-5.2.5.3-3.6.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.5.3-3.6.1">Rewrite existing file data or modify existing directory entries.<a href="#section-5.2.5.3-3.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.2.5.3-3.7"></dt>
+<dt id="section-5.2.5.3-3.7">ACCESS2_EXTEND</dt>
               <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.8">
-                <p id="section-5.2.5.3-3.8.1">Write new data or add directory entries.
-ACCESS2_DELETE<a href="#section-5.2.5.3-3.8.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.5.3-3.8.1">Write new data or add directory entries.<a href="#section-5.2.5.3-3.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.2.5.3-3.9"></dt>
+<dt id="section-5.2.5.3-3.9">ACCESS2_DELETE</dt>
               <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.10">
-                <p id="section-5.2.5.3-3.10.1">Delete an existing directory entry.
-ACCESS2_EXECUTE<a href="#section-5.2.5.3-3.10.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.5.3-3.10.1">Delete an existing directory entry (no meaning for non-directory objects).<a href="#section-5.2.5.3-3.10.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-5.2.5.3-3.11"></dt>
+<dt id="section-5.2.5.3-3.11">ACCESS2_EXECUTE</dt>
               <dd style="margin-left: 1.5em" id="section-5.2.5.3-3.12">
                 <p id="section-5.2.5.3-3.12.1">Execute file (no meaning for a directory).<a href="#section-5.2.5.3-3.12.1" class="pilcrow">¶</a></p>
 </dd>
@@ -2889,19 +2884,22 @@ default:
             <h5 id="name-description-6">
 <a href="#section-5.2.6.3" class="section-number selfRef">5.2.6.3. </a><a href="#name-description-6" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-5.2.6.3-1">The GETXATTRDIR procedure obtains the file handle of the named attribute
+<p id="section-5.2.6.3-1"><span><a href="https://rfc-editor.org/rfc/rfc8881#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span> defines a set of generic file attributes known
+as "named attributes". The GETXATTRDIR procedure extends this facility
+into the NFSv2 protocol.<a href="#section-5.2.6.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-2">The GETXATTRDIR procedure obtains the file handle of the named attribute
 directory associated with the file handle in the GETXATTRDIR2args.fh
-field.<a href="#section-5.2.6.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.6.3-2">If the GETXATTRDIR procedure is successful, the server sets the
+field. This directory contains only objects of type NFREG.<a href="#section-5.2.6.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-3">If the GETXATTRDIR procedure is successful, the server sets the
 GETXATTRDIR2res.status field to ACL2_OK.
 It fills in the GETXATTRDIR2resok.fh field with a file handle that
 the client may use to look up the target file's named attributes.
 It fills in the GETXATTRDIR2resok.attr field with the name attribute
-directory's current file attributes, as detailed in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.6.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.2.6.3-3">Using the file handle returned in GETXATTRDIR2resok.fh, a client
+directory's current file attributes, as detailed in <span>[<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>.<a href="#section-5.2.6.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-4">Using the file handle returned in GETXATTRDIR2resok.fh, a client
 can utilize the READDIR and LOOKUP procedures to obtain file handles
-for the named attributes associated with the target file system object.<a href="#section-5.2.6.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.6.3-4">If the target file object does not currently have a named attribute
+for the named attributes associated with the target file system object.<a href="#section-5.2.6.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-5">If the target file object does not currently have a named attribute
 directory associated with it and the GETXATTRDIR2args.create boolean
 field is set to false, the server returns ACL2ERR_NOENT.
 If the target file object does not currently have a named attribute
@@ -2911,17 +2909,17 @@ directory before returning a result.
 If the target file currently has a named attribute directory
 associated with it and the GETXATTRDIR2args.create boolean is set
 to true, the server returns the file handle of that named attribute
-directory.<a href="#section-5.2.6.3-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.6.3-5">If the RPC user does not have read access to the target file, or
+directory.<a href="#section-5.2.6.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-6">If the RPC user does not have read access to the target file, or
 if the GETXATTRDIR operation is to create a named attribute directory
 and the RPC user does not have permission to do so, the server returns
-ACL2_ACCES in the GETXATTRDIR2.status field.<a href="#section-5.2.6.3-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.6.3-6">If the target file handle designates an object not of type NFREG or
+ACL2_ACCES in the GETXATTRDIR2.status field.<a href="#section-5.2.6.3-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-7">If the target file handle designates an object not of type NFREG or
 NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
 field. Neither named attributes nor named attribute directories have
-their own named attributes.<a href="#section-5.2.6.3-6" class="pilcrow">¶</a></p>
-<p id="section-5.2.6.3-7">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
-specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" class="relref">Section 16.17</a> of [<a href="#RFC7530" class="cite xref">RFC7530</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8881#section-18.17" class="relref">Section 18.17</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#section-5.2.6.3-7" class="pilcrow">¶</a></p>
+their own named attributes.<a href="#section-5.2.6.3-7" class="pilcrow">¶</a></p>
+<p id="section-5.2.6.3-8">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" class="relref">Section 16.17</a> of [<a href="#RFC7530" class="cite xref">RFC7530</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8881#section-18.17" class="relref">Section 18.17</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#section-5.2.6.3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-5">
@@ -2932,9 +2930,10 @@ specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" cl
 <p id="section-5.2.6.4-1">Server implementers are free to choose not to implement this procedure.
 In this case, the server returns the RPC-level error PROC_UNAVAIL.<a href="#section-5.2.6.4-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.6.4-2">If the server implementation does implement the GETXATTRDIR procedure
-but the shared file system containing the target file object does not
-support named attributes, the server returns ACL2ERR_IO in the
-GETXATTRDIR2.status field.<a href="#section-5.2.6.4-2" class="pilcrow">¶</a></p>
+but the shared file system containing the file object specified by the
+file handle in the GETXATTRDIR2args.fh field does not support named
+attributes, the server returns ACL2ERR_IO in the GETXATTRDIR2.status
+field.<a href="#section-5.2.6.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-5">
@@ -3667,19 +3666,22 @@ default:
             <h5 id="name-description-10">
 <a href="#section-6.3.4.3" class="section-number selfRef">6.3.4.3. </a><a href="#name-description-10" class="section-name selfRef">DESCRIPTION</a>
             </h5>
-<p id="section-6.3.4.3-1">The GETXATTRDIR procedure obtains the file handle of the named attribute
+<p id="section-6.3.4.3-1"><span><a href="https://rfc-editor.org/rfc/rfc8881#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span> defines a set of generic file attributes known
+as "named attributes". The GETXATTRDIR procedure extends this facility
+into the NFSv3 protocol.<a href="#section-6.3.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-2">The GETXATTRDIR procedure obtains the file handle of the named attribute
 directory associated with the file handle in the GETXATTRDIR3args.fh
-field.<a href="#section-6.3.4.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.3.4.3-2">If the GETXATTRDIR procedure is successful, the server sets the
+field. This directory contains only objects of type NF3REG.<a href="#section-6.3.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-3">If the GETXATTRDIR procedure is successful, the server sets the
 GETXATTRDIR3res.status field to ACL3_OK.
 It fills in the GETXATTRDIR3resok.fh field with a file handle that
 the client may use to look up the target file's named attributes.
 It fills in the GETXATTRDIR3resok.attr field with the name attribute
-directory's current file attributes, as detailed in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.3.4.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.3.4.3-3">Using the file handle returned in GETXATTRDIR3resok.fh, a client
+directory's current file attributes, as detailed in <span>[<a href="#RFC1813" class="cite xref">RFC1813</a>]</span>.<a href="#section-6.3.4.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-4">Using the file handle returned in GETXATTRDIR3resok.fh, a client
 can utilize the READDIR and LOOKUP procedures to obtain file handles
-for the named attributes associated with the target file system object.<a href="#section-6.3.4.3-3" class="pilcrow">¶</a></p>
-<p id="section-6.3.4.3-4">If the target file object does not currently have a named attribute
+for the named attributes associated with the target file system object.<a href="#section-6.3.4.3-4" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-5">If the target file object does not currently have a named attribute
 directory associated with it and the GETXATTRDIR3args.create boolean
 field is set to false, the server returns ACL3ERR_NOENT.
 If the target file object does not currently have a named attribute
@@ -3689,17 +3691,17 @@ directory before returning a result.
 If the target file currently has a named attribute directory
 associated with it and the GETXATTRDIR3args.create boolean is set
 to true, the server returns the file handle of that named attribute
-directory.<a href="#section-6.3.4.3-4" class="pilcrow">¶</a></p>
-<p id="section-6.3.4.3-5">If the RPC user does not have read access to the target file, or
+directory.<a href="#section-6.3.4.3-5" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-6">If the RPC user does not have read access to the target file, or
 if the GETXATTRDIR operation is to create a named attribute directory
 and the RPC user does not have permission to do so, the server returns
-ACL3_ACCES in the GETXATTRDIR3.status field.<a href="#section-6.3.4.3-5" class="pilcrow">¶</a></p>
-<p id="section-6.3.4.3-6">If the target file handle designates an object not of type NF3REG or
+ACL3_ACCES in the GETXATTRDIR3.status field.<a href="#section-6.3.4.3-6" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-7">If the target file handle designates an object not of type NF3REG or
 NF3DIR, the server returns the value ACL3ERR_INVAL in the
 GETXATTRDIR3.status field. Neither named attributes nor named attribute
-directories have their own named attributes.<a href="#section-6.3.4.3-6" class="pilcrow">¶</a></p>
-<p id="section-6.3.4.3-7">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
-specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" class="relref">Section 16.17</a> of [<a href="#RFC7530" class="cite xref">RFC7530</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8881#section-18.17" class="relref">Section 18.17</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#section-6.3.4.3-7" class="pilcrow">¶</a></p>
+directories have their own named attributes.<a href="#section-6.3.4.3-7" class="pilcrow">¶</a></p>
+<p id="section-6.3.4.3-8">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
+specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" class="relref">Section 16.17</a> of [<a href="#RFC7530" class="cite xref">RFC7530</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8881#section-18.17" class="relref">Section 18.17</a> of [<a href="#RFC8881" class="cite xref">RFC8881</a>]</span>.<a href="#section-6.3.4.3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-9">
@@ -3710,9 +3712,10 @@ specified in <span><a href="https://rfc-editor.org/rfc/rfc7530#section-16.17" cl
 <p id="section-6.3.4.4-1">Server implementers are free to choose not to implement this procedure.
 In this case, the server returns the RPC-level error PROC_UNAVAIL.<a href="#section-6.3.4.4-1" class="pilcrow">¶</a></p>
 <p id="section-6.3.4.4-2">If the server implementation does implement the GETXATTRDIR procedure
-but the shared file system containing the target file object does not
-support named attributes, the server returns ACL3ERR_NOTSUPP in the
-GETXATTRDIR3.status field.<a href="#section-6.3.4.4-2" class="pilcrow">¶</a></p>
+but the shared file system containing the file object specified by the
+file handle in the GETXATTRDIR3args.fh field does not support named
+attributes, the server returns ACL3ERR_NOTSUPP in the GETXATTRDIR3.status
+field.<a href="#section-6.3.4.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-9">
@@ -3954,7 +3957,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///
 /// const NFS_ACL_MAX_ENTRIES = 1024;
 ///
-/// typedef int uid;
+/// typedef unsigned int uid;
 /// typedef unsigned short o_mode;
 ///
 /// /*

@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                                    Oracle
-Intended status: Informational                            27 August 2025
-Expires: 28 February 2026
+Intended status: Informational                         11 September 2025
+Expires: 15 March 2026
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 February 2026.
+   This Internet-Draft will expire on 15 March 2026.
 
 Copyright Notice
 
@@ -483,11 +483,11 @@ Table of Contents
 
    When an ACL is present on a file, changing the file's owner (say, via
    the SETATTR operation) may alter the server's interpretation of any
-   ACE that targets @OWNER.
+   ACE that targets NA_USER_OBJ.
 
    When an ACL is present on a file, changing the file's group (say, via
    the SETATTR operation) may alter the server's interpretation of any
-   ACE that targets @GROUP.
+   ACE that targets NA_GROUP_OBJ.
 
    If an NFS client observes that a file's ctime attribute has changed,
    it should assume that any ACLs that are present might have been
@@ -546,7 +546,7 @@ Table of Contents
    The following XDR definitions are basic scalar types that are used in
    other structures.
 
-   typedef int uid;
+   typedef unsigned int uid;
 
    typedef unsigned short o_mode;
 
@@ -1028,7 +1028,7 @@ Table of Contents
 
    The ACCESS procedure determines the access rights that a user, as
    identified by the RPC credentials in the request, has with respect to
-   the file system specified by the ACCESS2args.fh field.  The client
+   the file handle specified by the ACCESS2args.fh field.  The client
    obtains this file handle using one of the NFS version 2 LOOKUP,
    CREATE, MKDIR, SYMLINK procedures, or the MOUNT service, as described
    in [RFC1094].  The client encodes the set of permissions that are to
@@ -1037,19 +1037,19 @@ Table of Contents
    The following access permissions may be requested:
 
    ACCESS2_READ  Read data from file or read a directory.
-      ACCESS2_LOOKUP
 
-      Look up a name in a directory (no meaning for non-directory
-      objects).  ACCESS2_MODIFY
+   ACCESS2_LOOKUP  Look up a name in a directory (no meaning for non-
+      directory objects).
 
-      Rewrite existing file data or modify existing directory entries.
-      ACCESS2_EXTEND
+   ACCESS2_MODIFY  Rewrite existing file data or modify existing
+      directory entries.
 
-      Write new data or add directory entries.  ACCESS2_DELETE
+   ACCESS2_EXTEND  Write new data or add directory entries.
 
-      Delete an existing directory entry.  ACCESS2_EXECUTE
+   ACCESS2_DELETE  Delete an existing directory entry (no meaning for
+      non-directory objects).
 
-      Execute file (no meaning for a directory).
+   ACCESS2_EXECUTE  Execute file (no meaning for a directory).
 
    If the ACCESS procedure is successful, the server sets the
    ACCESS2res.status field to ACL2_OK.  It fills in the
@@ -1130,9 +1130,14 @@ Table of Contents
 
 5.2.6.3.  DESCRIPTION
 
+   Section 5.3 of [RFC8881] defines a set of generic file attributes
+   known as "named attributes".  The GETXATTRDIR procedure extends this
+   facility into the NFSv2 protocol.
+
    The GETXATTRDIR procedure obtains the file handle of the named
    attribute directory associated with the file handle in the
-   GETXATTRDIR2args.fh field.
+   GETXATTRDIR2args.fh field.  This directory contains only objects of
+   type NFREG.
 
    If the GETXATTRDIR procedure is successful, the server sets the
    GETXATTRDIR2res.status field to ACL2_OK.  It fills in the
@@ -1177,8 +1182,9 @@ Table of Contents
    PROC_UNAVAIL.
 
    If the server implementation does implement the GETXATTRDIR procedure
-   but the shared file system containing the target file object does not
-   support named attributes, the server returns ACL2ERR_IO in the
+   but the shared file system containing the file object specified by
+   the file handle in the GETXATTRDIR2args.fh field does not support
+   named attributes, the server returns ACL2ERR_IO in the
    GETXATTRDIR2.status field.
 
 5.2.6.5.  ERRORS
@@ -1641,9 +1647,14 @@ Table of Contents
 
 6.3.4.3.  DESCRIPTION
 
+   Section 5.3 of [RFC8881] defines a set of generic file attributes
+   known as "named attributes".  The GETXATTRDIR procedure extends this
+   facility into the NFSv3 protocol.
+
    The GETXATTRDIR procedure obtains the file handle of the named
    attribute directory associated with the file handle in the
-   GETXATTRDIR3args.fh field.
+   GETXATTRDIR3args.fh field.  This directory contains only objects of
+   type NF3REG.
 
    If the GETXATTRDIR procedure is successful, the server sets the
    GETXATTRDIR3res.status field to ACL3_OK.  It fills in the
@@ -1688,8 +1699,9 @@ Table of Contents
    PROC_UNAVAIL.
 
    If the server implementation does implement the GETXATTRDIR procedure
-   but the shared file system containing the target file object does not
-   support named attributes, the server returns ACL3ERR_NOTSUPP in the
+   but the shared file system containing the file object specified by
+   the file handle in the GETXATTRDIR3args.fh field does not support
+   named attributes, the server returns ACL3ERR_NOTSUPP in the
    GETXATTRDIR3.status field.
 
 6.3.4.5.  ERRORS
@@ -1877,7 +1889,7 @@ Table of Contents
    ///
    /// const NFS_ACL_MAX_ENTRIES = 1024;
    ///
-   /// typedef int uid;
+   /// typedef unsigned int uid;
    /// typedef unsigned short o_mode;
    ///
    /// /*
