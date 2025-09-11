@@ -526,7 +526,7 @@ The maximum number of Access Control Entries allowed in one Access Control List 
 The following XDR definitions are basic scalar types that are used in other structures.
 
 ~~~ xdr
-typedef int uid;
+typedef unsigned int uid;
 ~~~
 
 ~~~ xdr
@@ -1937,7 +1937,7 @@ text need be preserved.
 ///
 /// const NFS_ACL_MAX_ENTRIES = 1024;
 ///
-/// typedef int uid;
+/// typedef unsigned int uid;
 /// typedef unsigned short o_mode;
 ///
 /// /*
