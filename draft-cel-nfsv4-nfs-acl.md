@@ -1167,9 +1167,13 @@ default:
 
 #### DESCRIPTION
 
+{{Section 5.3 of RFC8881}} defines a set of generic file attributes known
+as "named attributes". The GETXATTRDIR procedure extends this facility
+into the NFSv2 protocol.
+
 The GETXATTRDIR procedure obtains the file handle of the named attribute
 directory associated with the file handle in the GETXATTRDIR2args.fh
-field.
+field. This directory contains only objects of type NFREG.
 
 If the GETXATTRDIR procedure is successful, the server sets the
 GETXATTRDIR2res.status field to ACL2_OK.
@@ -1213,9 +1217,10 @@ Server implementers are free to choose not to implement this procedure.
 In this case, the server returns the RPC-level error PROC_UNAVAIL.
 
 If the server implementation does implement the GETXATTRDIR procedure
-but the shared file system containing the target file object does not
-support named attributes, the server returns ACL2ERR_IO in the
-GETXATTRDIR2.status field.
+but the shared file system containing the file object specified by the
+file handle in the GETXATTRDIR2args.fh field does not support named
+attributes, the server returns ACL2ERR_IO in the GETXATTRDIR2.status
+field.
 
 #### ERRORS
 
@@ -1701,9 +1706,13 @@ default:
 
 #### DESCRIPTION
 
+{{Section 5.3 of RFC8881}} defines a set of generic file attributes known
+as "named attributes". The GETXATTRDIR procedure extends this facility
+into the NFSv3 protocol.
+
 The GETXATTRDIR procedure obtains the file handle of the named attribute
 directory associated with the file handle in the GETXATTRDIR3args.fh
-field.
+field. This directory contains only objects of type NF3REG.
 
 If the GETXATTRDIR procedure is successful, the server sets the
 GETXATTRDIR3res.status field to ACL3_OK.
@@ -1747,9 +1756,10 @@ Server implementers are free to choose not to implement this procedure.
 In this case, the server returns the RPC-level error PROC_UNAVAIL.
 
 If the server implementation does implement the GETXATTRDIR procedure
-but the shared file system containing the target file object does not
-support named attributes, the server returns ACL3ERR_NOTSUPP in the
-GETXATTRDIR3.status field.
+but the shared file system containing the file object specified by the
+file handle in the GETXATTRDIR3args.fh field does not support named
+attributes, the server returns ACL3ERR_NOTSUPP in the GETXATTRDIR3.status
+field.
 
 #### ERRORS
 
