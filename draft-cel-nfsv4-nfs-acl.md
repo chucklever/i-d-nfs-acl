@@ -460,11 +460,11 @@ operations.
 
 When an ACL is present on a file, changing the file's owner
 (say, via the SETATTR operation) may alter the server's
-interpretation of any ACE that targets @OWNER.
+interpretation of any ACE that targets NA_USER_OBJ.
 
 When an ACL is present on a file, changing the file's group
 (say, via the SETATTR operation) may alter the server's
-interpretation of any ACE that targets @GROUP.
+interpretation of any ACE that targets NA_GROUP_OBJ.
 
 If an NFS client observes that a file's ctime attribute
 has changed, it should assume that any ACLs that are
