@@ -17,8 +17,7 @@
 /node_modules/
 /versioned/
 archive.json
-draft-cel-nfsv4-nfs-acl.xml
-draft-cel-nfsv4-nfsacl.xml
+draft-ietf-nfsv4-nfs-acl.xml
 Gemfile.lock
 package-lock.json
 report.xml

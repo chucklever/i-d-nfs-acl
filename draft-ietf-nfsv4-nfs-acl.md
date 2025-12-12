@@ -3,7 +3,7 @@ title: "The Network File System Access Control List Protocol"
 abbrev: "NFS ACL Protocol"
 category: info
 
-docname: draft-cel-nfsv4-nfs-acl-latest
+docname: draft-ietf-nfsv4-nfs-acl-latest
 pi: [sortrefs, symrefs, docmapping]
 submissiontype: IETF
 ipr: trust200902
@@ -20,7 +20,7 @@ venue:
   mail: "nfsv4@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/nfsv4/"
   github: "chucklever/i-d-nfs-acl"
-  latest: "https://chucklever.github.io/i-d-nfs-acl/draft-cel-nfsv4-nfs-acl.html"
+  latest: "https://chucklever.github.io/i-d-nfs-acl/draft-ietf-nfsv4-nfs-acl.html"
 
 author:
  -
