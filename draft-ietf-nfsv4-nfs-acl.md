@@ -675,7 +675,7 @@ enum ftype {
     NFDIR = 2,
     NFBLK = 3,
     NFCHR = 4,
-    NFLNK = 5,
+    NFLNK = 5
 };
 ~~~
 
@@ -747,7 +747,7 @@ enum aclstat2 {
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
     ACL2ERR_DQUOT = 69,
-    ACL2ERR_STALE = 70,
+    ACL2ERR_STALE = 70
 };
 ~~~
 
