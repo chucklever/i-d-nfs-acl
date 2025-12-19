@@ -685,6 +685,8 @@ NFS version 2 uses a fixed-size file handle. The following definition
 comes from {{Section 2.3.3 of RFC1094}}:
 
 ~~~ xdr
+const FHSIZE = 32;
+
 typedef opaque fhandle[FHSIZE];
 ~~~
 
