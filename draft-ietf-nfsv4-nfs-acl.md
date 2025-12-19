@@ -679,7 +679,7 @@ enum ftype {
 };
 ~~~
 
-### fhandle_t
+### fhandle
 
 NFS version 2 uses a fixed-size file handle. The following definition
 comes from {{Section 2.3.3 of RFC1094}}:
@@ -815,7 +815,7 @@ settings.
 
 ~~~ xdr
 struct GETACL2args {
-    fhandle_t fh;
+    fhandle fh;
     u_int mask;
 };
 ~~~
@@ -886,7 +886,7 @@ mode bits of the object (see {{acls-in-operation}}).
 
 ~~~ xdr
 struct SETACL2args {
-    fhandle_t fh;
+    fhandle fh;
     secattr acl;
 };
 ~~~
@@ -964,7 +964,7 @@ setting SETACL2res.status to ACL2ERR_IO.
 
 ~~~ xdr
 struct GETATTR2args {
-    fhandle_t fh;
+    fhandle fh;
 };
 ~~~
 
@@ -1017,7 +1017,7 @@ about the content of the returned file attributes.
 
 ~~~ xdr
 struct ACCESS2args {
-    fhandle_t fh;
+    fhandle fh;
     uint32 access;
 };
 ~~~
@@ -1144,7 +1144,7 @@ the required access checks.
 
 ~~~ xdr
 struct GETXATTRDIR2args {
-    fhandle_t fh;
+    fhandle fh;
     bool create;
 };
 ~~~
@@ -1153,7 +1153,7 @@ struct GETXATTRDIR2args {
 
 ~~~ xdr
 struct GETXATTRDIR2resok {
-    fhandle_t fh;
+    fhandle fh;
     struct nfsfattr attr;
 };
 
@@ -2068,7 +2068,7 @@ text need be preserved.
 ///  */
 ///
 /// struct GETACL2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     u_int mask;
 /// };
 ///
@@ -2085,7 +2085,7 @@ text need be preserved.
 /// };
 ///
 /// struct SETACL2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     secattr acl;
 /// };
 ///
@@ -2101,7 +2101,7 @@ text need be preserved.
 /// };
 ///
 /// struct GETATTR2args {
-///     fhandle_t fh;
+///     fhandle fh;
 /// };
 ///
 /// struct GETATTR2resok {
@@ -2116,7 +2116,7 @@ text need be preserved.
 /// };
 ///
 /// struct ACCESS2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     uint32 access;
 /// };
 ///
@@ -2145,12 +2145,12 @@ text need be preserved.
 ///  * to NFS Version 2 files.
 ///  */
 /// struct GETXATTRDIR2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     bool create;
 /// };
 ///
 /// struct GETXATTRDIR2resok {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     struct nfsfattr attr;
 /// };
 ///
@@ -2469,7 +2469,7 @@ base did not compile using the widely-available rpcgen tool).
 ACL3_OK constants used in definitions of result unions.
 
 * The file does not include definitions of NFS protocol elements
-that are shared with the NFS_ACL protocol, such as fhandle_t and
+that are shared with the NFS_ACL protocol, such as fhandle and
 post_op_attr.
 
 The XDR specification provided in this document rectifies those
