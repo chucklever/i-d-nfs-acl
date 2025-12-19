@@ -582,7 +582,7 @@ children.
 
 ~~~ xdr
 struct secattr {
-    u_int mask;
+    unsigned int mask;
     int aclcnt;
     aclent aclent<NFS_ACL_MAX_ENTRIES>;
     int dfaclcnt;
@@ -816,7 +816,7 @@ settings.
 ~~~ xdr
 struct GETACL2args {
     fhandle fh;
-    u_int mask;
+    unsigned int mask;
 };
 ~~~
 
@@ -1515,7 +1515,7 @@ based on security or authentication policy settings.
 ~~~ xdr
 struct GETACL3args {
     nfs_fh3 fh;
-    u_int mask;
+    unsigned int mask;
 };
 ~~~
 
@@ -1993,7 +1993,7 @@ text need be preserved.
 ///  * The values for the mask field are defined below.
 ///  */
 /// struct secattr {
-///     u_int mask;
+///     unsigned int mask;
 ///     int aclcnt;
 ///     aclent aclent<NFS_ACL_MAX_ENTRIES>;
 ///     int dfaclcnt;
@@ -2069,7 +2069,7 @@ text need be preserved.
 ///
 /// struct GETACL2args {
 ///     fhandle fh;
-///     u_int mask;
+///     unsigned int mask;
 /// };
 ///
 /// struct GETACL2resok {
@@ -2249,7 +2249,7 @@ text need be preserved.
 ///
 /// struct GETACL3args {
 ///     nfs_fh3 fh;
-///     u_int mask;
+///     unsigned int mask;
 /// };
 ///
 /// struct GETACL3resok {
