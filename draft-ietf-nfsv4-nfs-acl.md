@@ -1531,7 +1531,7 @@ struct GETACL3resfail {
     post_op_attr attr;
 };
 
-union GETACL3res switch (nfsstat3 status) {
+union GETACL3res switch (aclstat3 status) {
 case ACL3_OK:
     GETACL3resok resok;
 default:
@@ -1610,7 +1610,7 @@ struct SETACL3resfail {
     post_op_attr attr;
 };
 
-union SETACL3res switch (nfsstat3 status) {
+union SETACL3res switch (aclstat3 status) {
 case ACL3_OK:
     SETACL3resok resok;
 default:
@@ -1696,7 +1696,7 @@ struct GETXATTRDIR3resok {
     post_op_attr attr;
 };
 
-union GETXATTRDIR3res switch (nfsstat3 status) {
+union GETXATTRDIR3res switch (aclstat3 status) {
 case ACL3_OK:
     GETXATTRDIR3resok resok;
 default:
@@ -2261,7 +2261,7 @@ text need be preserved.
 ///     post_op_attr attr;
 /// };
 ///
-/// union GETACL3res switch (nfsstat3 status) {
+/// union GETACL3res switch (aclstat3 status) {
 /// case ACL3_OK:
 ///     GETACL3resok resok;
 /// default:
@@ -2281,7 +2281,7 @@ text need be preserved.
 ///     post_op_attr attr;
 /// };
 ///
-/// union SETACL3res switch (nfsstat3 status) {
+/// union SETACL3res switch (aclstat3 status) {
 /// case ACL3_OK:
 ///     SETACL3resok resok;
 /// default:
@@ -2302,7 +2302,7 @@ text need be preserved.
 ///     post_op_attr attr;
 /// };
 ///
-/// union GETXATTRDIR3res switch (nfsstat3 status) {
+/// union GETXATTRDIR3res switch (aclstat3 status) {
 /// case ACL3_OK:
 ///     GETXATTRDIR3resok resok;
 /// default:
