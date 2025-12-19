@@ -219,6 +219,42 @@ service procedures that an NFS_ACL server provides.
 Readers can find a full guide to XDR and the RPC Data Description
 Language in {{RFC4506}}.
 
+### Extensions to RFC 4506
+
+The original NFS_ACL version 2 RPC language specification includes the use of
+the "unsigned short" type. This type is not described in {{RFC4506}}. However,
+most current implementations of the rpcgen program implement support for
+this type. This section provides a proper specification for "short" and
+"unsigned short" integer types for the RPC language, based on those
+implementations. This is so that the NFS_ACL version 2 RPC language
+specification appearing in this document accurately reflects the wire behavior
+of existing implementations.
+
+The XDR wire representation of both types is a network-endian 32-bit integer,
+sign-extended. This maintains XDR's consistent 4-octet alignment for all basic
+integer types while allowing applications to use narrower types internally.
+
+#### unsigned short
+
+The unsigned short type is aero-extended, with the high-order two octets each
+containing zeroes on the wire. The value range of this type is zero to 65,535,
+inclusive.
+
+Example: 0xFFFF (65535) appears as 0x0000FFFF on the wire.
+
+#### signed short
+
+The short type is sign-extended, with the high-order two octets replicating
+the sign bit. The value range of this type is -32768 to 32767, inclusive.
+
+When a signed short contains a positive or zero value, its high-order octets
+each contain 0x00. For example: 0x7FFF (32767) appears as 0x00007FFF on the
+wire.
+
+When a signed short contains a negative value, its high-order octets each
+contain 0xFF. For example: 0xFFFF (-1) appears as 0xFFFFFFFF on the wire,
+and 0x8000 (-32768) appears as 0xFFFF8000 on the wire.
+
 ## Authentication and Authorization
 
 The RPC protocol includes fields in every procedure call for
