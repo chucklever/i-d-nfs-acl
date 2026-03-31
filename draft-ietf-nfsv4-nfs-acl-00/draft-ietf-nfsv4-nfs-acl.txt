@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                                    Oracle
-Intended status: Informational                          12 December 2025
-Expires: 15 June 2026
+Intended status: Informational                             31 March 2026
+Expires: 2 October 2026
 
 
           The Network File System Access Control List Protocol
@@ -50,11 +50,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 June 2026.
+   This Internet-Draft will expire on 2 October 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -74,6 +74,7 @@ Table of Contents
      3.1.  A Glossary of Useful Terms
      3.2.  Remote Procedure Call
      3.3.  External Data Representation
+       3.3.1.  Extensions to RFC 4506
      3.4.  Authentication and Authorization
      3.5.  File Access Control
        3.5.1.  File Ownership
@@ -93,7 +94,7 @@ Table of Contents
    5.  NFS_ACL Version 2
      5.1.  Data types inherited from NFS version 2
        5.1.1.  ftype
-       5.1.2.  fhandle_t
+       5.1.2.  fhandle
        5.1.3.  timeval
        5.1.4.  nfsfattr
        5.1.5.  Defined Error Numbers
@@ -257,6 +258,45 @@ Table of Contents
 
    Readers can find a full guide to XDR and the RPC Data Description
    Language in [RFC4506].
+
+3.3.1.  Extensions to RFC 4506
+
+   The original NFS_ACL version 2 RPC language specification includes
+   the use of the "unsigned short" type.  This type is not described in
+   [RFC4506].  However, most current implementations of the rpcgen
+   program implement support for this type.  This section provides a
+   proper specification for "short" and "unsigned short" integer types
+   for the RPC language, based on those implementations.  This is so
+   that the NFS_ACL version 2 RPC language specification appearing in
+   this document accurately reflects the wire behavior of existing
+   implementations.
+
+   The XDR wire representation of both types is a network-endian 32-bit
+   integer, sign-extended.  This maintains XDR's consistent 4-octet
+   alignment for all basic integer types while allowing applications to
+   use narrower types internally.
+
+3.3.1.1.  unsigned short
+
+   The unsigned short type is aero-extended, with the high-order two
+   octets each containing zeroes on the wire.  The value range of this
+   type is zero to 65,535, inclusive.
+
+   Example: 0xFFFF (65535) appears as 0x0000FFFF on the wire.
+
+3.3.1.2.  signed short
+
+   The short type is sign-extended, with the high-order two octets
+   replicating the sign bit.  The value range of this type is -32768 to
+   32767, inclusive.
+
+   When a signed short contains a positive or zero value, its high-order
+   octets each contain 0x00.  For example: 0x7FFF (32767) appears as
+   0x00007FFF on the wire.
+
+   When a signed short contains a negative value, its high-order octets
+   each contain 0xFF.  For example: 0xFFFF (-1) appears as 0xFFFFFFFF on
+   the wire, and 0x8000 (-32768) appears as 0xFFFF8000 on the wire.
 
 3.4.  Authentication and Authorization
 
@@ -592,7 +632,7 @@ Table of Contents
    children.
 
    struct secattr {
-       u_int mask;
+       unsigned int mask;
        int aclcnt;
        aclent aclent<NFS_ACL_MAX_ENTRIES>;
        int dfaclcnt;
@@ -678,13 +718,15 @@ Table of Contents
        NFDIR = 2,
        NFBLK = 3,
        NFCHR = 4,
-       NFLNK = 5,
+       NFLNK = 5
    };
 
-5.1.2.  fhandle_t
+5.1.2.  fhandle
 
    NFS version 2 uses a fixed-size file handle.  The following
    definition comes from Section 2.3.3 of [RFC1094]:
+
+   const FHSIZE = 32;
 
    typedef opaque fhandle[FHSIZE];
 
@@ -739,7 +781,7 @@ Table of Contents
        ACL2ERR_NOSPC = 28,
        ACL2ERR_ROFS = 30,
        ACL2ERR_DQUOT = 69,
-       ACL2ERR_STALE = 70,
+       ACL2ERR_STALE = 70
    };
 
    These status codes carry the following meanings:
@@ -804,8 +846,8 @@ Table of Contents
 5.2.2.1.  ARGUMENTS
 
    struct GETACL2args {
-       fhandle_t fh;
-       u_int mask;
+       fhandle fh;
+       unsigned int mask;
    };
 
 5.2.2.2.  RESULTS
@@ -874,7 +916,7 @@ Table of Contents
 5.2.3.1.  ARGUMENTS
 
    struct SETACL2args {
-       fhandle_t fh;
+       fhandle fh;
        secattr acl;
    };
 
@@ -950,7 +992,7 @@ Table of Contents
 5.2.4.1.  ARGUMENTS
 
    struct GETATTR2args {
-       fhandle_t fh;
+       fhandle fh;
    };
 
 5.2.4.2.  RESULTS
@@ -998,7 +1040,7 @@ Table of Contents
 5.2.5.1.  ARGUMENTS
 
    struct ACCESS2args {
-       fhandle_t fh;
+       fhandle fh;
        uint32 access;
    };
 
@@ -1110,14 +1152,14 @@ Table of Contents
 5.2.6.1.  ARGUMENTS
 
    struct GETXATTRDIR2args {
-       fhandle_t fh;
+       fhandle fh;
        bool create;
    };
 
 5.2.6.2.  RESULTS
 
    struct GETXATTRDIR2resok {
-       fhandle_t fh;
+       fhandle fh;
        struct nfsfattr attr;
    };
 
@@ -1456,7 +1498,7 @@ Table of Contents
 
    struct GETACL3args {
        nfs_fh3 fh;
-       u_int mask;
+       unsigned int mask;
    };
 
 6.3.2.2.  RESULTS
@@ -1470,7 +1512,7 @@ Table of Contents
        post_op_attr attr;
    };
 
-   union GETACL3res switch (nfsstat3 status) {
+   union GETACL3res switch (aclstat3 status) {
    case ACL3_OK:
        GETACL3resok resok;
    default:
@@ -1550,7 +1592,7 @@ Table of Contents
        post_op_attr attr;
    };
 
-   union SETACL3res switch (nfsstat3 status) {
+   union SETACL3res switch (aclstat3 status) {
    case ACL3_OK:
        SETACL3resok resok;
    default:
@@ -1638,7 +1680,7 @@ Table of Contents
        post_op_attr attr;
    };
 
-   union GETXATTRDIR3res switch (nfsstat3 status) {
+   union GETXATTRDIR3res switch (aclstat3 status) {
    case ACL3_OK:
        GETXATTRDIR3resok resok;
    default:
@@ -1930,7 +1972,7 @@ Table of Contents
    ///  * The values for the mask field are defined below.
    ///  */
    /// struct secattr {
-   ///     u_int mask;
+   ///     unsigned int mask;
    ///     int aclcnt;
    ///     aclent aclent<NFS_ACL_MAX_ENTRIES>;
    ///     int dfaclcnt;
@@ -2005,8 +2047,8 @@ Table of Contents
    ///  */
    ///
    /// struct GETACL2args {
-   ///     fhandle_t fh;
-   ///     u_int mask;
+   ///     fhandle fh;
+   ///     unsigned int mask;
    /// };
    ///
    /// struct GETACL2resok {
@@ -2022,7 +2064,7 @@ Table of Contents
    /// };
    ///
    /// struct SETACL2args {
-   ///     fhandle_t fh;
+   ///     fhandle fh;
    ///     secattr acl;
    /// };
    ///
@@ -2038,7 +2080,7 @@ Table of Contents
    /// };
    ///
    /// struct GETATTR2args {
-   ///     fhandle_t fh;
+   ///     fhandle fh;
    /// };
    ///
    /// struct GETATTR2resok {
@@ -2053,7 +2095,7 @@ Table of Contents
    /// };
    ///
    /// struct ACCESS2args {
-   ///     fhandle_t fh;
+   ///     fhandle fh;
    ///     uint32 access;
    /// };
    ///
@@ -2082,12 +2124,12 @@ Table of Contents
    ///  * to NFS Version 2 files.
    ///  */
    /// struct GETXATTRDIR2args {
-   ///     fhandle_t fh;
+   ///     fhandle fh;
    ///     bool create;
    /// };
    ///
    /// struct GETXATTRDIR2resok {
-   ///     fhandle_t fh;
+   ///     fhandle fh;
    ///     struct nfsfattr attr;
    /// };
    ///
@@ -2186,7 +2228,7 @@ Table of Contents
    ///
    /// struct GETACL3args {
    ///     nfs_fh3 fh;
-   ///     u_int mask;
+   ///     unsigned int mask;
    /// };
    ///
    /// struct GETACL3resok {
@@ -2198,7 +2240,7 @@ Table of Contents
    ///     post_op_attr attr;
    /// };
    ///
-   /// union GETACL3res switch (nfsstat3 status) {
+   /// union GETACL3res switch (aclstat3 status) {
    /// case ACL3_OK:
    ///     GETACL3resok resok;
    /// default:
@@ -2218,7 +2260,7 @@ Table of Contents
    ///     post_op_attr attr;
    /// };
    ///
-   /// union SETACL3res switch (nfsstat3 status) {
+   /// union SETACL3res switch (aclstat3 status) {
    /// case ACL3_OK:
    ///     SETACL3resok resok;
    /// default:
@@ -2239,7 +2281,7 @@ Table of Contents
    ///     post_op_attr attr;
    /// };
    ///
-   /// union GETXATTRDIR3res switch (nfsstat3 status) {
+   /// union GETXATTRDIR3res switch (aclstat3 status) {
    /// case ACL3_OK:
    ///     GETXATTRDIR3resok resok;
    /// default:
@@ -2474,7 +2516,7 @@ A.3.  Code Compilation Requirements
       constants used in definitions of result unions.
 
    *  The file does not include definitions of NFS protocol elements
-      that are shared with the NFS_ACL protocol, such as fhandle_t and
+      that are shared with the NFS_ACL protocol, such as fhandle and
       post_op_attr.
 
    The XDR specification provided in this document rectifies those

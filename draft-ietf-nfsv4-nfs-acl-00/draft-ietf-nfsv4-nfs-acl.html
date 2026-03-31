@@ -12,23 +12,23 @@ NFS_ACL is a legacy member of the Network File System family
 of protocols that NFS clients use to view and update Access
 Control Lists stored on an NFS version 2 or version 3 server. 
     " name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="xml2rfc 3.32.0" name="generator">
 <meta content="NFS" name="keyword">
 <meta content="ACL" name="keyword">
 <meta content="draft-ietf-nfsv4-nfs-acl-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
+  xml2rfc 3.32.0
     Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.5.0
+    lxml 6.0.2
+    platformdirs 4.9.4
     pycountry 24.6.1
-    PyYAML 6.0.2
+    PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.6.0
 -->
 <link href="draft-ietf-nfsv4-nfs-acl.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -169,7 +169,7 @@ Control Lists stored on an NFS version 2 or version 3 server.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -177,7 +177,8 @@ Control Lists stored on an NFS version 2 or version 3 server.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -569,6 +570,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -639,7 +641,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1047,11 +1049,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">NFS ACL Protocol</td>
-<td class="right">December 2025</td>
+<td class="right">March 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lever</td>
-<td class="center">Expires 15 June 2026</td>
+<td class="center">Expires 2 October 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-nfsv4-nfs-acl-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-12-12" class="published">12 December 2025</time>
+<time datetime="2026-03-31" class="published">31 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-06-15">15 June 2026</time></dd>
+<dd class="expires"><time datetime="2026-10-02">2 October 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1125,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1132,7 +1134,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1169,6 +1171,11 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-external-data-representatio" class="internal xref">External Data Representation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-extensions-to-rfc-4506" class="internal xref">Extensions to RFC 4506</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-authentication-and-authoriz" class="internal xref">Authentication and Authorization</a></p>
@@ -1236,7 +1243,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
                     <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-ftype" class="internal xref">ftype</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
-                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-fhandle_t" class="internal xref">fhandle_t</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-fhandle" class="internal xref">fhandle</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.3">
                     <p id="section-toc.1-1.5.2.1.2.3.1"><a href="#section-5.1.3" class="auto internal xref">5.1.3</a>.  <a href="#name-timeval" class="internal xref">timeval</a></p>
@@ -1549,6 +1556,50 @@ specify the XDR format arguments and results to each of the RPC
 service procedures that an NFS_ACL server provides.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.3-3">Readers can find a full guide to XDR and the RPC Data Description
 Language in <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<div id="extensions-to-rfc-4506">
+<section id="section-3.3.1">
+          <h4 id="name-extensions-to-rfc-4506">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-extensions-to-rfc-4506" class="section-name selfRef">Extensions to RFC 4506</a>
+          </h4>
+<p id="section-3.3.1-1">The original NFS_ACL version 2 RPC language specification includes the use of
+the "unsigned short" type. This type is not described in <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>. However,
+most current implementations of the rpcgen program implement support for
+this type. This section provides a proper specification for "short" and
+"unsigned short" integer types for the RPC language, based on those
+implementations. This is so that the NFS_ACL version 2 RPC language
+specification appearing in this document accurately reflects the wire behavior
+of existing implementations.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2">The XDR wire representation of both types is a network-endian 32-bit integer,
+sign-extended. This maintains XDR's consistent 4-octet alignment for all basic
+integer types while allowing applications to use narrower types internally.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<div id="unsigned-short">
+<section id="section-3.3.1.1">
+            <h5 id="name-unsigned-short">
+<a href="#section-3.3.1.1" class="section-number selfRef">3.3.1.1. </a><a href="#name-unsigned-short" class="section-name selfRef">unsigned short</a>
+            </h5>
+<p id="section-3.3.1.1-1">The unsigned short type is aero-extended, with the high-order two octets each
+containing zeroes on the wire. The value range of this type is zero to 65,535,
+inclusive.<a href="#section-3.3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1.1-2">Example: 0xFFFF (65535) appears as 0x0000FFFF on the wire.<a href="#section-3.3.1.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="signed-short">
+<section id="section-3.3.1.2">
+            <h5 id="name-signed-short">
+<a href="#section-3.3.1.2" class="section-number selfRef">3.3.1.2. </a><a href="#name-signed-short" class="section-name selfRef">signed short</a>
+            </h5>
+<p id="section-3.3.1.2-1">The short type is sign-extended, with the high-order two octets replicating
+the sign bit. The value range of this type is -32768 to 32767, inclusive.<a href="#section-3.3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1.2-2">When a signed short contains a positive or zero value, its high-order octets
+each contain 0x00. For example: 0x7FFF (32767) appears as 0x00007FFF on the
+wire.<a href="#section-3.3.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.1.2-3">When a signed short contains a negative value, its high-order octets each
+contain 0xFF. For example: 0xFFFF (-1) appears as 0xFFFFFFFF on the wire,
+and 0x8000 (-32768) appears as 0xFFFF8000 on the wire.<a href="#section-3.3.1.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="authentication-and-authorization">
@@ -2024,7 +2075,7 @@ children.<a href="#section-4.6.2-1" class="pilcrow">¶</a></p>
 <div class="lang-xdr sourcecode" id="section-4.6.2-2">
 <pre>
 struct secattr {
-    u_int mask;
+    unsigned int mask;
     int aclcnt;
     aclent aclent&lt;NFS_ACL_MAX_ENTRIES&gt;;
     int dfaclcnt;
@@ -2146,21 +2197,23 @@ enum ftype {
     NFDIR = 2,
     NFBLK = 3,
     NFCHR = 4,
-    NFLNK = 5,
+    NFLNK = 5
 };
 </pre><a href="#section-5.1.1-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="fhandlet">
+<div id="fhandle">
 <section id="section-5.1.2">
-          <h4 id="name-fhandle_t">
-<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-fhandle_t" class="section-name selfRef">fhandle_t</a>
+          <h4 id="name-fhandle">
+<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-fhandle" class="section-name selfRef">fhandle</a>
           </h4>
 <p id="section-5.1.2-1">NFS version 2 uses a fixed-size file handle. The following definition
 comes from <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span>:<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
 <div class="lang-xdr sourcecode" id="section-5.1.2-2">
 <pre>
+const FHSIZE = 32;
+
 typedef opaque fhandle[FHSIZE];
 </pre><a href="#section-5.1.2-2" class="pilcrow">¶</a>
 </div>
@@ -2236,7 +2289,7 @@ enum aclstat2 {
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
     ACL2ERR_DQUOT = 69,
-    ACL2ERR_STALE = 70,
+    ACL2ERR_STALE = 70
 };
 </pre><a href="#section-5.1.5-2" class="pilcrow">¶</a>
 </div>
@@ -2364,8 +2417,8 @@ settings.<a href="#section-5.2.1.5-1" class="pilcrow">¶</a></p>
 <div class="lang-xdr sourcecode" id="section-5.2.2.1-1">
 <pre>
 struct GETACL2args {
-    fhandle_t fh;
-    u_int mask;
+    fhandle fh;
+    unsigned int mask;
 };
 </pre><a href="#section-5.2.2.1-1" class="pilcrow">¶</a>
 </div>
@@ -2476,7 +2529,7 @@ mode bits of the object (see <a href="#acls-in-operation" class="auto internal x
 <div class="lang-xdr sourcecode" id="section-5.2.3.1-1">
 <pre>
 struct SETACL2args {
-    fhandle_t fh;
+    fhandle fh;
     secattr acl;
 };
 </pre><a href="#section-5.2.3.1-1" class="pilcrow">¶</a>
@@ -2594,7 +2647,7 @@ setting SETACL2res.status to ACL2ERR_IO.<a href="#section-5.2.3.4-4" class="pilc
 <div class="lang-xdr sourcecode" id="section-5.2.4.1-1">
 <pre>
 struct GETATTR2args {
-    fhandle_t fh;
+    fhandle fh;
 };
 </pre><a href="#section-5.2.4.1-1" class="pilcrow">¶</a>
 </div>
@@ -2680,7 +2733,7 @@ about the content of the returned file attributes.<a href="#section-5.2.4.4-1" c
 <div class="lang-xdr sourcecode" id="section-5.2.5.1-1">
 <pre>
 struct ACCESS2args {
-    fhandle_t fh;
+    fhandle fh;
     uint32 access;
 };
 </pre><a href="#section-5.2.5.1-1" class="pilcrow">¶</a>
@@ -2849,7 +2902,7 @@ the required access checks.<a href="#section-5.2.5.4-6" class="pilcrow">¶</a></
 <div class="lang-xdr sourcecode" id="section-5.2.6.1-1">
 <pre>
 struct GETXATTRDIR2args {
-    fhandle_t fh;
+    fhandle fh;
     bool create;
 };
 </pre><a href="#section-5.2.6.1-1" class="pilcrow">¶</a>
@@ -2864,7 +2917,7 @@ struct GETXATTRDIR2args {
 <div class="lang-xdr sourcecode" id="section-5.2.6.2-1">
 <pre>
 struct GETXATTRDIR2resok {
-    fhandle_t fh;
+    fhandle fh;
     struct nfsfattr attr;
 };
 
@@ -3369,7 +3422,7 @@ based on security or authentication policy settings.<a href="#section-6.3.1.5-1"
 <pre>
 struct GETACL3args {
     nfs_fh3 fh;
-    u_int mask;
+    unsigned int mask;
 };
 </pre><a href="#section-6.3.2.1-1" class="pilcrow">¶</a>
 </div>
@@ -3391,7 +3444,7 @@ struct GETACL3resfail {
     post_op_attr attr;
 };
 
-union GETACL3res switch (nfsstat3 status) {
+union GETACL3res switch (aclstat3 status) {
 case ACL3_OK:
     GETACL3resok resok;
 default:
@@ -3517,7 +3570,7 @@ struct SETACL3resfail {
     post_op_attr attr;
 };
 
-union SETACL3res switch (nfsstat3 status) {
+union SETACL3res switch (aclstat3 status) {
 case ACL3_OK:
     SETACL3resok resok;
 default:
@@ -3650,7 +3703,7 @@ struct GETXATTRDIR3resok {
     post_op_attr attr;
 };
 
-union GETXATTRDIR3res switch (nfsstat3 status) {
+union GETXATTRDIR3res switch (aclstat3 status) {
 case ACL3_OK:
     GETXATTRDIR3resok resok;
 default:
@@ -3997,7 +4050,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///  * The values for the mask field are defined below.
 ///  */
 /// struct secattr {
-///     u_int mask;
+///     unsigned int mask;
 ///     int aclcnt;
 ///     aclent aclent&lt;NFS_ACL_MAX_ENTRIES&gt;;
 ///     int dfaclcnt;
@@ -4072,8 +4125,8 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///  */
 ///
 /// struct GETACL2args {
-///     fhandle_t fh;
-///     u_int mask;
+///     fhandle fh;
+///     unsigned int mask;
 /// };
 ///
 /// struct GETACL2resok {
@@ -4089,7 +4142,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// };
 ///
 /// struct SETACL2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     secattr acl;
 /// };
 ///
@@ -4105,7 +4158,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// };
 ///
 /// struct GETATTR2args {
-///     fhandle_t fh;
+///     fhandle fh;
 /// };
 ///
 /// struct GETATTR2resok {
@@ -4120,7 +4173,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// };
 ///
 /// struct ACCESS2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     uint32 access;
 /// };
 ///
@@ -4149,12 +4202,12 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///  * to NFS Version 2 files.
 ///  */
 /// struct GETXATTRDIR2args {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     bool create;
 /// };
 ///
 /// struct GETXATTRDIR2resok {
-///     fhandle_t fh;
+///     fhandle fh;
 ///     struct nfsfattr attr;
 /// };
 ///
@@ -4253,7 +4306,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///
 /// struct GETACL3args {
 ///     nfs_fh3 fh;
-///     u_int mask;
+///     unsigned int mask;
 /// };
 ///
 /// struct GETACL3resok {
@@ -4265,7 +4318,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///     post_op_attr attr;
 /// };
 ///
-/// union GETACL3res switch (nfsstat3 status) {
+/// union GETACL3res switch (aclstat3 status) {
 /// case ACL3_OK:
 ///     GETACL3resok resok;
 /// default:
@@ -4285,7 +4338,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///     post_op_attr attr;
 /// };
 ///
-/// union SETACL3res switch (nfsstat3 status) {
+/// union SETACL3res switch (aclstat3 status) {
 /// case ACL3_OK:
 ///     SETACL3resok resok;
 /// default:
@@ -4306,7 +4359,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///     post_op_attr attr;
 /// };
 ///
-/// union GETXATTRDIR3res switch (nfsstat3 status) {
+/// union GETXATTRDIR3res switch (aclstat3 status) {
 /// case ACL3_OK:
 ///     GETXATTRDIR3resok resok;
 /// default:
@@ -4587,7 +4640,7 @@ ACL3_OK constants used in definitions of result unions.<a href="#appendix-A.3-2.
 </li>
           <li class="normal" id="appendix-A.3-2.2">
             <p id="appendix-A.3-2.2.1">The file does not include definitions of NFS protocol elements
-that are shared with the NFS_ACL protocol, such as fhandle_t and
+that are shared with the NFS_ACL protocol, such as fhandle and
 post_op_attr.<a href="#appendix-A.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
