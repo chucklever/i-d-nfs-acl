@@ -2503,10 +2503,9 @@ in the protocol description appearing in this document.
 
 ## Extension of NFS_ACL
 
-{:aside}
-> Perhaps this document should provide rules for extending the
-> NFS_ACL protocol, in case some other implementation wishes to
-> provide additional operations.
+Extension of this legacy protocol is out of scope for an
+Informational document whose purpose is to describe existing
+implementations.
 
 ## Code Compilation Requirements
 
