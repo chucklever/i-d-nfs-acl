@@ -235,7 +235,7 @@ integer types while allowing applications to use narrower types internally.
 
 #### unsigned short
 
-The unsigned short type is aero-extended, with the high-order two octets each
+The unsigned short type is zero-extended, with the high-order two octets each
 containing zeroes on the wire. The value range of this type is zero to 65,535,
 inclusive.
 
@@ -512,7 +512,7 @@ present might have been modified.
 impact they may have on the mode bits of the new file.
 
 A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures
-to request instantiatiation of a new file object. The server uses
+to request instantiation of a new file object. The server uses
 the default ACL from the parent directory as the initial access
 ACL on the new object.
 
@@ -626,7 +626,7 @@ struct secattr {
 ~~~
 
 The "mask" element of the secattr structure is a bit mask. The
-bit field vvalues in this mask are defined as follows:
+bit field values in this mask are defined as follows:
 
 ~~~ xdr
 const NA_ACL = 0x1;         /* aclent contains a valid list */
@@ -682,7 +682,7 @@ server.
 For file objects that do not implement ACL support:
 
 * The server responds to a GETACL procedure by returning
-a manufactured minimal ACL (ie., only three ACEs) that
+a manufactured minimal ACL (i.e., only three ACEs) that
 reflects the current mode bits of the object.
 
 * The server responds to a SETACL version 3 procedure by
@@ -700,7 +700,7 @@ version 2 of the NFS protocol.
 
 ### ftype
 
-The enumeration "ftype" gives the type of an NFS version 3 file.
+The enumeration "ftype" gives the type of an NFS version 2 file.
 This definition comes from {{Section 2.3.2 of RFC1094}}:
 
 ~~~ xdr
@@ -1163,7 +1163,7 @@ delete permission on a file is determined by the access
 permissions on the directory in which the file resides,
 instead of being determined by the permissions of the file
 itself.  Thus, the bit mask returned for such a request
-will have the ACCESS3_DELETE bit set to 0, indicating that
+will have the ACCESS2_DELETE bit set to 0, indicating that
 the client does not have this permission.
 
 The server should return a status of ACL2_OK if no
@@ -1238,7 +1238,7 @@ directory.
 If the RPC user does not have read access to the target file, or
 if the GETXATTRDIR operation is to create a named attribute directory
 and the RPC user does not have permission to do so, the server returns
-ACL2_ACCES in the GETXATTRDIR2.status field.
+ACL2ERR_ACCES in the GETXATTRDIR2.status field.
 
 If the target file handle designates an object not of type NFREG or
 NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
@@ -1534,7 +1534,7 @@ It is important that this procedure do no work at all so that clients
 can use it to measure the overhead of processing a service request.
 By convention, the NULL procedure should never require any
 authentication.
-A server implmentation may choose to ignore this convention, if
+A server implementation may choose to ignore this convention, if
 responding to the NULL procedure call acknowledges the existence
 of a resource to an unauthenticated client.
 
@@ -1558,7 +1558,7 @@ struct GETACL3args {
 
 #### RESULTS
 
-~~~ xde
+~~~ xdr
 struct GETACL3resok {
     post_op_attr attr;
     secattr acl;
@@ -2266,7 +2266,7 @@ text need be preserved.
 /// enum aclstat3 {
 ///     ACL3_OK = 0,
 ///     ACL3ERR_PERM = 1,
-///     ACL33ERR_NOENT = 2,
+///     ACL3ERR_NOENT = 2,
 ///     ACL3ERR_IO = 5,
 ///     ACL3ERR_ACCES = 13,
 ///     ACL3ERR_INVAL = 22,
@@ -2463,7 +2463,7 @@ the current document as a Reference.
 # Source Material
 
 The on-the-wire protocol described here is intended to
-match existing de factor implementations of NFS_ACL.
+match existing de facto implementations of NFS_ACL.
 
 The source for the XDR specification provided in this
 document is the nfs_acl.x file as found in published
@@ -2477,7 +2477,7 @@ base.
 ## Redaction of NFS_ACL Version 4
 
 Version 4 of NFS_ACL is described in the original nfs_acl.x source
-file is described this way:
+file this way:
 
 > This is a transitional interface to enable Solaris NFSv4
 > clients to manipulate ACLs on Solaris servers until the
