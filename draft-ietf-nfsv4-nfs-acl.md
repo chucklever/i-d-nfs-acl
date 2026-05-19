@@ -957,8 +957,9 @@ handle using one of the NFS version 2 LOOKUP, CREATE,
 MKDIR, SYMLINK procedures, or the MOUNT service, as
 described in {{RFC1094}}.
 
-{:aside}
-> How are ACLs removed?
+To remove extended access control from a file object, a client
+uses SETACL to replace the object's ACL with a minimal NFS ACL
+(see {{acls-in-operation}}).
 
 If the SETACL procedure is successful, the server sets the
 SETACL2res.status field to ACL2_OK and fills in the
@@ -1673,8 +1674,9 @@ handle using one of the NFS version 3 LOOKUP, CREATE,
 MKDIR, MKNOD, SYMLINK, or READDIRPLUS procedures, or
 the MOUNT service, as described in {{RFC1813}}.
 
-{:aside}
-> How are ACLs removed?
+To remove extended access control from a file object, a client
+uses SETACL to replace the object's ACL with a minimal NFS ACL
+(see {{acls-in-operation}}).
 
 If the SETACL procedure is successful, the server sets
 the SETACL3res.status field to ACL3_OK and fills in the
