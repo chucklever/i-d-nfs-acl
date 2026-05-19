@@ -139,7 +139,7 @@ of them.
 Issues of compatibility between the protocol described in
 this document and NFSv4 ACLs (as described by {{RFC8881}})
 are considered out of scope. More information on this topic
-is available in {{?I-D.rmacklem-nfsv4-posix-acls}}.
+is available in {{?I-D.ietf-nfsv4-posix-acls}}.
 
 Local file systems on NFSv2 and NFSv3 servers determine the
 particular semantics of each Access Control List -- in other
