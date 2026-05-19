@@ -777,6 +777,7 @@ NFS_ACL protocol.
 enum aclstat2 {
     ACL2_OK = 0,
     ACL2ERR_PERM = 1,
+    ACL2ERR_NOENT = 2,
     ACL2ERR_IO = 5,
     ACL2ERR_ACCES = 13,
     ACL2ERR_NOSPC = 28,
@@ -790,6 +791,9 @@ These status codes carry the following meanings:
 
 ACL2ERR_PERM
 : Not owner. The caller does not have correct ownership to perform the requested operation.
+
+ACL2ERR_NOENT
+: No such file or directory. The file or directory name specified does not exist.
 
 ACL2ERR_IO
 : Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.
@@ -1453,6 +1457,7 @@ NFS_ACL protocol.
 enum aclstat3 {
     ACL3_OK             = 0,
     ACL3ERR_PERM        = 1,
+    ACL3ERR_NOENT       = 2,
     ACL3ERR_IO          = 5,
     ACL3ERR_ACCES       = 13,
     ACL3ERR_INVAL       = 22,
@@ -1474,6 +1479,9 @@ ACL3_OK
 
 ACL3ERR_PERM
 : Not owner. The operation was not allowed because the caller is either not a privileged user (root) or not the owner of the target of the operation.
+
+ACL3ERR_NOENT
+: No such file or directory. The file or directory name specified does not exist.
 
 ACL3ERR_IO
 : I/O error. A hard error (for example, a disk error) occurred while processing the requested operation.
@@ -1602,7 +1610,7 @@ If the GETACL procedure is successful, the server sets the
 GETACL3res.status field to ACL3_OK. It fills in the
 GETACL3resok.attr field with the file object's post
 operation file attributes, as detailed in {{RFC1813}}.
-Lastly, it fills in the GETACL3res.acl field with two
+Lastly, it fills in the GETACL3resok.acl field with two
 counted arrays of Access Control Entries (ACEs).
 
 Otherwise, GETACL3res.status contains an error status
@@ -2060,6 +2068,7 @@ text need be preserved.
 ///     NFLNK = 5,
 /// };
 ///
+/// const FHSIZE = 32;
 /// typedef opaque fhandle[FHSIZE];
 ///
 /// struct timeval {
