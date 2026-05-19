@@ -688,8 +688,13 @@ reflects the current mode bits of the object.
 * The server responds to a SETACL version 3 procedure by
 returning ACL3ERR_NOTSUPP.
 
-{:aside}
-> Linux returns NFS3ERR_NOTSUPP even for NFS_ACLv2. Check Solaris.
+* The server responds to a SETACL version 2 procedure by
+returning ACL2ERR_IO.
+
+The Linux implementation of the NFS_ACL protocol deviates from
+the protocol specified in the current document by returning
+NFS3ERR_NOTSUPP in response to a SETACL version 2 procedure on a
+file system that does not support ACLs.
 
 # NFS_ACL Version 2
 
