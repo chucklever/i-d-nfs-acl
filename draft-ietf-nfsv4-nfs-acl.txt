@@ -3,7 +3,7 @@
 
 
 Network File System Version 4                              C. Lever, Ed.
-Internet-Draft                                                    Oracle
+Internet-Draft                                               Independent
 Intended status: Informational                               19 May 2026
 Expires: 20 November 2026
 
@@ -120,7 +120,8 @@ Table of Contents
      6.3.  Server Procedures
        6.3.1.  Procedure 0: NULL - No Operation
        6.3.2.  Procedure 1: GETACL - Retrieve an Access Control List
-       6.3.3.  SETACL Procedure
+       6.3.3.  Procedure 2: SETACL - Set or replace an Access Control
+               List
        6.3.4.  Procedure 3: GETXATTRDIR - Get named attribute
                directory
    7.  Implementation Issues
@@ -183,7 +184,7 @@ Table of Contents
    Issues of compatibility between the protocol described in this
    document and NFSv4 ACLs (as described by [RFC8881]) are considered
    out of scope.  More information on this topic is available in
-   Section 6 of draft-rmacklem-nfsv4-posix-acls.
+   [I-D.ietf-nfsv4-posix-acls].
 
    Local file systems on NFSv2 and NFSv3 servers determine the
    particular semantics of each Access Control List -- in other words,
@@ -278,7 +279,7 @@ Table of Contents
 
 3.3.1.1.  unsigned short
 
-   The unsigned short type is aero-extended, with the high-order two
+   The unsigned short type is zero-extended, with the high-order two
    octets each containing zeroes on the wire.  The value range of this
    type is zero to 65,535, inclusive.
 
@@ -539,7 +540,7 @@ Table of Contents
       |  they may have on the mode bits of the new file.
 
    A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures to
-   request instantiatiation of a new file object.  The server uses the
+   request instantiation of a new file object.  The server uses the
    default ACL from the parent directory as the initial access ACL on
    the new object.
 
@@ -640,7 +641,7 @@ Table of Contents
    };
 
    The "mask" element of the secattr structure is a bit mask.  The bit
-   field vvalues in this mask are defined as follows:
+   field values in this mask are defined as follows:
 
    const NA_ACL = 0x1;         /* aclent contains a valid list */
    const NA_ACLCNT = 0x2;      /* number of entries in the aclent list */
@@ -691,14 +692,19 @@ Table of Contents
    For file objects that do not implement ACL support:
 
    *  The server responds to a GETACL procedure by returning a
-      manufactured minimal ACL (ie., only three ACEs) that reflects the
+      manufactured minimal ACL (i.e., only three ACEs) that reflects the
       current mode bits of the object.
 
    *  The server responds to a SETACL version 3 procedure by returning
       ACL3ERR_NOTSUPP.
 
-      |  Linux returns NFS3ERR_NOTSUPP even for NFS_ACLv2.  Check
-      |  Solaris.
+   *  The server responds to a SETACL version 2 procedure by returning
+      ACL2ERR_IO.
+
+   The Linux implementation of the NFS_ACL protocol deviates from the
+   protocol specified in the current document by returning
+   NFS3ERR_NOTSUPP in response to a SETACL version 2 procedure on a file
+   system that does not support ACLs.
 
 5.  NFS_ACL Version 2
 
@@ -709,7 +715,7 @@ Table of Contents
 
 5.1.1.  ftype
 
-   The enumeration "ftype" gives the type of an NFS version 3 file.
+   The enumeration "ftype" gives the type of an NFS version 2 file.
    This definition comes from Section 2.3.2 of [RFC1094]:
 
    enum ftype {
@@ -776,6 +782,7 @@ Table of Contents
    enum aclstat2 {
        ACL2_OK = 0,
        ACL2ERR_PERM = 1,
+       ACL2ERR_NOENT = 2,
        ACL2ERR_IO = 5,
        ACL2ERR_ACCES = 13,
        ACL2ERR_NOSPC = 28,
@@ -788,6 +795,9 @@ Table of Contents
 
    ACL2ERR_PERM  Not owner.  The caller does not have correct ownership
       to perform the requested operation.
+
+   ACL2ERR_NOENT  No such file or directory.  The file or directory name
+      specified does not exist.
 
    ACL2ERR_IO  Some sort of hard error occurred when the operation was
       in progress.  This could be a disk error, for example.
@@ -942,7 +952,9 @@ Table of Contents
    CREATE, MKDIR, SYMLINK procedures, or the MOUNT service, as described
    in [RFC1094].
 
-      |  How are ACLs removed?
+   To remove extended access control from a file object, a client uses
+   SETACL to replace the object's ACL with a minimal NFS ACL (see
+   Section 3.5.4.2).
 
    If the SETACL procedure is successful, the server sets the
    SETACL2res.status field to ACL2_OK and fills in the SETACL2resok.attr
@@ -1135,7 +1147,7 @@ Table of Contents
    by the access permissions on the directory in which the file resides,
    instead of being determined by the permissions of the file itself.
    Thus, the bit mask returned for such a request will have the
-   ACCESS3_DELETE bit set to 0, indicating that the client does not have
+   ACCESS2_DELETE bit set to 0, indicating that the client does not have
    this permission.
 
    The server should return a status of ACL2_OK if no errors occurred
@@ -1206,7 +1218,7 @@ Table of Contents
    If the RPC user does not have read access to the target file, or if
    the GETXATTRDIR operation is to create a named attribute directory
    and the RPC user does not have permission to do so, the server
-   returns ACL2_ACCES in the GETXATTRDIR2.status field.
+   returns ACL2ERR_ACCES in the GETXATTRDIR2.status field.
 
    If the target file handle designates an object not of type NFREG or
    NFDIR, the server returns the value ACL2ERR_IO in the
@@ -1396,6 +1408,7 @@ Table of Contents
    enum aclstat3 {
        ACL3_OK             = 0,
        ACL3ERR_PERM        = 1,
+       ACL3ERR_NOENT       = 2,
        ACL3ERR_IO          = 5,
        ACL3ERR_ACCES       = 13,
        ACL3ERR_INVAL       = 22,
@@ -1416,6 +1429,9 @@ Table of Contents
    ACL3ERR_PERM  Not owner.  The operation was not allowed because the
       caller is either not a privileged user (root) or not the owner of
       the target of the operation.
+
+   ACL3ERR_NOENT  No such file or directory.  The file or directory name
+      specified does not exist.
 
    ACL3ERR_IO  I/O error.  A hard error (for example, a disk error)
       occurred while processing the requested operation.
@@ -1481,7 +1497,7 @@ Table of Contents
    It is important that this procedure do no work at all so that clients
    can use it to measure the overhead of processing a service request.
    By convention, the NULL procedure should never require any
-   authentication.  A server implmentation may choose to ignore this
+   authentication.  A server implementation may choose to ignore this
    convention, if responding to the NULL procedure call acknowledges the
    existence of a resource to an unauthenticated client.
 
@@ -1547,7 +1563,7 @@ Table of Contents
    GETACL3res.status field to ACL3_OK.  It fills in the
    GETACL3resok.attr field with the file object's post operation file
    attributes, as detailed in [RFC1813].  Lastly, it fills in the
-   GETACL3res.acl field with two counted arrays of Access Control
+   GETACL3resok.acl field with two counted arrays of Access Control
    Entries (ACEs).
 
    Otherwise, GETACL3res.status contains an error status on failure and
@@ -1573,7 +1589,7 @@ Table of Contents
 
    *  ACL3ERR_JUKEBOX
 
-6.3.3.  SETACL Procedure
+6.3.3.  Procedure 2: SETACL - Set or replace an Access Control List
 
 6.3.3.1.  ARGUMENTS
 
@@ -1608,7 +1624,9 @@ Table of Contents
    CREATE, MKDIR, MKNOD, SYMLINK, or READDIRPLUS procedures, or the
    MOUNT service, as described in [RFC1813].
 
-      |  How are ACLs removed?
+   To remove extended access control from a file object, a client uses
+   SETACL to replace the object's ACL with a minimal NFS ACL (see
+   Section 3.5.4.2).
 
    If the SETACL procedure is successful, the server sets the
    SETACL3res.status field to ACL3_OK and fills in the SETACL3resok.attr
@@ -2002,6 +2020,7 @@ Table of Contents
    ///     NFLNK = 5,
    /// };
    ///
+   /// const FHSIZE = 32;
    /// typedef opaque fhandle[FHSIZE];
    ///
    /// struct timeval {
@@ -2208,7 +2227,7 @@ Table of Contents
    /// enum aclstat3 {
    ///     ACL3_OK = 0,
    ///     ACL3ERR_PERM = 1,
-   ///     ACL33ERR_NOENT = 2,
+   ///     ACL3ERR_NOENT = 2,
    ///     ACL3ERR_IO = 5,
    ///     ACL3ERR_ACCES = 13,
    ///     ACL3ERR_INVAL = 22,
@@ -2430,6 +2449,13 @@ Table of Contents
               Technical Conference, pp. 259-272, ISBN 1-931971-11-0,
               January 2003.
 
+   [I-D.ietf-nfsv4-posix-acls]
+              Macklem, R., "POSIX Draft ACL support for Network File
+              System Version 4, Minor Version 2", Work in Progress,
+              Internet-Draft, draft-ietf-nfsv4-posix-acls-01, 8 January
+              2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              nfsv4-posix-acls-01>.
+
    [IEEE]     Institute of Electrical and Electronics Engineers, "IEEE
               1003.1e and 1003.2c: Draft Standard for Information
               Technology-- Portable Operating System Interface (POSIX)--
@@ -2477,7 +2503,7 @@ Table of Contents
 Appendix A.  Source Material
 
    The on-the-wire protocol described here is intended to match existing
-   de factor implementations of NFS_ACL.
+   de facto implementations of NFS_ACL.
 
    The source for the XDR specification provided in this document is the
    nfs_acl.x file as found in published versions of the OpenSolaris
@@ -2489,7 +2515,7 @@ Appendix A.  Source Material
 A.1.  Redaction of NFS_ACL Version 4
 
    Version 4 of NFS_ACL is described in the original nfs_acl.x source
-   file is described this way:
+   file this way:
 
       This is a transitional interface to enable Solaris NFSv4 clients
       to manipulate ACLs on Solaris servers until the spec is complete
@@ -2503,9 +2529,9 @@ A.1.  Redaction of NFS_ACL Version 4
 
 A.2.  Extension of NFS_ACL
 
-      |  Perhaps this document should provide rules for extending the
-      |  NFS_ACL protocol, in case some other implementation wishes to
-      |  provide additional operations.
+   Extension of this legacy protocol is out of scope for an
+   Informational document whose purpose is to describe existing
+   implementations.
 
 A.3.  Code Compilation Requirements
 
@@ -2537,6 +2563,6 @@ Acknowledgments
 Author's Address
 
    Chuck Lever (editor)
-   Oracle Corporation
+   Independent
    United States of America
-   Email: chuck.lever@oracle.com
+   Email: cel-ietf@chucklever.net
