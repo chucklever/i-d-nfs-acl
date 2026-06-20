@@ -870,11 +870,11 @@ struct GETACL2args {
 
 ~~~ xdr
 struct GETACL2resok {
-    struct nfsfattr attr;
+    fattr attr;
     secattr acl;
 };
 
-union GETACL2res switch (enum nfsstat status) {
+union GETACL2res switch (aclstat2 status) {
 case ACL2_OK:
     GETACL2resok resok;
 default:
@@ -941,10 +941,10 @@ struct SETACL2args {
 
 ~~~ xdr
 struct SETACL2resok {
-    struct nfsfattr attr;
+    fattr attr;
 };
 
-union SETACL2res switch (enum nfsstat status) {
+union SETACL2res switch (aclstat2 status) {
 case ACL2_OK:
     SETACL2resok resok;
 default:
@@ -1019,10 +1019,10 @@ struct GETATTR2args {
 
 ~~~ xdr
 struct GETATTR2resok {
-    struct nfsfattr attr;
+    fattr attr;
 };
 
-union GETATTR2res switch (enum nfsstat status) {
+union GETATTR2res switch (aclstat2 status) {
 case ACL2_OK:
     GETATTR2resok resok;
 default:
@@ -1065,7 +1065,7 @@ about the content of the returned file attributes.
 ~~~ xdr
 struct ACCESS2args {
     fhandle fh;
-    uint32 access;
+    unsigned int access;
 };
 ~~~
 
@@ -1081,11 +1081,11 @@ const ACCESS2_DELETE = 0x10;    /* delete existing directory entry */
 const ACCESS2_EXECUTE = 0x20;   /* execute file (no meaning for a directory) */
 
 struct ACCESS2resok {
-    struct nfsfattr attr;
-    uint32 access;
+    fattr attr;
+    unsigned int access;
 };
 
-union ACCESS2res switch (enum nfsstat status) {
+union ACCESS2res switch (aclstat2 status) {
 case ACL2_OK:
     ACCESS2resok resok;
 default:
@@ -1201,10 +1201,10 @@ struct GETXATTRDIR2args {
 ~~~ xdr
 struct GETXATTRDIR2resok {
     fhandle fh;
-    struct nfsfattr attr;
+    fattr attr;
 };
 
-union GETXATTRDIR2res switch (enum nfsstat status) {
+union GETXATTRDIR2res switch (aclstat2 status) {
 case ACL2_OK:
     GETXATTRDIR2resok resok;
 default:
@@ -2072,7 +2072,7 @@ text need be preserved.
 ///     NFDIR = 2,
 ///     NFBLK = 3,
 ///     NFCHR = 4,
-///     NFLNK = 5,
+///     NFLNK = 5
 /// };
 ///
 /// const FHSIZE = 32;
@@ -2113,7 +2113,7 @@ text need be preserved.
 ///     ACL2ERR_NOSPC = 28,
 ///     ACL2ERR_ROFS = 30,
 ///     ACL2ERR_DQUOT = 69,
-///     ACL2ERR_STALE = 70,
+///     ACL2ERR_STALE = 70
 /// };
 ///
 /// /*
@@ -2126,11 +2126,11 @@ text need be preserved.
 /// };
 ///
 /// struct GETACL2resok {
-///     struct nfsfattr attr;
+///     fattr attr;
 ///     secattr acl;
 /// };
 ///
-/// union GETACL2res switch (enum nfsstat status) {
+/// union GETACL2res switch (aclstat2 status) {
 /// case ACL2_OK:
 ///     GETACL2resok resok;
 /// default:
@@ -2143,10 +2143,10 @@ text need be preserved.
 /// };
 ///
 /// struct SETACL2resok {
-///     struct nfsfattr attr;
+///     fattr attr;
 /// };
 ///
-/// union SETACL2res switch (enum nfsstat status) {
+/// union SETACL2res switch (aclstat2 status) {
 /// case ACL2_OK:
 ///     SETACL2resok resok;
 /// default:
@@ -2158,10 +2158,10 @@ text need be preserved.
 /// };
 ///
 /// struct GETATTR2resok {
-///     struct nfsfattr attr;
+///     fattr attr;
 /// };
 ///
-/// union GETATTR2res switch (enum nfsstat status) {
+/// union GETATTR2res switch (aclstat2 status) {
 /// case ACL2_OK:
 ///     GETATTR2resok resok;
 /// default:
@@ -2170,7 +2170,7 @@ text need be preserved.
 ///
 /// struct ACCESS2args {
 ///     fhandle fh;
-///     uint32 access;
+///     unsigned int access;
 /// };
 ///
 /// const ACCESS2_READ = 0x1;           /* read data or readdir a directory */
@@ -2182,11 +2182,11 @@ text need be preserved.
 /// const ACCESS2_EXECUTE = 0x20;       /* execute file (no meaning for a directory) */
 ///
 /// struct ACCESS2resok {
-///     struct nfsfattr attr;
-///     uint32 access;
+///     fattr attr;
+///     unsigned int access;
 /// };
 ///
-/// union ACCESS2res switch (enum nfsstat status) {
+/// union ACCESS2res switch (aclstat2 status) {
 /// case ACL2_OK:
 ///     ACCESS2resok resok;
 /// default:
@@ -2204,10 +2204,10 @@ text need be preserved.
 ///
 /// struct GETXATTRDIR2resok {
 ///     fhandle fh;
-///     struct nfsfattr attr;
+///     fattr attr;
 /// };
 ///
-/// union GETXATTRDIR2res switch (enum nfsstat status) {
+/// union GETXATTRDIR2res switch (aclstat2 status) {
 /// case ACL2_OK:
 ///     GETXATTRDIR2resok resok;
 /// default:
@@ -2293,7 +2293,7 @@ text need be preserved.
 ///     ACL3ERR_BADHANDLE = 10001,
 ///     ACL3ERR_NOTSUPP = 10004,
 ///     ACL3ERR_SERVERFAULT = 10006,
-///     ACL3ERR_JUKEBOX = 10008,
+///     ACL3ERR_JUKEBOX = 10008
 /// };
 ///
 /// /*
