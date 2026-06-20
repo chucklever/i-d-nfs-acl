@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                               Independent
-Intended status: Informational                               19 May 2026
-Expires: 20 November 2026
+Intended status: Informational                              20 June 2026
+Expires: 22 December 2026
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 November 2026.
+   This Internet-Draft will expire on 22 December 2026.
 
 Copyright Notice
 
@@ -863,11 +863,11 @@ Table of Contents
 5.2.2.2.  RESULTS
 
    struct GETACL2resok {
-       struct nfsfattr attr;
+       fattr attr;
        secattr acl;
    };
 
-   union GETACL2res switch (enum nfsstat status) {
+   union GETACL2res switch (aclstat2 status) {
    case ACL2_OK:
        GETACL2resok resok;
    default:
@@ -933,10 +933,10 @@ Table of Contents
 5.2.3.2.  RESULTS
 
    struct SETACL2resok {
-       struct nfsfattr attr;
+       fattr attr;
    };
 
-   union SETACL2res switch (enum nfsstat status) {
+   union SETACL2res switch (aclstat2 status) {
    case ACL2_OK:
        SETACL2resok resok;
    default:
@@ -1010,10 +1010,10 @@ Table of Contents
 5.2.4.2.  RESULTS
 
    struct GETATTR2resok {
-       struct nfsfattr attr;
+       fattr attr;
    };
 
-   union GETATTR2res switch (enum nfsstat status) {
+   union GETATTR2res switch (aclstat2 status) {
    case ACL2_OK:
        GETATTR2resok resok;
    default:
@@ -1053,7 +1053,7 @@ Table of Contents
 
    struct ACCESS2args {
        fhandle fh;
-       uint32 access;
+       unsigned int access;
    };
 
 5.2.5.2.  RESULTS
@@ -1067,11 +1067,11 @@ Table of Contents
    const ACCESS2_EXECUTE = 0x20;   /* execute file (no meaning for a directory) */
 
    struct ACCESS2resok {
-       struct nfsfattr attr;
-       uint32 access;
+       fattr attr;
+       unsigned int access;
    };
 
-   union ACCESS2res switch (enum nfsstat status) {
+   union ACCESS2res switch (aclstat2 status) {
    case ACL2_OK:
        ACCESS2resok resok;
    default:
@@ -1172,10 +1172,10 @@ Table of Contents
 
    struct GETXATTRDIR2resok {
        fhandle fh;
-       struct nfsfattr attr;
+       fattr attr;
    };
 
-   union GETXATTRDIR2res switch (enum nfsstat status) {
+   union GETXATTRDIR2res switch (aclstat2 status) {
    case ACL2_OK:
        GETXATTRDIR2resok resok;
    default:
@@ -2017,7 +2017,7 @@ Table of Contents
    ///     NFDIR = 2,
    ///     NFBLK = 3,
    ///     NFCHR = 4,
-   ///     NFLNK = 5,
+   ///     NFLNK = 5
    /// };
    ///
    /// const FHSIZE = 32;
@@ -2058,7 +2058,7 @@ Table of Contents
    ///     ACL2ERR_NOSPC = 28,
    ///     ACL2ERR_ROFS = 30,
    ///     ACL2ERR_DQUOT = 69,
-   ///     ACL2ERR_STALE = 70,
+   ///     ACL2ERR_STALE = 70
    /// };
    ///
    /// /*
@@ -2071,11 +2071,11 @@ Table of Contents
    /// };
    ///
    /// struct GETACL2resok {
-   ///     struct nfsfattr attr;
+   ///     fattr attr;
    ///     secattr acl;
    /// };
    ///
-   /// union GETACL2res switch (enum nfsstat status) {
+   /// union GETACL2res switch (aclstat2 status) {
    /// case ACL2_OK:
    ///     GETACL2resok resok;
    /// default:
@@ -2088,10 +2088,10 @@ Table of Contents
    /// };
    ///
    /// struct SETACL2resok {
-   ///     struct nfsfattr attr;
+   ///     fattr attr;
    /// };
    ///
-   /// union SETACL2res switch (enum nfsstat status) {
+   /// union SETACL2res switch (aclstat2 status) {
    /// case ACL2_OK:
    ///     SETACL2resok resok;
    /// default:
@@ -2103,10 +2103,10 @@ Table of Contents
    /// };
    ///
    /// struct GETATTR2resok {
-   ///     struct nfsfattr attr;
+   ///     fattr attr;
    /// };
    ///
-   /// union GETATTR2res switch (enum nfsstat status) {
+   /// union GETATTR2res switch (aclstat2 status) {
    /// case ACL2_OK:
    ///     GETATTR2resok resok;
    /// default:
@@ -2115,7 +2115,7 @@ Table of Contents
    ///
    /// struct ACCESS2args {
    ///     fhandle fh;
-   ///     uint32 access;
+   ///     unsigned int access;
    /// };
    ///
    /// const ACCESS2_READ = 0x1;           /* read data or readdir a directory */
@@ -2127,11 +2127,11 @@ Table of Contents
    /// const ACCESS2_EXECUTE = 0x20;       /* execute file (no meaning for a directory) */
    ///
    /// struct ACCESS2resok {
-   ///     struct nfsfattr attr;
-   ///     uint32 access;
+   ///     fattr attr;
+   ///     unsigned int access;
    /// };
    ///
-   /// union ACCESS2res switch (enum nfsstat status) {
+   /// union ACCESS2res switch (aclstat2 status) {
    /// case ACL2_OK:
    ///     ACCESS2resok resok;
    /// default:
@@ -2149,10 +2149,10 @@ Table of Contents
    ///
    /// struct GETXATTRDIR2resok {
    ///     fhandle fh;
-   ///     struct nfsfattr attr;
+   ///     fattr attr;
    /// };
    ///
-   /// union GETXATTRDIR2res switch (enum nfsstat status) {
+   /// union GETXATTRDIR2res switch (aclstat2 status) {
    /// case ACL2_OK:
    ///     GETXATTRDIR2resok resok;
    /// default:
@@ -2238,7 +2238,7 @@ Table of Contents
    ///     ACL3ERR_BADHANDLE = 10001,
    ///     ACL3ERR_NOTSUPP = 10004,
    ///     ACL3ERR_SERVERFAULT = 10006,
-   ///     ACL3ERR_JUKEBOX = 10008,
+   ///     ACL3ERR_JUKEBOX = 10008
    /// };
    ///
    /// /*
