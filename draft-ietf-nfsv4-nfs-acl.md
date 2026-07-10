@@ -458,6 +458,8 @@ of NFS_ACL that is in use. ACLs that are not valid include:
 * The presented ACL contains too many ACEs
 * The presented ACL's type field contains more than one
   set bit
+* The presented ACL contains an ACE whose type or perm
+  field has a bit set that is not defined by this protocol
 
 {:aside}
 > cel: What does the NA_ACL_DEFAULT bit do?
