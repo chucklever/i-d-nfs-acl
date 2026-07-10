@@ -448,7 +448,7 @@ ACEs.
 
 When a client presents a SETACL operation that a server
 finds is invalid or it cannot process, the server responds
-with ACL2ERR_IO or ACL3ERR_INVAL, depending on the version
+with ACL2ERR_INVAL or ACL3ERR_INVAL, depending on the version
 of NFS_ACL that is in use. ACLs that are not valid include:
 
 * The presented ACL does not contain one ACE for each of
@@ -778,6 +778,14 @@ status codes. The numeric values of these two types match up,
 though aclstat2 omits some codes that are not relevant to the
 NFS_ACL protocol.
 
+The "stat" type in {{Section 2.3.1 of RFC1094}} does not define a
+status code corresponding to the POSIX EINVAL error. However,
+existing NFS_ACL version 2 server implementations return the value
+22 (the numeric value of EINVAL) when a client presents an invalid
+argument to a procedure. The aclstat2 type therefore defines
+ACL2ERR_INVAL with that value, even though the NFS version 2 "stat"
+type has no matching code.
+
 ~~~ xdr
 enum aclstat2 {
     ACL2_OK = 0,
@@ -785,6 +793,7 @@ enum aclstat2 {
     ACL2ERR_NOENT = 2,
     ACL2ERR_IO = 5,
     ACL2ERR_ACCES = 13,
+    ACL2ERR_INVAL = 22,
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
     ACL2ERR_DQUOT = 69,
@@ -805,6 +814,9 @@ ACL2ERR_IO
 
 ACL2ERR_ACCES
 : Permission denied.  The caller does not have the correct permission to perform the requested operation.
+
+ACL2ERR_INVAL
+: An invalid or unsupported argument was specified for procedure.
 
 ACL2ERR_NOSPC
 : No space left on device.  The operation caused the server's file system to reach its limit.
@@ -990,10 +1002,13 @@ ACL contents. However, a failed SETACL may partially
 change a file's ACLs.
 
 When SETACL2args.fh represents a file object that does
-not implement support for ACLs, or the new ACL does not
-contain at least the minimal set of ACEs (as described
-in {{acls-in-operation}}), the server responds by
+not implement support for ACLs, the server responds by
 setting SETACL2res.status to ACL2ERR_IO.
+
+When the new ACL does not contain at least the minimal
+set of ACEs (as described in {{acls-in-operation}}), the
+server responds by setting SETACL2res.status to
+ACL2ERR_INVAL.
 
 #### ERRORS
 
@@ -1001,6 +1016,7 @@ setting SETACL2res.status to ACL2ERR_IO.
 - ACL2ERR_PERM
 - ACL2ERR_IO
 - ACL2ERR_ACCES
+- ACL2ERR_INVAL
 - ACL2ERR_NOSPC
 - ACL2ERR_DQUOT
 - ACL2ERR_STALE
@@ -1251,7 +1267,7 @@ and the RPC user does not have permission to do so, the server returns
 ACL2ERR_ACCES in the GETXATTRDIR2.status field.
 
 If the target file handle designates an object not of type NFREG or
-NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
+NFDIR, the server returns the value ACL2ERR_INVAL in the GETXATTRDIR2.status
 field. Neither named attributes nor named attribute directories have
 their own named attributes.
 
@@ -1275,6 +1291,7 @@ field.
 - ACL2ERR_NOENT
 - ACL2ERR_IO
 - ACL2ERR_ACCES
+- ACL2ERR_INVAL
 - ACL2ERR_NOSPC
 - ACL2ERR_ROFS
 - ACL2ERR_STALE
@@ -2147,7 +2164,9 @@ The following definitions, together with the common definitions in
 ///
 /// /*
 ///  * ACL error codes; the numeric values match codes with the same
-///  * name used in NFS version 2.
+///  * name used in NFS version 2, except ACL2ERR_INVAL, which has no
+///  * counterpart in NFS version 2 but is returned by existing
+///  * implementations.
 ///  */
 /// enum aclstat2 {
 ///     ACL2_OK = 0,
@@ -2155,6 +2174,7 @@ The following definitions, together with the common definitions in
 ///     ACL2ERR_NOENT = 2,
 ///     ACL2ERR_IO = 5,
 ///     ACL2ERR_ACCES = 13,
+///     ACL2ERR_INVAL = 22,
 ///     ACL2ERR_NOSPC = 28,
 ///     ACL2ERR_ROFS = 30,
 ///     ACL2ERR_DQUOT = 69,
