@@ -1929,29 +1929,60 @@ that it invalidates normal file attributes.
 # XDR Protocol Definition
 
 This section contains a description of the core features of the
-NFS_ACL protocol, version 2 and 3, expressed in the XDR language
-{{RFC4506}}.
+NFS_ACL protocol, version 2 and version 3, expressed in the XDR
+language {{RFC4506}}.
+
+NFS_ACL version 2 and NFS_ACL version 3 are independent versions of
+a single RPC program.  Their XDR definitions are given here as two
+separate specifications, one in {{nfs-acl-v2-xdr}} and one in
+{{nfs-acl-v3-xdr}}, and each version is intended to form its own XDR
+file.  Presenting the two versions as separate files lets an
+implementer extract and compile only the protocol version of
+interest.  The code component license and the data types common to both
+versions appear once, in {{code-component-license}}.  Prepending
+those common definitions to the definitions of a single version
+yields a complete, independently compilable XDR file for that
+version: nfs_acl2.x for version 2, and nfs_acl3.x for version 3.
 
 This description is provided in a way that makes it simple to
-extract into ready-to-compile form.  The reader can apply the
-following shell script to this document to produce a
-machine-readable XDR description of the NFS_ACL protocol.
+extract into ready-to-compile form.  In the sections that follow,
+each line of XDR text is preceded by the marker "///".  A line of
+the form "/// @@FILE name" marks the start of the version-specific
+definitions belonging to the file "name"; the XDR text preceding
+the first such marker, in {{code-component-license}}, is common to
+both files.  The reader can apply the following shell script to this
+document to extract the two XDR files.
 
 ~~~ sh
 #!/bin/sh
-grep '^ *///' | sed 's?^ /// ??' | sed 's?^ *///$??'
+awk '
+  /^ *\/\/\// {
+    line = $0
+    sub(/^ *\/\/\/ ?/, "", line)
+    if (line ~ /^@@FILE /) { split(line, a, " "); f = a[2]; next }
+    if (f == "") common = common line "\n"
+    else         part[f] = part[f] line "\n"
+    next
+  }
+  END { for (f in part) printf "%s%s", common, part[f] > f }
+'
 ~~~
 
 That is, if the above script is stored in a file called
-"extract.sh" and this document is in a file called "spec.txt",
-then the reader can do the following to extract an XDR
-description file:
+"extract.sh" and this document is in a file called "spec.txt", then
 
 ~~~ sh
-sh extract.sh < spec.txt > nfs_acl.x
+sh extract.sh < spec.txt
 ~~~
 
-##  Code Component License
+writes two files into the current directory: nfs_acl2.x, containing
+the common definitions followed by the NFS_ACL version 2 definitions
+of {{nfs-acl-v2-xdr}}, and nfs_acl3.x, containing the common
+definitions followed by the NFS_ACL version 3 definitions of
+{{nfs-acl-v3-xdr}}.  Each file is a complete and independently
+compilable XDR description of one protocol version.
+
+##  Code Component License {#code-component-license}
 
 Code components extracted from this document must include
 the following license text.  When the extracted XDR code
@@ -2061,6 +2092,20 @@ text need be preserved.
 /// const NA_ACLCNT = 0x2;              /* number of entries in the aclent list */
 /// const NA_DFACL = 0x4;               /* dfaclent contains a valid list */
 /// const NA_DFACLCNT = 0x8;            /* number of entries in the dfaclent list */
+///
+/// /*
+///  * Share the port with the NFS service.
+///  */
+/// const NFS_ACL_PORT = 2049;
+~~~
+
+## NFS_ACL Version 2 {#nfs-acl-v2-xdr}
+
+The following definitions, together with the common definitions in
+{{code-component-license}}, form the file nfs_acl2.x.
+
+~~~ xdr
+/// @@FILE nfs_acl2.x
 ///
 /// /*
 ///  * XDR data types inherited from the NFS version 2 protocol
@@ -2214,6 +2259,32 @@ text need be preserved.
 ///     void;
 /// };
 ///
+/// program NFS_ACL_PROGRAM {
+///     version NFS_ACL_V2 {
+///         void
+///             ACLPROC2_NULL(void) = 0;
+///         GETACL2res
+///             ACLPROC2_GETACL(GETACL2args) = 1;
+///         SETACL2res
+///             ACLPROC2_SETACL(SETACL2args) = 2;
+///         GETATTR2res
+///             ACLPROC2_GETATTR(GETATTR2args) = 3;
+///         ACCESS2res
+///             ACLPROC2_ACCESS(ACCESS2args) = 4;
+///         GETXATTRDIR2res
+///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
+///     } = 2;
+/// } = 100227;
+~~~
+
+## NFS_ACL Version 3 {#nfs-acl-v3-xdr}
+
+The following definitions, together with the common definitions in
+{{code-component-license}}, form the file nfs_acl3.x.
+
+~~~ xdr
+/// @@FILE nfs_acl3.x
+///
 /// /*
 ///  * XDR data types inherited from the NFS version 3 protocol
 ///  */
@@ -2362,26 +2433,7 @@ text need be preserved.
 ///     void;
 /// };
 ///
-/// /*
-///  * Share the port with the NFS service.
-///  */
-/// const NFS_ACL_PORT = 2049;
-///
 /// program NFS_ACL_PROGRAM {
-///     version NFS_ACL_V2 {
-///         void
-///             ACLPROC2_NULL(void) = 0;
-///         GETACL2res
-///             ACLPROC2_GETACL(GETACL2args) = 1;
-///         SETACL2res
-///             ACLPROC2_SETACL(SETACL2args) = 2;
-///         GETATTR2res
-///             ACLPROC2_GETATTR(GETATTR2args) = 3;
-///         ACCESS2res
-///             ACLPROC2_ACCESS(ACCESS2args) = 4;
-///         GETXATTRDIR2res
-///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
-///     } = 2;
 ///     version NFS_ACL_V3 {
 ///         void
 ///             ACLPROC3_NULL(void) = 0;
@@ -2454,6 +2506,12 @@ Linux and Solaris implementations of ACLs, and remarks that:
 > than in draft 17 for ACLs with only four ACL entries. This
 > is a corner case that occurs only rarely, so the semantic
 > differences may not be noticeable.
+
+The Linux NFS_ACL implementation already builds the version 2 and
+version 3 protocols from two separate source files, presently
+maintained by hand.  Work is underway to generate those files from
+the separate XDR descriptions in {{nfs-acl-v2-xdr}} and
+{{nfs-acl-v3-xdr}} instead.
 
 # Security Considerations
 
