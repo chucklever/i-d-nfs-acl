@@ -29,7 +29,7 @@ Control Lists stored on an NFS version 2 or version 3 server.
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.1
+    wcwidth 0.8.2
 -->
 <link href="draft-ietf-nfsv4-nfs-acl.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1048,11 +1048,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">NFS ACL Protocol</td>
-<td class="right">June 2026</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lever</td>
-<td class="center">Expires 22 December 2026</td>
+<td class="center">Expires 11 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <dd class="internet-draft">draft-ietf-nfsv4-nfs-acl-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-20" class="published">20 June 2026</time>
+<time datetime="2026-07-10" class="published">10 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-22">22 December 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-11">11 January 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1124,7 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1350,6 +1350,12 @@ Control Lists stored on an NFS version 2 or version 3 server.<a href="#section-a
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
                 <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-code-component-license" class="internal xref">Code Component License</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-nfs_acl-version-2-2" class="internal xref">NFS_ACL Version 2</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-nfs_acl-version-3-2" class="internal xref">NFS_ACL Version 3</a></p>
 </li>
             </ul>
 </li>
@@ -1839,7 +1845,7 @@ three ACEs is referred to as a minimal NFS ACL.<a href="#section-3.5.4.2-3" clas
 ACEs.<a href="#section-3.5.4.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.5.4.2-5">When a client presents a SETACL operation that a server
 finds is invalid or it cannot process, the server responds
-with ACL2ERR_IO or ACL3ERR_INVAL, depending on the version
+with ACL2ERR_INVAL or ACL3ERR_INVAL, depending on the version
 of NFS_ACL that is in use. ACLs that are not valid include:<a href="#section-3.5.4.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.5.4.2-6.1">
@@ -1856,6 +1862,10 @@ is not a directory<a href="#section-3.5.4.2-6.2.1" class="pilcrow">¶</a></p>
               <li class="normal" id="section-3.5.4.2-6.4">
                 <p id="section-3.5.4.2-6.4.1">The presented ACL's type field contains more than one
 set bit<a href="#section-3.5.4.2-6.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.5.4.2-6.5">
+                <p id="section-3.5.4.2-6.5.1">The presented ACL contains an ACE whose type or perm
+field has a bit set that is not defined by this protocol<a href="#section-3.5.4.2-6.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <aside id="section-3.5.4.2-7">
@@ -2283,7 +2293,14 @@ for the similar purpose of returning NFS_ACL version 2 procedure
 status codes. The numeric values of these two types match up,
 though aclstat2 omits some codes that are not relevant to the
 NFS_ACL protocol.<a href="#section-5.1.5-1" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.1.5-2">
+<p id="section-5.1.5-2">The "stat" type in <span><a href="https://rfc-editor.org/rfc/rfc1094#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#RFC1094" class="cite xref">RFC1094</a>]</span> does not define a
+status code corresponding to the POSIX EINVAL error. However,
+existing NFS_ACL version 2 server implementations return the value
+22 (the numeric value of EINVAL) when a client presents an invalid
+argument to a procedure. The aclstat2 type therefore defines
+ACL2ERR_INVAL with that value, even though the NFS version 2 "stat"
+type has no matching code.<a href="#section-5.1.5-2" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.5-3">
 <pre>
 enum aclstat2 {
     ACL2_OK = 0,
@@ -2291,53 +2308,59 @@ enum aclstat2 {
     ACL2ERR_NOENT = 2,
     ACL2ERR_IO = 5,
     ACL2ERR_ACCES = 13,
+    ACL2ERR_INVAL = 22,
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
     ACL2ERR_DQUOT = 69,
     ACL2ERR_STALE = 70
 };
-</pre><a href="#section-5.1.5-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.5-3">These status codes carry the following meanings:<a href="#section-5.1.5-3" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.1.5-4">
-            <dt id="section-5.1.5-4.1">ACL2ERR_PERM</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.2">
-              <p id="section-5.1.5-4.2.1">Not owner. The caller does not have correct ownership to perform the requested operation.<a href="#section-5.1.5-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.5-4">These status codes carry the following meanings:<a href="#section-5.1.5-4" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.1.5-5">
+            <dt id="section-5.1.5-5.1">ACL2ERR_PERM</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.2">
+              <p id="section-5.1.5-5.2.1">Not owner. The caller does not have correct ownership to perform the requested operation.<a href="#section-5.1.5-5.2.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.3">ACL2ERR_NOENT</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.4">
-              <p id="section-5.1.5-4.4.1">No such file or directory. The file or directory name specified does not exist.<a href="#section-5.1.5-4.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.3">ACL2ERR_NOENT</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.4">
+              <p id="section-5.1.5-5.4.1">No such file or directory. The file or directory name specified does not exist.<a href="#section-5.1.5-5.4.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.5">ACL2ERR_IO</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.6">
-              <p id="section-5.1.5-4.6.1">Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.<a href="#section-5.1.5-4.6.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.5">ACL2ERR_IO</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.6">
+              <p id="section-5.1.5-5.6.1">Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.<a href="#section-5.1.5-5.6.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.7">ACL2ERR_ACCES</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.8">
-              <p id="section-5.1.5-4.8.1">Permission denied.  The caller does not have the correct permission to perform the requested operation.<a href="#section-5.1.5-4.8.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.7">ACL2ERR_ACCES</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.8">
+              <p id="section-5.1.5-5.8.1">Permission denied.  The caller does not have the correct permission to perform the requested operation.<a href="#section-5.1.5-5.8.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.9">ACL2ERR_NOSPC</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.10">
-              <p id="section-5.1.5-4.10.1">No space left on device.  The operation caused the server's file system to reach its limit.<a href="#section-5.1.5-4.10.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.9">ACL2ERR_INVAL</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.10">
+              <p id="section-5.1.5-5.10.1">An invalid or unsupported argument was specified for procedure.<a href="#section-5.1.5-5.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.11">ACL2ERR_ROFS</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.12">
-              <p id="section-5.1.5-4.12.1">Read-only file system.  Write attempted on a read-only file system.<a href="#section-5.1.5-4.12.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.11">ACL2ERR_NOSPC</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.12">
+              <p id="section-5.1.5-5.12.1">No space left on device.  The operation caused the server's file system to reach its limit.<a href="#section-5.1.5-5.12.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.13">ACL2ERR_DQUOT</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.14">
-              <p id="section-5.1.5-4.14.1">Disk quota exceeded.  The client's disk quota on the server has been exceeded.<a href="#section-5.1.5-4.14.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.13">ACL2ERR_ROFS</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.14">
+              <p id="section-5.1.5-5.14.1">Read-only file system.  Write attempted on a read-only file system.<a href="#section-5.1.5-5.14.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-4.15">ACL2ERR_STALE</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-4.16">
-              <p id="section-5.1.5-4.16.1">The "fhandle" given in the arguments was invalid.  That is, the file referred to by that file handle no longer exists, or access to it has been revoked.<a href="#section-5.1.5-4.16.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-5.15">ACL2ERR_DQUOT</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.16">
+              <p id="section-5.1.5-5.16.1">Disk quota exceeded.  The client's disk quota on the server has been exceeded.<a href="#section-5.1.5-5.16.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.1.5-5.17">ACL2ERR_STALE</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-5.18">
+              <p id="section-5.1.5-5.18.1">The "fhandle" given in the arguments was invalid.  That is, the file referred to by that file handle no longer exists, or access to it has been revoked.<a href="#section-5.1.5-5.18.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2606,10 +2629,12 @@ procedure does not return partially updated (torn)
 ACL contents. However, a failed SETACL may partially
 change a file's ACLs.<a href="#section-5.2.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-5.2.3.4-4">When SETACL2args.fh represents a file object that does
-not implement support for ACLs, or the new ACL does not
-contain at least the minimal set of ACEs (as described
-in <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>), the server responds by
+not implement support for ACLs, the server responds by
 setting SETACL2res.status to ACL2ERR_IO.<a href="#section-5.2.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.4-5">When the new ACL does not contain at least the minimal
+set of ACEs (as described in <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>), the
+server responds by setting SETACL2res.status to
+ACL2ERR_INVAL.<a href="#section-5.2.3.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="errors-2">
@@ -2631,13 +2656,16 @@ setting SETACL2res.status to ACL2ERR_IO.<a href="#section-5.2.3.4-4" class="pilc
                 <p id="section-5.2.3.5-1.4.1">ACL2ERR_ACCES<a href="#section-5.2.3.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.3.5-1.5">
-                <p id="section-5.2.3.5-1.5.1">ACL2ERR_NOSPC<a href="#section-5.2.3.5-1.5.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.3.5-1.5.1">ACL2ERR_INVAL<a href="#section-5.2.3.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.3.5-1.6">
-                <p id="section-5.2.3.5-1.6.1">ACL2ERR_DQUOT<a href="#section-5.2.3.5-1.6.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.3.5-1.6.1">ACL2ERR_NOSPC<a href="#section-5.2.3.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.3.5-1.7">
-                <p id="section-5.2.3.5-1.7.1">ACL2ERR_STALE<a href="#section-5.2.3.5-1.7.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.3.5-1.7.1">ACL2ERR_DQUOT<a href="#section-5.2.3.5-1.7.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-5.2.3.5-1.8">
+                <p id="section-5.2.3.5-1.8.1">ACL2ERR_STALE<a href="#section-5.2.3.5-1.8.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -2977,7 +3005,7 @@ if the GETXATTRDIR operation is to create a named attribute directory
 and the RPC user does not have permission to do so, the server returns
 ACL2ERR_ACCES in the GETXATTRDIR2.status field.<a href="#section-5.2.6.3-6" class="pilcrow">¶</a></p>
 <p id="section-5.2.6.3-7">If the target file handle designates an object not of type NFREG or
-NFDIR, the server returns the value ACL2ERR_IO in the GETXATTRDIR2.status
+NFDIR, the server returns the value ACL2ERR_INVAL in the GETXATTRDIR2.status
 field. Neither named attributes nor named attribute directories have
 their own named attributes.<a href="#section-5.2.6.3-7" class="pilcrow">¶</a></p>
 <p id="section-5.2.6.3-8">Note: This operation is equivalent to the NFSv4 OPENATTR operation as
@@ -3017,13 +3045,16 @@ field.<a href="#section-5.2.6.4-2" class="pilcrow">¶</a></p>
                 <p id="section-5.2.6.5-1.4.1">ACL2ERR_ACCES<a href="#section-5.2.6.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.6.5-1.5">
-                <p id="section-5.2.6.5-1.5.1">ACL2ERR_NOSPC<a href="#section-5.2.6.5-1.5.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.6.5-1.5.1">ACL2ERR_INVAL<a href="#section-5.2.6.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.6.5-1.6">
-                <p id="section-5.2.6.5-1.6.1">ACL2ERR_ROFS<a href="#section-5.2.6.5-1.6.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.6.5-1.6.1">ACL2ERR_NOSPC<a href="#section-5.2.6.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.6.5-1.7">
-                <p id="section-5.2.6.5-1.7.1">ACL2ERR_STALE<a href="#section-5.2.6.5-1.7.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.6.5-1.7.1">ACL2ERR_ROFS<a href="#section-5.2.6.5-1.7.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-5.2.6.5-1.8">
+                <p id="section-5.2.6.5-1.8.1">ACL2ERR_STALE<a href="#section-5.2.6.5-1.8.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -3948,27 +3979,56 @@ that it invalidates normal file attributes.<a href="#section-7.3-2" class="pilcr
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-xdr-protocol-definition" class="section-name selfRef">XDR Protocol Definition</a>
       </h2>
 <p id="section-8-1">This section contains a description of the core features of the
-NFS_ACL protocol, version 2 and 3, expressed in the XDR language
-<span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">This description is provided in a way that makes it simple to
-extract into ready-to-compile form.  The reader can apply the
-following shell script to this document to produce a
-machine-readable XDR description of the NFS_ACL protocol.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<div class="lang-sh sourcecode" id="section-8-3">
+NFS_ACL protocol, version 2 and version 3, expressed in the XDR
+language <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">NFS_ACL version 2 and NFS_ACL version 3 are independent versions of
+a single RPC program.  Their XDR definitions are given here as two
+separate specifications, one in <a href="#nfs-acl-v2-xdr" class="auto internal xref">Section 8.2</a> and one in
+<a href="#nfs-acl-v3-xdr" class="auto internal xref">Section 8.3</a>, and each version is intended to form its own XDR
+file.  Presenting the two versions as separate files lets an
+implementer extract and compile only the protocol version of
+interest.  The code component license and the data types common to both
+versions appear once, in <a href="#code-component-license" class="auto internal xref">Section 8.1</a>.  Prepending
+those common definitions to the definitions of a single version
+yields a complete, independently compilable XDR file for that
+version: nfs_acl2.x for version 2, and nfs_acl3.x for version 3.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">This description is provided in a way that makes it simple to
+extract into ready-to-compile form.  In the sections that follow,
+each line of XDR text is preceded by the marker "///".  A line of
+the form "/// @@FILE name" marks the start of the version-specific
+definitions belonging to the file "name"; the XDR text preceding
+the first such marker, in <a href="#code-component-license" class="auto internal xref">Section 8.1</a>, is common to
+both files.  The reader can apply the following shell script to this
+document to extract the two XDR files.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<div class="lang-sh sourcecode" id="section-8-4">
 <pre>
 #!/bin/sh
-grep '^ *///' | sed 's?^ /// ??' | sed 's?^ *///$??'
-</pre><a href="#section-8-3" class="pilcrow">¶</a>
+awk '
+  /^ *\/\/\// {
+    line = $0
+    sub(/^ *\/\/\/ ?/, "", line)
+    if (line ~ /^@@FILE /) { split(line, a, " "); f = a[2]; next }
+    if (f == "") common = common line "\n"
+    else         part[f] = part[f] line "\n"
+    next
+  }
+  END { for (f in part) printf "%s%s", common, part[f] &gt; f }
+'
+</pre><a href="#section-8-4" class="pilcrow">¶</a>
 </div>
-<p id="section-8-4">That is, if the above script is stored in a file called
-"extract.sh" and this document is in a file called "spec.txt",
-then the reader can do the following to extract an XDR
-description file:<a href="#section-8-4" class="pilcrow">¶</a></p>
-<div class="lang-sh sourcecode" id="section-8-5">
+<p id="section-8-5">That is, if the above script is stored in a file called
+"extract.sh" and this document is in a file called "spec.txt", then<a href="#section-8-5" class="pilcrow">¶</a></p>
+<div class="lang-sh sourcecode" id="section-8-6">
 <pre>
-sh extract.sh &lt; spec.txt &gt; nfs_acl.x
-</pre><a href="#section-8-5" class="pilcrow">¶</a>
+sh extract.sh &lt; spec.txt
+</pre><a href="#section-8-6" class="pilcrow">¶</a>
 </div>
+<p id="section-8-7">writes two files into the current directory: nfs_acl2.x, containing
+the common definitions followed by the NFS_ACL version 2 definitions
+of <a href="#nfs-acl-v2-xdr" class="auto internal xref">Section 8.2</a>, and nfs_acl3.x, containing the common
+definitions followed by the NFS_ACL version 3 definitions of
+<a href="#nfs-acl-v3-xdr" class="auto internal xref">Section 8.3</a>.  Each file is a complete and independently
+compilable XDR description of one protocol version.<a href="#section-8-7" class="pilcrow">¶</a></p>
 <div id="code-component-license">
 <section id="section-8.1">
         <h3 id="name-code-component-license">
@@ -4084,6 +4144,25 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// const NA_DFACLCNT = 0x8;            /* number of entries in the dfaclent list */
 ///
 /// /*
+///  * Share the port with the NFS service.
+///  */
+/// const NFS_ACL_PORT = 2049;
+</pre><a href="#section-8.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="nfs-acl-v2-xdr">
+<section id="section-8.2">
+        <h3 id="name-nfs_acl-version-2-2">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-nfs_acl-version-2-2" class="section-name selfRef">NFS_ACL Version 2</a>
+        </h3>
+<p id="section-8.2-1">The following definitions, together with the common definitions in
+<a href="#code-component-license" class="auto internal xref">Section 8.1</a>, form the file nfs_acl2.x.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-xdr sourcecode" id="section-8.2-2">
+<pre>
+/// @@FILE nfs_acl2.x
+///
+/// /*
 ///  * XDR data types inherited from the NFS version 2 protocol
 ///  */
 ///
@@ -4123,7 +4202,9 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///
 /// /*
 ///  * ACL error codes; the numeric values match codes with the same
-///  * name used in NFS version 2.
+///  * name used in NFS version 2, except ACL2ERR_INVAL, which has no
+///  * counterpart in NFS version 2 but is returned by existing
+///  * implementations.
 ///  */
 /// enum aclstat2 {
 ///     ACL2_OK = 0,
@@ -4131,6 +4212,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///     ACL2ERR_NOENT = 2,
 ///     ACL2ERR_IO = 5,
 ///     ACL2ERR_ACCES = 13,
+///     ACL2ERR_INVAL = 22,
 ///     ACL2ERR_NOSPC = 28,
 ///     ACL2ERR_ROFS = 30,
 ///     ACL2ERR_DQUOT = 69,
@@ -4234,6 +4316,37 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 /// default:
 ///     void;
 /// };
+///
+/// program NFS_ACL_PROGRAM {
+///     version NFS_ACL_V2 {
+///         void
+///             ACLPROC2_NULL(void) = 0;
+///         GETACL2res
+///             ACLPROC2_GETACL(GETACL2args) = 1;
+///         SETACL2res
+///             ACLPROC2_SETACL(SETACL2args) = 2;
+///         GETATTR2res
+///             ACLPROC2_GETATTR(GETATTR2args) = 3;
+///         ACCESS2res
+///             ACLPROC2_ACCESS(ACCESS2args) = 4;
+///         GETXATTRDIR2res
+///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
+///     } = 2;
+/// } = 100227;
+</pre><a href="#section-8.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="nfs-acl-v3-xdr">
+<section id="section-8.3">
+        <h3 id="name-nfs_acl-version-3-2">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-nfs_acl-version-3-2" class="section-name selfRef">NFS_ACL Version 3</a>
+        </h3>
+<p id="section-8.3-1">The following definitions, together with the common definitions in
+<a href="#code-component-license" class="auto internal xref">Section 8.1</a>, form the file nfs_acl3.x.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-xdr sourcecode" id="section-8.3-2">
+<pre>
+/// @@FILE nfs_acl3.x
 ///
 /// /*
 ///  * XDR data types inherited from the NFS version 3 protocol
@@ -4383,26 +4496,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///     void;
 /// };
 ///
-/// /*
-///  * Share the port with the NFS service.
-///  */
-/// const NFS_ACL_PORT = 2049;
-///
 /// program NFS_ACL_PROGRAM {
-///     version NFS_ACL_V2 {
-///         void
-///             ACLPROC2_NULL(void) = 0;
-///         GETACL2res
-///             ACLPROC2_GETACL(GETACL2args) = 1;
-///         SETACL2res
-///             ACLPROC2_SETACL(SETACL2args) = 2;
-///         GETATTR2res
-///             ACLPROC2_GETATTR(GETATTR2args) = 3;
-///         ACCESS2res
-///             ACLPROC2_ACCESS(ACCESS2args) = 4;
-///         GETXATTRDIR2res
-///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
-///     } = 2;
 ///     version NFS_ACL_V3 {
 ///         void
 ///             ACLPROC3_NULL(void) = 0;
@@ -4414,7 +4508,7 @@ text need be preserved.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 ///             ACLPROC3_GETXATTRDIR(GETXATTRDIR3args) = 3;
 ///     } = 3;
 /// } = 100227;
-</pre><a href="#section-8.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-8.3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -4476,6 +4570,11 @@ Linux and Solaris implementations of ACLs, and remarks that:
 &gt; than in draft 17 for ACLs with only four ACL entries. This
 &gt; is a corner case that occurs only rarely, so the semantic
 &gt; differences may not be noticeable.<a href="#section-9.2-7" class="pilcrow">¶</a></p>
+<p id="section-9.2-8">The Linux NFS_ACL implementation already builds the version 2 and
+version 3 protocols from two separate source files, presently
+maintained by hand.  Work is underway to generate those files from
+the separate XDR descriptions in <a href="#nfs-acl-v2-xdr" class="auto internal xref">Section 8.2</a> and
+<a href="#nfs-acl-v3-xdr" class="auto internal xref">Section 8.3</a> instead.<a href="#section-9.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

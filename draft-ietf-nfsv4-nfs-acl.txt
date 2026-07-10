@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                               Independent
-Intended status: Informational                              20 June 2026
-Expires: 22 December 2026
+Intended status: Informational                              10 July 2026
+Expires: 11 January 2027
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 December 2026.
+   This Internet-Draft will expire on 11 January 2027.
 
 Copyright Notice
 
@@ -130,6 +130,8 @@ Table of Contents
      7.3.  Caching Policies
    8.  XDR Protocol Definition
      8.1.  Code Component License
+     8.2.  NFS_ACL Version 2
+     8.3.  NFS_ACL Version 3
    9.  Implementation Status
      9.1.  Solaris NFS server and client
      9.2.  Linux NFS server and client
@@ -478,8 +480,8 @@ Table of Contents
    An NFS ACL may zero or more NA_USER and/or NA_GROUP ACEs.
 
    When a client presents a SETACL operation that a server finds is
-   invalid or it cannot process, the server responds with ACL2ERR_IO or
-   ACL3ERR_INVAL, depending on the version of NFS_ACL that is in use.
+   invalid or it cannot process, the server responds with ACL2ERR_INVAL
+   or ACL3ERR_INVAL, depending on the version of NFS_ACL that is in use.
    ACLs that are not valid include:
 
    *  The presented ACL does not contain one ACE for each of
@@ -491,6 +493,9 @@ Table of Contents
    *  The presented ACL contains too many ACEs
 
    *  The presented ACL's type field contains more than one set bit
+
+   *  The presented ACL contains an ACE whose type or perm field has a
+      bit set that is not defined by this protocol
 
       |  cel: What does the NA_ACL_DEFAULT bit do?
 
@@ -779,12 +784,21 @@ Table of Contents
    numeric values of these two types match up, though aclstat2 omits
    some codes that are not relevant to the NFS_ACL protocol.
 
+   The "stat" type in Section 2.3.1 of [RFC1094] does not define a
+   status code corresponding to the POSIX EINVAL error.  However,
+   existing NFS_ACL version 2 server implementations return the value 22
+   (the numeric value of EINVAL) when a client presents an invalid
+   argument to a procedure.  The aclstat2 type therefore defines
+   ACL2ERR_INVAL with that value, even though the NFS version 2 "stat"
+   type has no matching code.
+
    enum aclstat2 {
        ACL2_OK = 0,
        ACL2ERR_PERM = 1,
        ACL2ERR_NOENT = 2,
        ACL2ERR_IO = 5,
        ACL2ERR_ACCES = 13,
+       ACL2ERR_INVAL = 22,
        ACL2ERR_NOSPC = 28,
        ACL2ERR_ROFS = 30,
        ACL2ERR_DQUOT = 69,
@@ -804,6 +818,9 @@ Table of Contents
 
    ACL2ERR_ACCES  Permission denied.  The caller does not have the
       correct permission to perform the requested operation.
+
+   ACL2ERR_INVAL  An invalid or unsupported argument was specified for
+      procedure.
 
    ACL2ERR_NOSPC  No space left on device.  The operation caused the
       server's file system to reach its limit.
@@ -979,9 +996,12 @@ Table of Contents
    partially change a file's ACLs.
 
    When SETACL2args.fh represents a file object that does not implement
-   support for ACLs, or the new ACL does not contain at least the
-   minimal set of ACEs (as described in Section 3.5.4.2), the server
-   responds by setting SETACL2res.status to ACL2ERR_IO.
+   support for ACLs, the server responds by setting SETACL2res.status to
+   ACL2ERR_IO.
+
+   When the new ACL does not contain at least the minimal set of ACEs
+   (as described in Section 3.5.4.2), the server responds by setting
+   SETACL2res.status to ACL2ERR_INVAL.
 
 5.2.3.5.  ERRORS
 
@@ -992,6 +1012,8 @@ Table of Contents
    *  ACL2ERR_IO
 
    *  ACL2ERR_ACCES
+
+   *  ACL2ERR_INVAL
 
    *  ACL2ERR_NOSPC
 
@@ -1221,7 +1243,7 @@ Table of Contents
    returns ACL2ERR_ACCES in the GETXATTRDIR2.status field.
 
    If the target file handle designates an object not of type NFREG or
-   NFDIR, the server returns the value ACL2ERR_IO in the
+   NFDIR, the server returns the value ACL2ERR_INVAL in the
    GETXATTRDIR2.status field.  Neither named attributes nor named
    attribute directories have their own named attributes.
 
@@ -1250,6 +1272,8 @@ Table of Contents
    *  ACL2ERR_IO
 
    *  ACL2ERR_ACCES
+
+   *  ACL2ERR_INVAL
 
    *  ACL2ERR_NOSPC
 
@@ -1881,22 +1905,54 @@ Table of Contents
 8.  XDR Protocol Definition
 
    This section contains a description of the core features of the
-   NFS_ACL protocol, version 2 and 3, expressed in the XDR language
-   [RFC4506].
+   NFS_ACL protocol, version 2 and version 3, expressed in the XDR
+   language [RFC4506].
+
+   NFS_ACL version 2 and NFS_ACL version 3 are independent versions of a
+   single RPC program.  Their XDR definitions are given here as two
+   separate specifications, one in Section 8.2 and one in Section 8.3,
+   and each version is intended to form its own XDR file.  Presenting
+   the two versions as separate files lets an implementer extract and
+   compile only the protocol version of interest.  The code component
+   license and the data types common to both versions appear once, in
+   Section 8.1.  Prepending those common definitions to the definitions
+   of a single version yields a complete, independently compilable XDR
+   file for that version: nfs_acl2.x for version 2, and nfs_acl3.x for
+   version 3.
 
    This description is provided in a way that makes it simple to extract
-   into ready-to-compile form.  The reader can apply the following shell
-   script to this document to produce a machine-readable XDR description
-   of the NFS_ACL protocol.
+   into ready-to-compile form.  In the sections that follow, each line
+   of XDR text is preceded by the marker "///".  A line of the form "///
+   @@FILE name" marks the start of the version-specific definitions
+   belonging to the file "name"; the XDR text preceding the first such
+   marker, in Section 8.1, is common to both files.  The reader can
+   apply the following shell script to this document to extract the two
+   XDR files.
 
    #!/bin/sh
-   grep '^ *///' | sed 's?^ /// ??' | sed 's?^ *///$??'
+   awk '
+     /^ *\/\/\// {
+       line = $0
+       sub(/^ *\/\/\/ ?/, "", line)
+       if (line ~ /^@@FILE /) { split(line, a, " "); f = a[2]; next }
+       if (f == "") common = common line "\n"
+       else         part[f] = part[f] line "\n"
+       next
+     }
+     END { for (f in part) printf "%s%s", common, part[f] > f }
+   '
 
    That is, if the above script is stored in a file called "extract.sh"
-   and this document is in a file called "spec.txt", then the reader can
-   do the following to extract an XDR description file:
+   and this document is in a file called "spec.txt", then
 
-   sh extract.sh < spec.txt > nfs_acl.x
+   sh extract.sh < spec.txt
+
+   writes two files into the current directory: nfs_acl2.x, containing
+   the common definitions followed by the NFS_ACL version 2 definitions
+   of Section 8.2, and nfs_acl3.x, containing the common definitions
+   followed by the NFS_ACL version 3 definitions of Section 8.3.  Each
+   file is a complete and independently compilable XDR description of
+   one protocol version.
 
 8.1.  Code Component License
 
@@ -2008,6 +2064,18 @@ Table of Contents
    /// const NA_DFACLCNT = 0x8;            /* number of entries in the dfaclent list */
    ///
    /// /*
+   ///  * Share the port with the NFS service.
+   ///  */
+   /// const NFS_ACL_PORT = 2049;
+
+8.2.  NFS_ACL Version 2
+
+   The following definitions, together with the common definitions in
+   Section 8.1, form the file nfs_acl2.x.
+
+   /// @@FILE nfs_acl2.x
+   ///
+   /// /*
    ///  * XDR data types inherited from the NFS version 2 protocol
    ///  */
    ///
@@ -2047,7 +2115,9 @@ Table of Contents
    ///
    /// /*
    ///  * ACL error codes; the numeric values match codes with the same
-   ///  * name used in NFS version 2.
+   ///  * name used in NFS version 2, except ACL2ERR_INVAL, which has no
+   ///  * counterpart in NFS version 2 but is returned by existing
+   ///  * implementations.
    ///  */
    /// enum aclstat2 {
    ///     ACL2_OK = 0,
@@ -2055,6 +2125,7 @@ Table of Contents
    ///     ACL2ERR_NOENT = 2,
    ///     ACL2ERR_IO = 5,
    ///     ACL2ERR_ACCES = 13,
+   ///     ACL2ERR_INVAL = 22,
    ///     ACL2ERR_NOSPC = 28,
    ///     ACL2ERR_ROFS = 30,
    ///     ACL2ERR_DQUOT = 69,
@@ -2158,6 +2229,30 @@ Table of Contents
    /// default:
    ///     void;
    /// };
+   ///
+   /// program NFS_ACL_PROGRAM {
+   ///     version NFS_ACL_V2 {
+   ///         void
+   ///             ACLPROC2_NULL(void) = 0;
+   ///         GETACL2res
+   ///             ACLPROC2_GETACL(GETACL2args) = 1;
+   ///         SETACL2res
+   ///             ACLPROC2_SETACL(SETACL2args) = 2;
+   ///         GETATTR2res
+   ///             ACLPROC2_GETATTR(GETATTR2args) = 3;
+   ///         ACCESS2res
+   ///             ACLPROC2_ACCESS(ACCESS2args) = 4;
+   ///         GETXATTRDIR2res
+   ///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
+   ///     } = 2;
+   /// } = 100227;
+
+8.3.  NFS_ACL Version 3
+
+   The following definitions, together with the common definitions in
+   Section 8.1, form the file nfs_acl3.x.
+
+   /// @@FILE nfs_acl3.x
    ///
    /// /*
    ///  * XDR data types inherited from the NFS version 3 protocol
@@ -2307,26 +2402,7 @@ Table of Contents
    ///     void;
    /// };
    ///
-   /// /*
-   ///  * Share the port with the NFS service.
-   ///  */
-   /// const NFS_ACL_PORT = 2049;
-   ///
    /// program NFS_ACL_PROGRAM {
-   ///     version NFS_ACL_V2 {
-   ///         void
-   ///             ACLPROC2_NULL(void) = 0;
-   ///         GETACL2res
-   ///             ACLPROC2_GETACL(GETACL2args) = 1;
-   ///         SETACL2res
-   ///             ACLPROC2_SETACL(SETACL2args) = 2;
-   ///         GETATTR2res
-   ///             ACLPROC2_GETATTR(GETATTR2args) = 3;
-   ///         ACCESS2res
-   ///             ACLPROC2_ACCESS(ACCESS2args) = 4;
-   ///         GETXATTRDIR2res
-   ///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
-   ///     } = 2;
    ///     version NFS_ACL_V3 {
    ///         void
    ///             ACLPROC3_NULL(void) = 0;
@@ -2397,6 +2473,11 @@ Table of Contents
    mask ACL entry is slightly different > than in draft 17 for ACLs with
    only four ACL entries.  This > is a corner case that occurs only
    rarely, so the semantic > differences may not be noticeable.
+
+   The Linux NFS_ACL implementation already builds the version 2 and
+   version 3 protocols from two separate source files, presently
+   maintained by hand.  Work is underway to generate those files from
+   the separate XDR descriptions in Section 8.2 and Section 8.3 instead.
 
 10.  Security Considerations
 
