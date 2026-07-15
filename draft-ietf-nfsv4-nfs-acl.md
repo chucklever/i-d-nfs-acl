@@ -704,12 +704,13 @@ reflects the current mode bits of the object.
 returning ACL3ERR_NOTSUPP.
 
 * The server responds to a SETACL version 2 procedure by
-returning ACL2ERR_IO.
+returning ACL2ERR_NOTSUPP.
 
-The Linux implementation of the NFS_ACL protocol deviates from
-the protocol specified in the current document by returning
-NFS3ERR_NOTSUPP in response to a SETACL version 2 procedure on a
-file system that does not support ACLs.
+The Linux NFS server deviates from the protocol specified in the
+current document by returning the value 10004 (the NFS version 3
+NFS3ERR_NOTSUPP value) rather than the value 45 that this document
+assigns to ACL2ERR_NOTSUPP, in response to a SETACL version 2
+procedure on a file system that does not support ACLs.
 
 # NFS_ACL Version 2
 
@@ -801,6 +802,17 @@ argument to a procedure. The aclstat2 type therefore defines
 ACL2ERR_INVAL with that value, even though the NFS version 2 "stat"
 type has no matching code.
 
+Similarly, the "stat" type does not define a status code that
+reports that a requested operation is not supported. The Solaris
+NFS_ACL version 2 server returns the value 45 (its NFSERR_OPNOTSUPP
+status code) when a client directs an operation at a file object
+whose file system does not support ACLs. The aclstat2 type therefore
+defines ACL2ERR_NOTSUPP with that value. This value matches the one
+that the sole existing NFS_ACL version 2 client (the Solaris
+implementation) decodes to the POSIX EOPNOTSUPP error; the numeric
+value 10004 that NFS version 3 assigns to NFS3ERR_NOTSUPP is not used
+in NFS_ACL version 2 results.
+
 ~~~ xdr
 enum aclstat2 {
     ACL2_OK = 0,
@@ -811,6 +823,7 @@ enum aclstat2 {
     ACL2ERR_INVAL = 22,
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
+    ACL2ERR_NOTSUPP = 45,
     ACL2ERR_DQUOT = 69,
     ACL2ERR_STALE = 70
 };
@@ -838,6 +851,9 @@ ACL2ERR_NOSPC
 
 ACL2ERR_ROFS
 : Read-only file system.  Write attempted on a read-only file system.
+
+ACL2ERR_NOTSUPP
+: Operation is not supported.
 
 ACL2ERR_DQUOT
 : Disk quota exceeded.  The client's disk quota on the server has been exceeded.
@@ -1018,7 +1034,7 @@ change a file's ACLs.
 
 When SETACL2args.fh represents a file object that does
 not implement support for ACLs, the server responds by
-setting SETACL2res.status to ACL2ERR_IO.
+setting SETACL2res.status to ACL2ERR_NOTSUPP.
 
 When the new ACL does not contain at least the minimal
 set of ACEs (as described in {{acls-in-operation}}), the
@@ -1033,6 +1049,7 @@ ACL2ERR_INVAL.
 - ACL2ERR_ACCES
 - ACL2ERR_INVAL
 - ACL2ERR_NOSPC
+- ACL2ERR_NOTSUPP
 - ACL2ERR_DQUOT
 - ACL2ERR_STALE
 
