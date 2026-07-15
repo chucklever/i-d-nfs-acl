@@ -2541,8 +2541,10 @@ URL:       <https://www.kernel.org>
 
 Maturity:  Complete.
 
-Coverage:  All procedures except GETXATTRDIR are implemented in
-           both versions of the protocol.
+Coverage:  The Linux NFS server implements all procedures except
+           GETXATTRDIR in both versions of the protocol. The Linux
+           NFS client implements the NFS_ACL protocol only for
+           version 3; it does not implement NFS_ACL version 2.
 
 Licensing: GPLv2
 
