@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                               Independent
-Intended status: Informational                              10 July 2026
-Expires: 11 January 2027
+Intended status: Informational                              15 July 2026
+Expires: 16 January 2027
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 January 2027.
+   This Internet-Draft will expire on 16 January 2027.
 
 Copyright Notice
 
@@ -477,7 +477,17 @@ Table of Contents
    and NA_OTHER_OBJ.  An NFS ACL that consists only of these three ACEs
    is referred to as a minimal NFS ACL.
 
-   An NFS ACL may zero or more NA_USER and/or NA_GROUP ACEs.
+   An NFS ACL may have zero or more NA_USER and/or NA_GROUP ACEs.
+
+   On the wire, a minimal NFS ACL is represented as four Access Control
+   Entries rather than three.  Along with the NA_USER_OBJ, NA_GROUP_OBJ,
+   and NA_OTHER_OBJ entries, the sender synthesizes an NA_CLASS_OBJ
+   entry whose "perm" element is derived from the permission bits of the
+   object's owning group.
+
+   The Access Control Entries in each of the "aclent" and "dfaclent"
+   arrays appear in ascending order of their "type" element value.  Some
+   receivers depend on this ordering.
 
    When a client presents a SETACL operation that a server finds is
    invalid or it cannot process, the server responds with ACL2ERR_INVAL
@@ -512,8 +522,9 @@ Table of Contents
       identifies the user on the server whose access permission is being
       set.
 
-   *  For an ACE that specifies other types of permission, the "id"
-      field is ignored.
+   *  For an ACE that specifies other types of permission (for example,
+      NA_CLASS_OBJ or NA_OTHER_OBJ), the "id" field is undefined.  A
+      sender sets this field to zero, and a receiver ignores its value.
 
 3.5.4.3.  Relationship Between ACLs and Other File Attributes
 
