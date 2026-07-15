@@ -2646,6 +2646,7 @@ description of the NFS_ACL protocol.
 
 The editor is grateful to
 Bill Baker,
+Frank Batschulat,
 Wim Coekaerts,
 Andreas Gruenbacher,
 Rick Macklem,
