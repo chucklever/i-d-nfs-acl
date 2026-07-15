@@ -446,6 +446,17 @@ three ACEs is referred to as a minimal NFS ACL.
 An NFS ACL may zero or more NA_USER and/or NA_GROUP
 ACEs.
 
+On the wire, a minimal NFS ACL is represented as four
+Access Control Entries rather than three. Along with the
+NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ entries, the
+sender synthesizes an NA_CLASS_OBJ entry whose "perm"
+element is derived from the permission bits of the object's
+owning group.
+
+The Access Control Entries in each of the "aclent" and
+"dfaclent" arrays appear in ascending order of their "type"
+element value. Some receivers depend on this ordering.
+
 When a client presents a SETACL operation that a server
 finds is invalid or it cannot process, the server responds
 with ACL2ERR_INVAL or ACL3ERR_INVAL, depending on the version
