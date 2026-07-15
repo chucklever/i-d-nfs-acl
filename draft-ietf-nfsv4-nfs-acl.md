@@ -964,6 +964,12 @@ for ACLs, the server responds by returning a manufactured
 minimal NFS ACL that reflects the current owner, group, and
 mode bits of the object (see {{acls-in-operation}}).
 
+A default ACL applies only to a directory object. When
+GETACL2args.fh represents an object that is not a directory,
+that object has no default ACL. If the request's NA_DFACL or
+NA_DFACLCNT bit is set, the server returns an empty dfaclent
+array and a dfaclcnt of zero rather than reporting an error.
+
 #### ERRORS
 
 - ACL2ERR_IO
@@ -1679,6 +1685,12 @@ implement support for ACLs, the server responds by
 returning a manufactured minimal NFS ACL that reflects
 the current owner, group, and mode bits of the object
 (see {{acls-in-operation}}).
+
+A default ACL applies only to a directory object. When
+GETACL3args.fh represents an object that is not a directory,
+that object has no default ACL. If the request's NA_DFACL or
+NA_DFACLCNT bit is set, the server returns an empty dfaclent
+array and a dfaclcnt of zero rather than reporting an error.
 
 #### ERRORS
 
