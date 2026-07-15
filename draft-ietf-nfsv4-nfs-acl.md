@@ -489,8 +489,10 @@ NA_GROUP, and NA_GROUP_OBJ, the "id" field contains
 a UID or GID value that identifies the user on the
 server whose access permission is being set.
 
-* For an ACE that specifies other types of permission,
-the "id" field is ignored.
+* For an ACE that specifies other types of permission (for
+example, NA_CLASS_OBJ or NA_OTHER_OBJ), the "id" field is
+undefined. A sender sets this field to zero, and a receiver
+ignores its value.
 
 #### Relationship Between ACLs and Other File Attributes
 
