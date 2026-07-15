@@ -443,7 +443,7 @@ NA_USER_OBJ, NA_GROUP_OBJ, and NA_OTHER_OBJ.
 An NFS ACL that consists only of these
 three ACEs is referred to as a minimal NFS ACL.
 
-An NFS ACL may zero or more NA_USER and/or NA_GROUP
+An NFS ACL may have zero or more NA_USER and/or NA_GROUP
 ACEs.
 
 On the wire, a minimal NFS ACL is represented as four
