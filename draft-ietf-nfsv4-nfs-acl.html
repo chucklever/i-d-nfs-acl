@@ -2180,13 +2180,14 @@ returning ACL3ERR_NOTSUPP.<a href="#section-4.6.3.3-3.2.1" class="pilcrow">¶</a
 </li>
               <li class="normal" id="section-4.6.3.3-3.3">
                 <p id="section-4.6.3.3-3.3.1">The server responds to a SETACL version 2 procedure by
-returning ACL2ERR_IO.<a href="#section-4.6.3.3-3.3.1" class="pilcrow">¶</a></p>
+returning ACL2ERR_NOTSUPP.<a href="#section-4.6.3.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-4.6.3.3-4">The Linux implementation of the NFS_ACL protocol deviates from
-the protocol specified in the current document by returning
-NFS3ERR_NOTSUPP in response to a SETACL version 2 procedure on a
-file system that does not support ACLs.<a href="#section-4.6.3.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.6.3.3-4">The Linux NFS server deviates from the protocol specified in the
+current document by returning the value 10004 (the NFS version 3
+NFS3ERR_NOTSUPP value) rather than the value 45 that this document
+assigns to ACL2ERR_NOTSUPP, in response to a SETACL version 2
+procedure on a file system that does not support ACLs.<a href="#section-4.6.3.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2311,7 +2312,17 @@ existing NFS_ACL version 2 server implementations return the value
 argument to a procedure. The aclstat2 type therefore defines
 ACL2ERR_INVAL with that value, even though the NFS version 2 "stat"
 type has no matching code.<a href="#section-5.1.5-2" class="pilcrow">¶</a></p>
-<div class="lang-xdr sourcecode" id="section-5.1.5-3">
+<p id="section-5.1.5-3">Similarly, the "stat" type does not define a status code that
+reports that a requested operation is not supported. The Solaris
+NFS_ACL version 2 server returns the value 45 (its NFSERR_OPNOTSUPP
+status code) when a client directs an operation at a file object
+whose file system does not support ACLs. The aclstat2 type therefore
+defines ACL2ERR_NOTSUPP with that value. This value matches the one
+that the sole existing NFS_ACL version 2 client (the Solaris
+implementation) decodes to the POSIX EOPNOTSUPP error; the numeric
+value 10004 that NFS version 3 assigns to NFS3ERR_NOTSUPP is not used
+in NFS_ACL version 2 results.<a href="#section-5.1.5-3" class="pilcrow">¶</a></p>
+<div class="lang-xdr sourcecode" id="section-5.1.5-4">
 <pre>
 enum aclstat2 {
     ACL2_OK = 0,
@@ -2322,56 +2333,62 @@ enum aclstat2 {
     ACL2ERR_INVAL = 22,
     ACL2ERR_NOSPC = 28,
     ACL2ERR_ROFS = 30,
+    ACL2ERR_NOTSUPP = 45,
     ACL2ERR_DQUOT = 69,
     ACL2ERR_STALE = 70
 };
-</pre><a href="#section-5.1.5-3" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.5-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.5-4">These status codes carry the following meanings:<a href="#section-5.1.5-4" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.1.5-5">
-            <dt id="section-5.1.5-5.1">ACL2ERR_PERM</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.2">
-              <p id="section-5.1.5-5.2.1">Not owner. The caller does not have correct ownership to perform the requested operation.<a href="#section-5.1.5-5.2.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.5-5">These status codes carry the following meanings:<a href="#section-5.1.5-5" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.1.5-6">
+            <dt id="section-5.1.5-6.1">ACL2ERR_PERM</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.2">
+              <p id="section-5.1.5-6.2.1">Not owner. The caller does not have correct ownership to perform the requested operation.<a href="#section-5.1.5-6.2.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.3">ACL2ERR_NOENT</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.4">
-              <p id="section-5.1.5-5.4.1">No such file or directory. The file or directory name specified does not exist.<a href="#section-5.1.5-5.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.3">ACL2ERR_NOENT</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.4">
+              <p id="section-5.1.5-6.4.1">No such file or directory. The file or directory name specified does not exist.<a href="#section-5.1.5-6.4.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.5">ACL2ERR_IO</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.6">
-              <p id="section-5.1.5-5.6.1">Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.<a href="#section-5.1.5-5.6.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.5">ACL2ERR_IO</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.6">
+              <p id="section-5.1.5-6.6.1">Some sort of hard error occurred when the operation was in progress.  This could be a disk error, for example.<a href="#section-5.1.5-6.6.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.7">ACL2ERR_ACCES</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.8">
-              <p id="section-5.1.5-5.8.1">Permission denied.  The caller does not have the correct permission to perform the requested operation.<a href="#section-5.1.5-5.8.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.7">ACL2ERR_ACCES</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.8">
+              <p id="section-5.1.5-6.8.1">Permission denied.  The caller does not have the correct permission to perform the requested operation.<a href="#section-5.1.5-6.8.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.9">ACL2ERR_INVAL</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.10">
-              <p id="section-5.1.5-5.10.1">An invalid or unsupported argument was specified for procedure.<a href="#section-5.1.5-5.10.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.9">ACL2ERR_INVAL</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.10">
+              <p id="section-5.1.5-6.10.1">An invalid or unsupported argument was specified for procedure.<a href="#section-5.1.5-6.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.11">ACL2ERR_NOSPC</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.12">
-              <p id="section-5.1.5-5.12.1">No space left on device.  The operation caused the server's file system to reach its limit.<a href="#section-5.1.5-5.12.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.11">ACL2ERR_NOSPC</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.12">
+              <p id="section-5.1.5-6.12.1">No space left on device.  The operation caused the server's file system to reach its limit.<a href="#section-5.1.5-6.12.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.13">ACL2ERR_ROFS</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.14">
-              <p id="section-5.1.5-5.14.1">Read-only file system.  Write attempted on a read-only file system.<a href="#section-5.1.5-5.14.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.13">ACL2ERR_ROFS</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.14">
+              <p id="section-5.1.5-6.14.1">Read-only file system.  Write attempted on a read-only file system.<a href="#section-5.1.5-6.14.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.15">ACL2ERR_DQUOT</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.16">
-              <p id="section-5.1.5-5.16.1">Disk quota exceeded.  The client's disk quota on the server has been exceeded.<a href="#section-5.1.5-5.16.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.15">ACL2ERR_NOTSUPP</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.16">
+              <p id="section-5.1.5-6.16.1">Operation is not supported.<a href="#section-5.1.5-6.16.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-5.1.5-5.17">ACL2ERR_STALE</dt>
-            <dd style="margin-left: 1.5em" id="section-5.1.5-5.18">
-              <p id="section-5.1.5-5.18.1">The "fhandle" given in the arguments was invalid.  That is, the file referred to by that file handle no longer exists, or access to it has been revoked.<a href="#section-5.1.5-5.18.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1.5-6.17">ACL2ERR_DQUOT</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.18">
+              <p id="section-5.1.5-6.18.1">Disk quota exceeded.  The client's disk quota on the server has been exceeded.<a href="#section-5.1.5-6.18.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.1.5-6.19">ACL2ERR_STALE</dt>
+            <dd style="margin-left: 1.5em" id="section-5.1.5-6.20">
+              <p id="section-5.1.5-6.20.1">The "fhandle" given in the arguments was invalid.  That is, the file referred to by that file handle no longer exists, or access to it has been revoked.<a href="#section-5.1.5-6.20.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2641,7 +2658,7 @@ ACL contents. However, a failed SETACL may partially
 change a file's ACLs.<a href="#section-5.2.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-5.2.3.4-4">When SETACL2args.fh represents a file object that does
 not implement support for ACLs, the server responds by
-setting SETACL2res.status to ACL2ERR_IO.<a href="#section-5.2.3.4-4" class="pilcrow">¶</a></p>
+setting SETACL2res.status to ACL2ERR_NOTSUPP.<a href="#section-5.2.3.4-4" class="pilcrow">¶</a></p>
 <p id="section-5.2.3.4-5">When the new ACL does not contain at least the minimal
 set of ACEs (as described in <a href="#acls-in-operation" class="auto internal xref">Section 3.5.4.2</a>), the
 server responds by setting SETACL2res.status to
@@ -2673,10 +2690,13 @@ ACL2ERR_INVAL.<a href="#section-5.2.3.4-5" class="pilcrow">¶</a></p>
                 <p id="section-5.2.3.5-1.6.1">ACL2ERR_NOSPC<a href="#section-5.2.3.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.3.5-1.7">
-                <p id="section-5.2.3.5-1.7.1">ACL2ERR_DQUOT<a href="#section-5.2.3.5-1.7.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.3.5-1.7.1">ACL2ERR_NOTSUPP<a href="#section-5.2.3.5-1.7.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.2.3.5-1.8">
-                <p id="section-5.2.3.5-1.8.1">ACL2ERR_STALE<a href="#section-5.2.3.5-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-5.2.3.5-1.8.1">ACL2ERR_DQUOT<a href="#section-5.2.3.5-1.8.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-5.2.3.5-1.9">
+                <p id="section-5.2.3.5-1.9.1">ACL2ERR_STALE<a href="#section-5.2.3.5-1.9.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -3719,10 +3739,13 @@ SETACL3res.status to ACL3ERR_INVAL.<a href="#section-6.3.3.4-5" class="pilcrow">
                 <p id="section-6.3.3.5-1.9.1">ACL3ERR_BADHANDLE<a href="#section-6.3.3.5-1.9.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.3.3.5-1.10">
-                <p id="section-6.3.3.5-1.10.1">ACL3ERR_SERVERFAULT<a href="#section-6.3.3.5-1.10.1" class="pilcrow">¶</a></p>
+                <p id="section-6.3.3.5-1.10.1">ACL3ERR_NOTSUPP<a href="#section-6.3.3.5-1.10.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.3.3.5-1.11">
-                <p id="section-6.3.3.5-1.11.1">ACL3ERR_JUKEBOX<a href="#section-6.3.3.5-1.11.1" class="pilcrow">¶</a></p>
+                <p id="section-6.3.3.5-1.11.1">ACL3ERR_SERVERFAULT<a href="#section-6.3.3.5-1.11.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.3.3.5-1.12">
+                <p id="section-6.3.3.5-1.12.1">ACL3ERR_JUKEBOX<a href="#section-6.3.3.5-1.12.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -4567,8 +4590,10 @@ exist.<a href="#section-9-3" class="pilcrow">¶</a></p>
 <p id="section-9.2-1">Organization:  The Linux Foundation<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.2-2">URL:       <a href="https://www.kernel.org">https://www.kernel.org</a><a href="#section-9.2-2" class="pilcrow">¶</a></p>
 <p id="section-9.2-3">Maturity:  Complete.<a href="#section-9.2-3" class="pilcrow">¶</a></p>
-<p id="section-9.2-4">Coverage:  All procedures except GETXATTRDIR are implemented in
-           both versions of the protocol.<a href="#section-9.2-4" class="pilcrow">¶</a></p>
+<p id="section-9.2-4">Coverage:  The Linux NFS server implements all procedures except
+           GETXATTRDIR in both versions of the protocol. The Linux
+           NFS client implements the NFS_ACL protocol only for
+           version 3; it does not implement NFS_ACL version 2.<a href="#section-9.2-4" class="pilcrow">¶</a></p>
 <p id="section-9.2-5">Licensing: GPLv2<a href="#section-9.2-5" class="pilcrow">¶</a></p>
 <p id="section-9.2-6">Implementation experience:  The initial Linux implementation
 of the NFS_ACL protocol is described in <span>[<a href="#Gruenbacher" class="cite xref">Gruenbacher</a>]</span>, and
@@ -4787,6 +4812,7 @@ description of the NFS_ACL protocol.<a href="#appendix-A.3-3" class="pilcrow">¶
       </h2>
 <p id="appendix-B-1">The editor is grateful to
 Bill Baker,
+Frank Batschulat,
 Wim Coekaerts,
 Andreas Gruenbacher,
 Rick Macklem,
