@@ -475,15 +475,18 @@ of NFS_ACL that is in use. ACLs that are not valid include:
 * The presented ACL contains an ACE whose type or perm
   field has a bit set that is not defined by this protocol
 
-{:aside}
-> cel: What does the NA_ACL_DEFAULT bit do?
-
-{:aside}
-> rthurlow: In the Solaris acl(2)/facl(2) system calls, the
-> equivalently-defined ACL_DEFAULT is used after aclent
-> sorting to note where regular entries end and where default
-> entries start in a single list.  So perhaps it would be
-> normal for the dfaclent entries to all be so marked.
+The NA_ACL_DEFAULT bit is a flag that a sender combines with
+one of the base type values (for example, NA_ACL_DEFAULT |
+NA_USER_OBJ) to mark an Access Control Entry as a default
+entry: one that a directory contributes to its newly created
+children rather than one that controls access to the directory
+itself. Every entry in the "dfaclent" array has the
+NA_ACL_DEFAULT bit set in its "type" field, and no entry in the
+"aclent" array has it set. Segregating default entries into the
+separate "dfaclent" array makes the flag redundant on the wire;
+a sender nonetheless sets it on every "dfaclent" entry so that a
+receiver can reconstruct the single, flag-tagged Access Control
+list that some file access APIs present to applications.
 
 The "id" field in an Access Control Entry is interpreted as follows:
 
