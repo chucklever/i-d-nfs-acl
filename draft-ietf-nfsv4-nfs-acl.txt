@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                               Independent
-Intended status: Informational                              15 July 2026
-Expires: 16 January 2027
+Intended status: Informational                              16 July 2026
+Expires: 17 January 2027
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 January 2027.
+   This Internet-Draft will expire on 17 January 2027.
 
 Copyright Notice
 
@@ -502,18 +502,25 @@ Table of Contents
 
    *  The presented ACL contains too many ACEs
 
-   *  The presented ACL's type field contains more than one set bit
+   *  The presented ACL contains an ACE whose "type" field sets more
+      than one of the base type values NA_USER_OBJ, NA_USER,
+      NA_GROUP_OBJ, NA_GROUP, NA_CLASS_OBJ, and NA_OTHER_OBJ (the
+      NA_ACL_DEFAULT flag may accompany exactly one such value)
 
    *  The presented ACL contains an ACE whose type or perm field has a
       bit set that is not defined by this protocol
 
-      |  cel: What does the NA_ACL_DEFAULT bit do?
-
-      |  rthurlow: In the Solaris acl(2)/facl(2) system calls, the
-      |  equivalently-defined ACL_DEFAULT is used after aclent sorting
-      |  to note where regular entries end and where default entries
-      |  start in a single list.  So perhaps it would be normal for the
-      |  dfaclent entries to all be so marked.
+   The NA_ACL_DEFAULT bit is a flag that a sender combines with one of
+   the base type values (for example, NA_ACL_DEFAULT | NA_USER_OBJ) to
+   mark an Access Control Entry as a default entry: one that a directory
+   contributes to its newly created children rather than one that
+   controls access to the directory itself.  Every entry in the
+   "dfaclent" array has the NA_ACL_DEFAULT bit set in its "type" field,
+   and no entry in the "aclent" array has it set.  Segregating default
+   entries into the separate "dfaclent" array makes the flag redundant
+   on the wire; a sender nonetheless sets it on every "dfaclent" entry
+   so that a receiver can reconstruct the single, flag-tagged Access
+   Control list that some file access APIs present to applications.
 
    The "id" field in an Access Control Entry is interpreted as follows:
 
@@ -552,13 +559,35 @@ Table of Contents
 
 3.5.4.4.  ACL Inheritance
 
-      |  Section needs to explain how default ACLs work and what impact
-      |  they may have on the mode bits of the new file.
-
    A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures to
-   request instantiation of a new file object.  The server uses the
-   default ACL from the parent directory as the initial access ACL on
-   the new object.
+   request instantiation of a new file object.  When the parent
+   directory carries a default ACL (that is, a non-empty "dfaclent"
+   array), the server forms the new object's access ACL from that
+   default ACL, copying each default entry into the new object's access
+   ACL with the NA_ACL_DEFAULT flag cleared so that the entry governs
+   access to the new object.
+
+   The default ACL also constrains the new object's mode bits.  The
+   server derives the owner permission bits from the default NA_USER_OBJ
+   entry, the other permission bits from the default NA_OTHER_OBJ entry,
+   and the group permission bits from the default NA_CLASS_OBJ (mask)
+   entry when one is present or else from the default NA_GROUP_OBJ
+   entry.  The server first reduces each of these three permission sets
+   to its intersection with the corresponding permission the client
+   requested in the creation operation.  The reduced permissions become
+   both the new object's mode bits and the permissions of the
+   corresponding entries in its access ACL.  Through this intersection a
+   default ACL takes the place of a umask in limiting the permissions of
+   a newly created object; see [Gruenbacher] for the relationship
+   between default ACLs and the umask.
+
+   When the newly created object is itself a directory, the server also
+   copies the parent's default ACL into the new directory's own default
+   ACL, so that the default ACL propagates to subsequent descendants.
+
+   When the parent directory has no default ACL, the server assigns no
+   ACL to the new object, and the object's mode bits are those the
+   client requested in the creation operation.
 
 3.5.4.5.  Historical References
 
