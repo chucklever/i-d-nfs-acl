@@ -528,14 +528,37 @@ present might have been modified.
 
 #### ACL Inheritance
 
-{:aside}
-> Section needs to explain how default ACLs work and what
-impact they may have on the mode bits of the new file.
-
 A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures
-to request instantiation of a new file object. The server uses
-the default ACL from the parent directory as the initial access
-ACL on the new object.
+to request instantiation of a new file object. When the parent
+directory carries a default ACL (that is, a non-empty "dfaclent"
+array), the server forms the new object's access ACL from that
+default ACL, copying each default entry into the new object's
+access ACL with the NA_ACL_DEFAULT flag cleared so that the
+entry governs access to the new object.
+
+The default ACL also constrains the new object's mode bits. The
+server derives the owner permission bits from the default
+NA_USER_OBJ entry, the other permission bits from the default
+NA_OTHER_OBJ entry, and the group permission bits from the
+default NA_CLASS_OBJ (mask) entry when one is present or else
+from the default NA_GROUP_OBJ entry. The server first reduces
+each of these three permission sets to its intersection with the
+corresponding permission the client requested in the creation
+operation. The reduced permissions become both the new object's
+mode bits and the permissions of the corresponding entries in
+its access ACL. Through this intersection a default ACL takes
+the place of a umask in limiting the permissions of a newly
+created object; see {{Gruenbacher}} for the relationship between
+default ACLs and the umask.
+
+When the newly created object is itself a directory, the server
+also copies the parent's default ACL into the new directory's
+own default ACL, so that the default ACL propagates to
+subsequent descendants.
+
+When the parent directory has no default ACL, the server assigns
+no ACL to the new object, and the object's mode bits are those
+the client requested in the creation operation.
 
 #### Historical References
 
