@@ -467,8 +467,11 @@ of NFS_ACL that is in use. ACLs that are not valid include:
 * The presented ACL is a default ACL but the target object
   is not a directory
 * The presented ACL contains too many ACEs
-* The presented ACL's type field contains more than one
-  set bit
+* The presented ACL contains an ACE whose "type" field
+  sets more than one of the base type values NA_USER_OBJ,
+  NA_USER, NA_GROUP_OBJ, NA_GROUP, NA_CLASS_OBJ, and
+  NA_OTHER_OBJ (the NA_ACL_DEFAULT flag may accompany
+  exactly one such value)
 * The presented ACL contains an ACE whose type or perm
   field has a bit set that is not defined by this protocol
 
