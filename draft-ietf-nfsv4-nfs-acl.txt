@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                               Independent
-Intended status: Informational                              16 July 2026
-Expires: 17 January 2027
+Intended status: Informational                              17 July 2026
+Expires: 18 January 2027
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 January 2027.
+   This Internet-Draft will expire on 18 January 2027.
 
 Copyright Notice
 
@@ -2186,9 +2186,7 @@ Table of Contents
    ///
    /// /*
    ///  * ACL error codes; the numeric values match codes with the same
-   ///  * name used in NFS version 2, except ACL2ERR_INVAL, which has no
-   ///  * counterpart in NFS version 2 but is returned by existing
-   ///  * implementations.
+   ///  * name used in NFS version 2.
    ///  */
    /// enum aclstat2 {
    ///     ACL2_OK = 0,
@@ -2199,6 +2197,7 @@ Table of Contents
    ///     ACL2ERR_INVAL = 22,
    ///     ACL2ERR_NOSPC = 28,
    ///     ACL2ERR_ROFS = 30,
+   ///     ACL2ERR_NOTSUPP = 45,
    ///     ACL2ERR_DQUOT = 69,
    ///     ACL2ERR_STALE = 70
    /// };
