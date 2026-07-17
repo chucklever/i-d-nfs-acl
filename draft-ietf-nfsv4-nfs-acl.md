@@ -2238,9 +2238,7 @@ The following definitions, together with the common definitions in
 ///
 /// /*
 ///  * ACL error codes; the numeric values match codes with the same
-///  * name used in NFS version 2, except ACL2ERR_INVAL, which has no
-///  * counterpart in NFS version 2 but is returned by existing
-///  * implementations.
+///  * name used in NFS version 2.
 ///  */
 /// enum aclstat2 {
 ///     ACL2_OK = 0,
@@ -2251,6 +2249,7 @@ The following definitions, together with the common definitions in
 ///     ACL2ERR_INVAL = 22,
 ///     ACL2ERR_NOSPC = 28,
 ///     ACL2ERR_ROFS = 30,
+///     ACL2ERR_NOTSUPP = 45,
 ///     ACL2ERR_DQUOT = 69,
 ///     ACL2ERR_STALE = 70
 /// };
