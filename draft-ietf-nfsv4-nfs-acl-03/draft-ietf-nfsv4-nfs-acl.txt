@@ -4,8 +4,8 @@
 
 Network File System Version 4                              C. Lever, Ed.
 Internet-Draft                                               Independent
-Intended status: Informational                              20 June 2026
-Expires: 22 December 2026
+Intended status: Informational                              22 July 2026
+Expires: 23 January 2027
 
 
           The Network File System Access Control List Protocol
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 December 2026.
+   This Internet-Draft will expire on 23 January 2027.
 
 Copyright Notice
 
@@ -130,6 +130,8 @@ Table of Contents
      7.3.  Caching Policies
    8.  XDR Protocol Definition
      8.1.  Code Component License
+     8.2.  NFS_ACL Version 2
+     8.3.  NFS_ACL Version 3
    9.  Implementation Status
      9.1.  Solaris NFS server and client
      9.2.  Linux NFS server and client
@@ -475,11 +477,21 @@ Table of Contents
    and NA_OTHER_OBJ.  An NFS ACL that consists only of these three ACEs
    is referred to as a minimal NFS ACL.
 
-   An NFS ACL may zero or more NA_USER and/or NA_GROUP ACEs.
+   An NFS ACL may have zero or more NA_USER and/or NA_GROUP ACEs.
+
+   On the wire, a minimal NFS ACL is represented as four Access Control
+   Entries rather than three.  Along with the NA_USER_OBJ, NA_GROUP_OBJ,
+   and NA_OTHER_OBJ entries, the sender synthesizes an NA_CLASS_OBJ
+   entry whose "perm" element is derived from the permission bits of the
+   object's owning group.
+
+   The Access Control Entries in each of the "aclent" and "dfaclent"
+   arrays appear in ascending order of their "type" element value.  Some
+   receivers depend on this ordering.
 
    When a client presents a SETACL operation that a server finds is
-   invalid or it cannot process, the server responds with ACL2ERR_IO or
-   ACL3ERR_INVAL, depending on the version of NFS_ACL that is in use.
+   invalid or it cannot process, the server responds with ACL2ERR_INVAL
+   or ACL3ERR_INVAL, depending on the version of NFS_ACL that is in use.
    ACLs that are not valid include:
 
    *  The presented ACL does not contain one ACE for each of
@@ -490,15 +502,25 @@ Table of Contents
 
    *  The presented ACL contains too many ACEs
 
-   *  The presented ACL's type field contains more than one set bit
+   *  The presented ACL contains an ACE whose "type" field sets more
+      than one of the base type values NA_USER_OBJ, NA_USER,
+      NA_GROUP_OBJ, NA_GROUP, NA_CLASS_OBJ, and NA_OTHER_OBJ (the
+      NA_ACL_DEFAULT flag may accompany exactly one such value)
 
-      |  cel: What does the NA_ACL_DEFAULT bit do?
+   *  The presented ACL contains an ACE whose type or perm field has a
+      bit set that is not defined by this protocol
 
-      |  rthurlow: In the Solaris acl(2)/facl(2) system calls, the
-      |  equivalently-defined ACL_DEFAULT is used after aclent sorting
-      |  to note where regular entries end and where default entries
-      |  start in a single list.  So perhaps it would be normal for the
-      |  dfaclent entries to all be so marked.
+   The NA_ACL_DEFAULT bit is a flag that a sender combines with one of
+   the base type values (for example, NA_ACL_DEFAULT | NA_USER_OBJ) to
+   mark an Access Control Entry as a default entry: one that a directory
+   contributes to its newly created children rather than one that
+   controls access to the directory itself.  Every entry in the
+   "dfaclent" array has the NA_ACL_DEFAULT bit set in its "type" field,
+   and no entry in the "aclent" array has it set.  Segregating default
+   entries into the separate "dfaclent" array makes the flag redundant
+   on the wire; a sender nonetheless sets it on every "dfaclent" entry
+   so that a receiver can reconstruct the single, flag-tagged Access
+   Control list that some file access APIs present to applications.
 
    The "id" field in an Access Control Entry is interpreted as follows:
 
@@ -507,8 +529,9 @@ Table of Contents
       identifies the user on the server whose access permission is being
       set.
 
-   *  For an ACE that specifies other types of permission, the "id"
-      field is ignored.
+   *  For an ACE that specifies other types of permission (for example,
+      NA_CLASS_OBJ or NA_OTHER_OBJ), the "id" field is undefined.  A
+      sender sets this field to zero, and a receiver ignores its value.
 
 3.5.4.3.  Relationship Between ACLs and Other File Attributes
 
@@ -536,13 +559,35 @@ Table of Contents
 
 3.5.4.4.  ACL Inheritance
 
-      |  Section needs to explain how default ACLs work and what impact
-      |  they may have on the mode bits of the new file.
-
    A client uses one of the NFS CREATE, MKDIR, or MKNOD procedures to
-   request instantiation of a new file object.  The server uses the
-   default ACL from the parent directory as the initial access ACL on
-   the new object.
+   request instantiation of a new file object.  When the parent
+   directory carries a default ACL (that is, a non-empty "dfaclent"
+   array), the server forms the new object's access ACL from that
+   default ACL, copying each default entry into the new object's access
+   ACL with the NA_ACL_DEFAULT flag cleared so that the entry governs
+   access to the new object.
+
+   The default ACL also constrains the new object's mode bits.  The
+   server derives the owner permission bits from the default NA_USER_OBJ
+   entry, the other permission bits from the default NA_OTHER_OBJ entry,
+   and the group permission bits from the default NA_CLASS_OBJ (mask)
+   entry when one is present or else from the default NA_GROUP_OBJ
+   entry.  The server first reduces each of these three permission sets
+   to its intersection with the corresponding permission the client
+   requested in the creation operation.  The reduced permissions become
+   both the new object's mode bits and the permissions of the
+   corresponding entries in its access ACL.  Through this intersection a
+   default ACL takes the place of a umask in limiting the permissions of
+   a newly created object; see [Gruenbacher] for the relationship
+   between default ACLs and the umask.
+
+   When the newly created object is itself a directory, the server also
+   copies the parent's default ACL into the new directory's own default
+   ACL, so that the default ACL propagates to subsequent descendants.
+
+   When the parent directory has no default ACL, the server assigns no
+   ACL to the new object, and the object's mode bits are those the
+   client requested in the creation operation.
 
 3.5.4.5.  Historical References
 
@@ -699,12 +744,13 @@ Table of Contents
       ACL3ERR_NOTSUPP.
 
    *  The server responds to a SETACL version 2 procedure by returning
-      ACL2ERR_IO.
+      ACL2ERR_NOTSUPP.
 
-   The Linux implementation of the NFS_ACL protocol deviates from the
-   protocol specified in the current document by returning
-   NFS3ERR_NOTSUPP in response to a SETACL version 2 procedure on a file
-   system that does not support ACLs.
+   The Linux NFS server deviates from the protocol specified in the
+   current document by returning the value 10004 (the NFS version 3
+   NFS3ERR_NOTSUPP value) rather than the value 45 that this document
+   assigns to ACL2ERR_NOTSUPP, in response to a SETACL version 2
+   procedure on a file system that does not support ACLs.
 
 5.  NFS_ACL Version 2
 
@@ -779,14 +825,35 @@ Table of Contents
    numeric values of these two types match up, though aclstat2 omits
    some codes that are not relevant to the NFS_ACL protocol.
 
+   The "stat" type in Section 2.3.1 of [RFC1094] does not define a
+   status code corresponding to the POSIX EINVAL error.  However,
+   existing NFS_ACL version 2 server implementations return the value 22
+   (the numeric value of EINVAL) when a client presents an invalid
+   argument to a procedure.  The aclstat2 type therefore defines
+   ACL2ERR_INVAL with that value, even though the NFS version 2 "stat"
+   type has no matching code.
+
+   Similarly, the "stat" type does not define a status code that reports
+   that a requested operation is not supported.  The Solaris NFS_ACL
+   version 2 server returns the value 45 (its NFSERR_OPNOTSUPP status
+   code) when a client directs an operation at a file object whose file
+   system does not support ACLs.  The aclstat2 type therefore defines
+   ACL2ERR_NOTSUPP with that value.  This value matches the one that the
+   sole existing NFS_ACL version 2 client (the Solaris implementation)
+   decodes to the POSIX EOPNOTSUPP error; the numeric value 10004 that
+   NFS version 3 assigns to NFS3ERR_NOTSUPP is not used in NFS_ACL
+   version 2 results.
+
    enum aclstat2 {
        ACL2_OK = 0,
        ACL2ERR_PERM = 1,
        ACL2ERR_NOENT = 2,
        ACL2ERR_IO = 5,
        ACL2ERR_ACCES = 13,
+       ACL2ERR_INVAL = 22,
        ACL2ERR_NOSPC = 28,
        ACL2ERR_ROFS = 30,
+       ACL2ERR_NOTSUPP = 45,
        ACL2ERR_DQUOT = 69,
        ACL2ERR_STALE = 70
    };
@@ -805,11 +872,16 @@ Table of Contents
    ACL2ERR_ACCES  Permission denied.  The caller does not have the
       correct permission to perform the requested operation.
 
+   ACL2ERR_INVAL  An invalid or unsupported argument was specified for
+      procedure.
+
    ACL2ERR_NOSPC  No space left on device.  The operation caused the
       server's file system to reach its limit.
 
    ACL2ERR_ROFS  Read-only file system.  Write attempted on a read-only
       file system.
+
+   ACL2ERR_NOTSUPP  Operation is not supported.
 
    ACL2ERR_DQUOT  Disk quota exceeded.  The client's disk quota on the
       server has been exceeded.
@@ -915,6 +987,12 @@ Table of Contents
    that reflects the current owner, group, and mode bits of the object
    (see Section 3.5.4.2).
 
+   A default ACL applies only to a directory object.  When
+   GETACL2args.fh represents an object that is not a directory, that
+   object has no default ACL.  If the request's NA_DFACL or NA_DFACLCNT
+   bit is set, the server returns an empty dfaclent array and a dfaclcnt
+   of zero rather than reporting an error.
+
 5.2.2.5.  ERRORS
 
    *  ACL2ERR_IO
@@ -979,9 +1057,12 @@ Table of Contents
    partially change a file's ACLs.
 
    When SETACL2args.fh represents a file object that does not implement
-   support for ACLs, or the new ACL does not contain at least the
-   minimal set of ACEs (as described in Section 3.5.4.2), the server
-   responds by setting SETACL2res.status to ACL2ERR_IO.
+   support for ACLs, the server responds by setting SETACL2res.status to
+   ACL2ERR_NOTSUPP.
+
+   When the new ACL does not contain at least the minimal set of ACEs
+   (as described in Section 3.5.4.2), the server responds by setting
+   SETACL2res.status to ACL2ERR_INVAL.
 
 5.2.3.5.  ERRORS
 
@@ -993,7 +1074,11 @@ Table of Contents
 
    *  ACL2ERR_ACCES
 
+   *  ACL2ERR_INVAL
+
    *  ACL2ERR_NOSPC
+
+   *  ACL2ERR_NOTSUPP
 
    *  ACL2ERR_DQUOT
 
@@ -1221,7 +1306,7 @@ Table of Contents
    returns ACL2ERR_ACCES in the GETXATTRDIR2.status field.
 
    If the target file handle designates an object not of type NFREG or
-   NFDIR, the server returns the value ACL2ERR_IO in the
+   NFDIR, the server returns the value ACL2ERR_INVAL in the
    GETXATTRDIR2.status field.  Neither named attributes nor named
    attribute directories have their own named attributes.
 
@@ -1250,6 +1335,8 @@ Table of Contents
    *  ACL2ERR_IO
 
    *  ACL2ERR_ACCES
+
+   *  ACL2ERR_INVAL
 
    *  ACL2ERR_NOSPC
 
@@ -1577,6 +1664,12 @@ Table of Contents
    that reflects the current owner, group, and mode bits of the object
    (see Section 3.5.4.2).
 
+   A default ACL applies only to a directory object.  When
+   GETACL3args.fh represents an object that is not a directory, that
+   object has no default ACL.  If the request's NA_DFACL or NA_DFACLCNT
+   bit is set, the server returns an empty dfaclent array and a dfaclcnt
+   of zero rather than reporting an error.
+
 6.3.2.5.  ERRORS
 
    *  ACL3ERR_IO
@@ -1677,6 +1770,8 @@ Table of Contents
    *  ACL3ERR_STALE
 
    *  ACL3ERR_BADHANDLE
+
+   *  ACL3ERR_NOTSUPP
 
    *  ACL3ERR_SERVERFAULT
 
@@ -1881,22 +1976,54 @@ Table of Contents
 8.  XDR Protocol Definition
 
    This section contains a description of the core features of the
-   NFS_ACL protocol, version 2 and 3, expressed in the XDR language
-   [RFC4506].
+   NFS_ACL protocol, version 2 and version 3, expressed in the XDR
+   language [RFC4506].
+
+   NFS_ACL version 2 and NFS_ACL version 3 are independent versions of a
+   single RPC program.  Their XDR definitions are given here as two
+   separate specifications, one in Section 8.2 and one in Section 8.3,
+   and each version is intended to form its own XDR file.  Presenting
+   the two versions as separate files lets an implementer extract and
+   compile only the protocol version of interest.  The code component
+   license and the data types common to both versions appear once, in
+   Section 8.1.  Prepending those common definitions to the definitions
+   of a single version yields a complete, independently compilable XDR
+   file for that version: nfs_acl2.x for version 2, and nfs_acl3.x for
+   version 3.
 
    This description is provided in a way that makes it simple to extract
-   into ready-to-compile form.  The reader can apply the following shell
-   script to this document to produce a machine-readable XDR description
-   of the NFS_ACL protocol.
+   into ready-to-compile form.  In the sections that follow, each line
+   of XDR text is preceded by the marker "///".  A line of the form "///
+   @@FILE name" marks the start of the version-specific definitions
+   belonging to the file "name"; the XDR text preceding the first such
+   marker, in Section 8.1, is common to both files.  The reader can
+   apply the following shell script to this document to extract the two
+   XDR files.
 
    #!/bin/sh
-   grep '^ *///' | sed 's?^ /// ??' | sed 's?^ *///$??'
+   awk '
+     /^ *\/\/\// {
+       line = $0
+       sub(/^ *\/\/\/ ?/, "", line)
+       if (line ~ /^@@FILE /) { split(line, a, " "); f = a[2]; next }
+       if (f == "") common = common line "\n"
+       else         part[f] = part[f] line "\n"
+       next
+     }
+     END { for (f in part) printf "%s%s", common, part[f] > f }
+   '
 
    That is, if the above script is stored in a file called "extract.sh"
-   and this document is in a file called "spec.txt", then the reader can
-   do the following to extract an XDR description file:
+   and this document is in a file called "spec.txt", then
 
-   sh extract.sh < spec.txt > nfs_acl.x
+   sh extract.sh < spec.txt
+
+   writes two files into the current directory: nfs_acl2.x, containing
+   the common definitions followed by the NFS_ACL version 2 definitions
+   of Section 8.2, and nfs_acl3.x, containing the common definitions
+   followed by the NFS_ACL version 3 definitions of Section 8.3.  Each
+   file is a complete and independently compilable XDR description of
+   one protocol version.
 
 8.1.  Code Component License
 
@@ -2008,6 +2135,18 @@ Table of Contents
    /// const NA_DFACLCNT = 0x8;            /* number of entries in the dfaclent list */
    ///
    /// /*
+   ///  * Share the port with the NFS service.
+   ///  */
+   /// const NFS_ACL_PORT = 2049;
+
+8.2.  NFS_ACL Version 2
+
+   The following definitions, together with the common definitions in
+   Section 8.1, form the file nfs_acl2.x.
+
+   /// @@FILE nfs_acl2.x
+   ///
+   /// /*
    ///  * XDR data types inherited from the NFS version 2 protocol
    ///  */
    ///
@@ -2055,8 +2194,10 @@ Table of Contents
    ///     ACL2ERR_NOENT = 2,
    ///     ACL2ERR_IO = 5,
    ///     ACL2ERR_ACCES = 13,
+   ///     ACL2ERR_INVAL = 22,
    ///     ACL2ERR_NOSPC = 28,
    ///     ACL2ERR_ROFS = 30,
+   ///     ACL2ERR_NOTSUPP = 45,
    ///     ACL2ERR_DQUOT = 69,
    ///     ACL2ERR_STALE = 70
    /// };
@@ -2158,6 +2299,30 @@ Table of Contents
    /// default:
    ///     void;
    /// };
+   ///
+   /// program NFS_ACL_PROGRAM {
+   ///     version NFS_ACL_V2 {
+   ///         void
+   ///             ACLPROC2_NULL(void) = 0;
+   ///         GETACL2res
+   ///             ACLPROC2_GETACL(GETACL2args) = 1;
+   ///         SETACL2res
+   ///             ACLPROC2_SETACL(SETACL2args) = 2;
+   ///         GETATTR2res
+   ///             ACLPROC2_GETATTR(GETATTR2args) = 3;
+   ///         ACCESS2res
+   ///             ACLPROC2_ACCESS(ACCESS2args) = 4;
+   ///         GETXATTRDIR2res
+   ///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
+   ///     } = 2;
+   /// } = 100227;
+
+8.3.  NFS_ACL Version 3
+
+   The following definitions, together with the common definitions in
+   Section 8.1, form the file nfs_acl3.x.
+
+   /// @@FILE nfs_acl3.x
    ///
    /// /*
    ///  * XDR data types inherited from the NFS version 3 protocol
@@ -2307,26 +2472,7 @@ Table of Contents
    ///     void;
    /// };
    ///
-   /// /*
-   ///  * Share the port with the NFS service.
-   ///  */
-   /// const NFS_ACL_PORT = 2049;
-   ///
    /// program NFS_ACL_PROGRAM {
-   ///     version NFS_ACL_V2 {
-   ///         void
-   ///             ACLPROC2_NULL(void) = 0;
-   ///         GETACL2res
-   ///             ACLPROC2_GETACL(GETACL2args) = 1;
-   ///         SETACL2res
-   ///             ACLPROC2_SETACL(SETACL2args) = 2;
-   ///         GETATTR2res
-   ///             ACLPROC2_GETATTR(GETATTR2args) = 3;
-   ///         ACCESS2res
-   ///             ACLPROC2_ACCESS(ACCESS2args) = 4;
-   ///         GETXATTRDIR2res
-   ///             ACLPROC2_GETXATTRDIR(GETXATTRDIR2args) = 5;
-   ///     } = 2;
    ///     version NFS_ACL_V3 {
    ///         void
    ///             ACLPROC3_NULL(void) = 0;
@@ -2381,8 +2527,10 @@ Table of Contents
 
    Maturity: Complete.
 
-   Coverage: All procedures except GETXATTRDIR are implemented in both
-   versions of the protocol.
+   Coverage: The Linux NFS server implements all procedures except
+   GETXATTRDIR in both versions of the protocol.  The Linux NFS client
+   implements the NFS_ACL protocol only for version 3; it does not
+   implement NFS_ACL version 2.
 
    Licensing: GPLv2
 
@@ -2397,6 +2545,11 @@ Table of Contents
    mask ACL entry is slightly different > than in draft 17 for ACLs with
    only four ACL entries.  This > is a corner case that occurs only
    rarely, so the semantic > differences may not be noticeable.
+
+   The Linux NFS_ACL implementation already builds the version 2 and
+   version 3 protocols from two separate source files, presently
+   maintained by hand.  Work is underway to generate those files from
+   the separate XDR descriptions in Section 8.2 and Section 8.3 instead.
 
 10.  Security Considerations
 
@@ -2551,9 +2704,9 @@ A.3.  Code Compilation Requirements
 
 Acknowledgments
 
-   The editor is grateful to Bill Baker, Wim Coekaerts, Andreas
-   Gruenbacher, Rick Macklem, Greg Marsden, Martin Thomson, Rob Thurlow,
-   and Jim Wright for their input and support.
+   The editor is grateful to Bill Baker, Frank Batschulat, Wim
+   Coekaerts, Andreas Gruenbacher, Rick Macklem, Greg Marsden, Martin
+   Thomson, Rob Thurlow, and Jim Wright for their input and support.
 
    Special thanks to Area Director Gorry Fairhurst, NFSV4 Working Group
    Chairs Brian Pawlowski and Christopher Inacio, and NFSV4 Working
